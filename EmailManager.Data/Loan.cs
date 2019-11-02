@@ -6,11 +6,10 @@ namespace EmailManager.Data
 {
     public class Loan
     {
+        public int LoanId { get; set; }
         public Client Client { get; set; }
-
         public Decimal LoanedSum { get; set; }
-
-
+        public DateTime DateAsigned { get; set; }
 
     }
 }
