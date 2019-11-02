@@ -10,8 +10,7 @@ namespace EmailManager.Data
         public bool IsValid { get; set; }
         public User User { get; set; }
         public Status EmailStatus { get; set; }
-        //Sender
-        public Client ClientId { get; set; }
+        public string Sender { get; set; }
         public DateTime ReceiveDate { get; set; }
         public string Subject { get; set; }
         public string Body { get; set; }
