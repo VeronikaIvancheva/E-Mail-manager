@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 namespace EmailManager.Data
 {
@@ -19,6 +18,7 @@ namespace EmailManager.Data
         public DateTime TimeStamp { get; set; }
         //Not sure about the type
         public string ActionTaken { get; set; }
+
         public ICollection<Email> Emails { get; set; }
     }
 }

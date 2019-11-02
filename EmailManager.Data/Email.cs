@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace EmailManager.Data
 {
@@ -8,8 +6,6 @@ namespace EmailManager.Data
     {
         public int EmailId { get; set; }
         public bool IsValid { get; set; }
-        public User User { get; set; }
-        public Status EmailStatus { get; set; }
         public string Sender { get; set; }
         public DateTime ReceiveDate { get; set; }
         public string Subject { get; set; }
@@ -20,9 +16,15 @@ namespace EmailManager.Data
         //questionable
         public DateTime CurrentStatus { get; set; }
         public DateTime TerminalStatus { get; set; }
-        public Loan Loan { get; set; }
-        public int LoanEmailID { get; set; }
 
+        public int LoanId { get; set; }
+        public Loan Loan { get; set; }
+
+        public int UserId { get; set; }
+        public User User { get; set; }
+
+        public int StatusId { get; set; }
+        public Status Status { get; set; }
 
     }
 }

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Identity;
 
 namespace EmailManager.Data
@@ -11,6 +9,7 @@ namespace EmailManager.Data
         public string Role { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+
         public ICollection<Email> UserEmails { get; set; }
     }
 }
