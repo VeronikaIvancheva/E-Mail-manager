@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using EmailManager.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using EmailManager.Data.Context;
 
 namespace EmailManager
 {
@@ -43,6 +44,9 @@ namespace EmailManager
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            services.AddDbContext<EmailManagerContext>(
+               options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
