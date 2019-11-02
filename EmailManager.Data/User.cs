@@ -11,6 +11,7 @@ namespace EmailManager.Data
         public string Role { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public string Email { get; set; }
+        //тук не ми е 100% ясно защо иска override
+        public override string Email { get; set; }
     }
 }

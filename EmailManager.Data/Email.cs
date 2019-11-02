@@ -4,7 +4,7 @@ using System.Text;
 
 namespace EmailManager.Data
 {
-    class Email
+   public class Email
     {
     }
 }

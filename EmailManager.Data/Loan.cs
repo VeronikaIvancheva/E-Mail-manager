@@ -4,7 +4,13 @@ using System.Text;
 
 namespace EmailManager.Data
 {
-    class Loan
+    public class Loan
     {
+        public Client Client { get; set; }
+
+        public Decimal LoanedSum { get; set; }
+
+
+
     }
 }
