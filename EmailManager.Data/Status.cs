@@ -10,7 +10,7 @@ namespace EmailManager.Data
         [Key]
         public int StatusID { get; set; }
         public string New { get; set; }
-        public string Open { get; set; }
+        public string Opened { get; set; }
         public string Closed { get; set; }
         public string NotReviewed { get; set; }
         public string InitialApplication { get; set; }

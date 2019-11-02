@@ -17,6 +17,17 @@ namespace EmailManager.Data.Context
         public DbSet<Client> Clients { get; set; }
         public DbSet<Email>Emails{get;set;}
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Email>().HasKey(m => m.EmailId);
+            modelBuilder.Entity<Loan>().HasKey(m => m.LoanId);
+
+            modelBuilder.Entity<Email>()
+                .HasOne(m => m.Loan)
+                .WithOne(w => w.LoanEmail);
+
+            base.OnModelCreating(modelBuilder);
+        }
 
     }
 }

@@ -20,6 +20,8 @@ namespace EmailManager.Data
         //questionable
         public DateTime CurrentStatus { get; set; }
         public DateTime TerminalStatus { get; set; }
+        public Loan Loan { get; set; }
+        public int LoanEmailID { get; set; }
 
 
     }
