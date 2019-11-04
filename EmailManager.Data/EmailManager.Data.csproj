@@ -5,14 +5,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Migrations\20191102211326_II.cs" />
-    <Compile Remove="Migrations\20191102211326_II.Designer.cs" />
-    <Compile Remove="Migrations\20191102211401_I.cs" />
-    <Compile Remove="Migrations\20191102211401_I.Designer.cs" />
-    <Compile Remove="Migrations\20191102211643_I.cs" />
-    <Compile Remove="Migrations\20191102211643_I.Designer.cs" />
-    <Compile Remove="Migrations\20191102211827_I.cs" />
-    <Compile Remove="Migrations\20191102211827_I.Designer.cs" />
+    <Compile Remove="Migrations\20191103201915_I.cs" />
+    <Compile Remove="Migrations\20191103201915_I.Designer.cs" />
+    <Compile Remove="Migrations\20191103204043_I.cs" />
+    <Compile Remove="Migrations\20191103204043_I.Designer.cs" />
+    <Compile Remove="Migrations\20191103204921_I.cs" />
+    <Compile Remove="Migrations\20191103204921_I.Designer.cs" />
+    <Compile Remove="Migrations\20191103205222_I.cs" />
+    <Compile Remove="Migrations\20191103205222_I.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -24,7 +24,6 @@
   <ItemGroup>
     <Folder Include="Contracts\" />
     <Folder Include="Implementation\" />
-    <Folder Include="Migrations\" />
   </ItemGroup>
 
 </Project>

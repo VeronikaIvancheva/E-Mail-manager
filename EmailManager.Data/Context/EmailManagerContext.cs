@@ -18,6 +18,7 @@ namespace EmailManager.Data.Context
         public DbSet<Client> Clients { get; set; }
         public DbSet<Email> Emails { get; set; }
         public DbSet<Status> Status { get; set; }
+        public DbSet<Attachment> Attachments { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -38,11 +39,11 @@ namespace EmailManager.Data.Context
             #endregion
 
             #region Email-Status - One-To-Many
-            //modelBuilder.Entity<Email>()
-            //    .HasOne(m => m.Status)
-            //    .WithMany(m => m.Emails)
-            //    .HasForeignKey(m => m.StatusId)
-            //    .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<Email>()
+                .HasOne(m => m.Status)
+                .WithMany(m => m.Emails)
+                .OnDelete(DeleteBehavior.Restrict)
+                .IsRequired();
 
             //modelBuilder.Entity<Status>()
             //    .HasMany(m => m.Emails)
@@ -58,6 +59,7 @@ namespace EmailManager.Data.Context
             //    .HasForeignKey(m => m.UserId)
             //    .OnDelete(DeleteBehavior.Restrict);
             #endregion
+
             #region User-Email - One-To-Many
             //modelBuilder.Entity<User>()
             //    .HasMany(m => m.UserEmails)
