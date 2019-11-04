@@ -20,6 +20,6 @@ namespace EmailManager.Data.Implementation
         //Not sure about the type
         public string ActionTaken { get; set; }
 
-        // public ICollection<Email> Emails { get; set; }
+        public ICollection<Email> Emails { get; set; }
     }
 }

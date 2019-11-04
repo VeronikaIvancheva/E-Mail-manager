@@ -1,12 +1,13 @@
 ﻿using EmailManager.Data.Implementation;
 using System;
+using System.Collections.Generic;
 
 namespace EmailManager.Data.Contracts
 {
     public interface IEmail
     {
-        int AttachmentCount { get; set; }
-        double AttachmentSize { get; set; }
+        //int AttachmentCount { get; set; }
+        //double AttachmentSize { get; set; }
         string Body { get; set; }
         DateTime CurrentStatus { get; set; }
         int EmailId { get; set; }
@@ -16,9 +17,11 @@ namespace EmailManager.Data.Contracts
         int LoanId { get; set; }
         DateTime ReceiveDate { get; set; }
         string Sender { get; set; }
+        int StatusId { get; set; }
         Status Status { get; set; }
         string Subject { get; set; }
         DateTime TerminalStatus { get; set; }
         User User { get; set; }
+        ICollection<Attachment> Attachments { get; set; }
     }
 }

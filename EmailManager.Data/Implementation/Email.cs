@@ -1,10 +1,12 @@
-﻿using System;
+﻿using EmailManager.Data.Contracts;
+using EmailManager.Data.Implementation;
+using System;
 using System.Collections.Generic;
 
 namespace EmailManager.Data
 {
     [Serializable]
-    public class Email
+    public class Email : IEmail
     {
         public Email()
         {
