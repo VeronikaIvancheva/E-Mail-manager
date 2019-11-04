@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
+using EmailManager.Data.Contracts;
 using Microsoft.AspNetCore.Identity;
 
-namespace EmailManager.Data
+namespace EmailManager.Data.Implementation
 {
-    public class User : IdentityUser
+    public class User : IdentityUser, IUser
     {
         //Мисля Role Enum както каза Мадин
         public string Role { get; set; }

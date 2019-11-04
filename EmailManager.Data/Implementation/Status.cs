@@ -1,10 +1,11 @@
-﻿using System;
+﻿using EmailManager.Data.Contracts;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace EmailManager.Data
+namespace EmailManager.Data.Implementation
 {
-    public class Status
+    public class Status : IStatus
     {
         [Key]
         public int StatusID { get; set; }
@@ -19,6 +20,6 @@ namespace EmailManager.Data
         //Not sure about the type
         public string ActionTaken { get; set; }
 
-        public ICollection<Email> Emails { get; set; }
+        // public ICollection<Email> Emails { get; set; }
     }
 }

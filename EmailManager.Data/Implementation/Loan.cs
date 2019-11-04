@@ -1,9 +1,10 @@
-﻿using System;
+﻿using EmailManager.Data.Contracts;
+using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace EmailManager.Data
+namespace EmailManager.Data.Implementation
 {
-    public class Loan
+    public class Loan : ILoan
     {
         [Key]
         public int LoanId { get; set; }

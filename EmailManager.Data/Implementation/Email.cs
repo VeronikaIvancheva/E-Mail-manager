@@ -1,8 +1,9 @@
-﻿using System;
+﻿using EmailManager.Data.Contracts;
+using System;
 
-namespace EmailManager.Data
+namespace EmailManager.Data.Implementation
 {
-    public class Email
+    public class Email : IEmail
     {
         public int EmailId { get; set; }
         public bool IsValid { get; set; }
