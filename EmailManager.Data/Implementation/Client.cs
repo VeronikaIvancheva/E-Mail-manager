@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using EmailManager.Data.Contracts;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace EmailManager.Data
+namespace EmailManager.Data.Implementation
 {
-    public class Client
+    public class Client : IClient
     {
         [Key]
         public int IdClient { get; set; }
