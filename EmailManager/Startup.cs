@@ -39,6 +39,7 @@ namespace EmailManager
             services.AddDbContext<EmailManagerContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
+
             services.AddDefaultIdentity<IdentityUser>()
                 .AddDefaultUI(UIFramework.Bootstrap4)
                 .AddEntityFrameworkStores<EmailManagerContext>();

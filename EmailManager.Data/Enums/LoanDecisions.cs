@@ -1,0 +1,15 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Text;
+
+namespace EmailManager.Data.Enums
+{
+    public enum LoanDecisions
+    {
+        [Display(Name = "Approved")]
+        Approved = 1,
+        [Display(Name = "Rejected")]
+        Rejected = 2
+    }
+}
