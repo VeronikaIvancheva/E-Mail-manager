@@ -10,7 +10,7 @@ namespace EmailManager.Data.Contracts
         string FileName { get; set; }
         double? AttachmentSize { get; set; }
 
-        int EmailId { get; set; }
+        int? EmailId { get; set; }
         Email Email { get; set; }
     }
 }

@@ -6,6 +6,11 @@ namespace EmailManager.Data.Implementation
 {
     public class User : IdentityUser, IUser
     {
+        public User()
+        {
+            this.UserEmails = new List<Email>();
+        }
+
         //Мисля Role Enum както каза Мадин
         public string Role { get; set; }
         public string FirstName { get; set; }

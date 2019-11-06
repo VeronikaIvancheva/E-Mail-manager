@@ -7,6 +7,11 @@ namespace EmailManager.Data.Implementation
 {
     public class Status : IStatus
     {
+        public Status()
+        {
+            this.Emails = new List<Email>();
+        }
+
         [Key]
         public int StatusID { get; set; }
         public string New { get; set; }

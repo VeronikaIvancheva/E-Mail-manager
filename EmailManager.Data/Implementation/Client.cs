@@ -6,6 +6,11 @@ namespace EmailManager.Data.Implementation
 {
     public class Client : IClient
     {
+        public Client()
+        {
+            this.Loans = new List<Loan>();
+        }
+
         [Key]
         public int IdClient { get; set; }
         public string PhoneNumberClient { get; set; }
