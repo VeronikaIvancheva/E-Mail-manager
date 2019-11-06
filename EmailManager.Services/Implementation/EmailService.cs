@@ -40,13 +40,13 @@ namespace EmailManager.Services.Implementation
             return email;
         }
 
-        // If modifying these scopes, delete your previously saved credentials
-        // at ~/.credentials/gmail-dotnet-quickstart.json
-        static string[] Scopes = { GmailService.Scope.GmailReadonly };
-        static string ApplicationName = "Gmail API .NET Quickstart";
-
-        public Task SaveEmailsToDB()
+        public async Task SaveEmailsToDB()
         {
+            // If modifying these scopes, delete your previously saved credentials
+            // at ~/.credentials/gmail-dotnet-quickstart.json
+            string[] Scopes = { GmailService.Scope.GmailReadonly };
+            string ApplicationName = "Gmail API .NET Quickstart";
+
             UserCredential credential;
 
             using (var stream =
@@ -56,12 +56,12 @@ namespace EmailManager.Services.Implementation
                 // automatically when the authorization flow completes for the first time.
                 string credPath = "token.json";
 
-                credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
+                credential = await GoogleWebAuthorizationBroker.AuthorizeAsync(
                     GoogleClientSecrets.Load(stream).Secrets,
                     Scopes,
                     "user",
                     CancellationToken.None,
-                    new FileDataStore(credPath, true)).Result;
+                    new FileDataStore(credPath, true));
 
                 Console.WriteLine("Credential file saved to: " + credPath);
             }
@@ -77,7 +77,7 @@ namespace EmailManager.Services.Implementation
             UsersResource.LabelsResource.ListRequest request = service.Users.Labels.List("me");
 
             // List labels.
-            IList<Label> labels = request.Execute().Labels;
+            /*IList<Label>*/ var labels = request.Execute().Labels;
 
             Console.WriteLine("Labels:");
 
