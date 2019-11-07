@@ -5,7 +5,7 @@ using System.Text;
 
 namespace EmailManager.Data.Enums
 {
-    public enum LoanDecisions
+    public enum LoanStatus
     {
         [Display(Name = "Approved")]
         Approved = 1,

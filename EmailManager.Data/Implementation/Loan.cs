@@ -1,4 +1,5 @@
 ﻿using EmailManager.Data.Contracts;
+using EmailManager.Data.Enums;
 using System;
 using System.ComponentModel.DataAnnotations;
 
@@ -16,6 +17,7 @@ namespace EmailManager.Data.Implementation
 
         public int ClientId { get; set; }
         public Client Client { get; set; }
+        public LoanStatus LoanStatus { get; set; }
 
     }
 }
