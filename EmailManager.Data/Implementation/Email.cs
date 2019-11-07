@@ -18,11 +18,12 @@ namespace EmailManager.Data
         public string Sender { get; set; }
         public DateTime ReceiveDate { get; set; }
         public string Subject { get; set; }
-        public EmailBody EmailBody { get; set; }
         public DateTime FirstRegistration { get; set; }
         //questionable
         public DateTime CurrentStatus { get; set; }
         public DateTime TerminalStatus { get; set; }
+
+        public string Body { get; set; }
 
         public int LoanId { get; set; }
         public Loan Loan { get; set; }

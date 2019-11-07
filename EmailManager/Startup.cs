@@ -15,6 +15,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using EmailManager.Data.Context;
 using EmailManager.Data.Implementation;
+using EmailManager.Services.Contracts;
+using EmailManager.Services.Implementation;
 
 namespace EmailManager
 {
@@ -57,6 +59,8 @@ namespace EmailManager
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddRouting(options => options.LowercaseUrls = true);
+
+            services.AddScoped<IEmailService, EmailService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

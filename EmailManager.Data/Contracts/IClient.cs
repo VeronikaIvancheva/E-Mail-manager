@@ -5,12 +5,12 @@ namespace EmailManager.Data.Contracts
 {
     public interface IClient
     {
-        string EGNClient { get; set; }
-        string EmailClient { get; set; }
-        string FirstNameClient { get; set; }
-        int IdClient { get; set; }
-        string LastNameClient { get; set; }
+        string ClientEGN { get; set; }
+        string ClientEmail { get; set; }
+        string ClientFirstName { get; set; }
+        int ClientId { get; set; }
+        string ClientLastName { get; set; }
         ICollection<Loan> Loans { get; set; }
-        string PhoneNumberClient { get; set; }
+        string ClientPhoneNumber { get; set; }
     }
 }

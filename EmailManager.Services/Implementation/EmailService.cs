@@ -25,21 +25,6 @@ namespace EmailManager.Services.Implementation
             this._context = context;
         }
 
-        public Email GetEmail(int emailId)
-        {
-            var email = _context.Emails
-                .Include(m => m.Attachments)
-                .Include(m => m.Status)
-                .FirstOrDefault(m => m.EmailId == emailId);
-
-            if (email == null)
-            {
-                throw new ArgumentException();
-            }
-
-            return email;
-        }
-
         public async Task SaveEmailsToDB()
         {
             // If modifying these scopes, delete your previously saved credentials
@@ -73,11 +58,30 @@ namespace EmailManager.Services.Implementation
                 ApplicationName = ApplicationName,
             });
 
+            var emailListRequest = service.Users.Messages.List("emailmanager13@gmail.com");
+
+            emailListRequest.LabelIds = "INBOX";
+            emailListRequest.IncludeSpamTrash = false;
+
+            var emailListResponse = emailListRequest.ExecuteAsync().Result;
+
+            if (emailListResponse != null && emailListResponse.Messages != null)
+            {
+                foreach (var email in emailListResponse.Messages)
+                {
+                    var emailRequest = service.Users.Messages.Get("emailmanager13@gmail.com", email.Id);
+
+                    //Collection with full email response.
+                    var emailFullResponse = emailRequest.ExecuteAsync().Result;
+                }
+            }
+
             // Define parameters of request.
-            UsersResource.LabelsResource.ListRequest request = service.Users.Labels.List("me");
+            UsersResource.LabelsResource.ListRequest request = service.Users.Labels.List("emailmanager13@gmail.com");
 
             // List labels.
-            /*IList<Label>*/ var labels = request.Execute().Labels;
+            /*IList<Label>*/
+            var labels = request.Execute().Labels;
 
             Console.WriteLine("Labels:");
 
@@ -93,7 +97,24 @@ namespace EmailManager.Services.Implementation
                 Console.WriteLine("No labels found.");
             }
 
-            Console.Read();
+
+            //Къде да сефйна, за да ги запазва и DB?
+            await _context.SaveChangesAsync();
+        }
+
+        public Email GetEmail(int emailId)
+        {
+            var email = _context.Emails
+                .Include(m => m.Attachments)
+                .Include(m => m.Status)
+                .FirstOrDefault(m => m.EmailId == emailId);
+
+            if (email == null)
+            {
+                throw new ArgumentException();
+            }
+
+            return email;
         }
     }
 }
