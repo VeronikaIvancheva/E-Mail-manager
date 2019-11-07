@@ -1,16 +1,17 @@
 ﻿using EmailManager.Data.Implementation;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace EmailManager.Data.Context
 {
-    public class EmailManagerContext : DbContext
+    public class EmailManagerContext : IdentityDbContext<User>
     {
         public EmailManagerContext(DbContextOptions options)
             : base(options)
         {
         }
 
-        public DbSet<User> Users { get; set; }
+        public DbSet<User> User { get; set; }
         public DbSet<Loan> Loans { get; set; }
         public DbSet<Client> Clients { get; set; }
         public DbSet<Email> Emails { get; set; }

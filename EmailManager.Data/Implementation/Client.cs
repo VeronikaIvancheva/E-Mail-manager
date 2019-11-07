@@ -12,12 +12,12 @@ namespace EmailManager.Data.Implementation
         }
 
         [Key]
-        public int IdClient { get; set; }
-        public string PhoneNumberClient { get; set; }
-        public string EGNClient { get; set; }
-        public string FirstNameClient { get; set; }
-        public string LastNameClient { get; set; }
-        public string EmailClient { get; set; }
+        public int ClientId { get; set; }
+        public string ClientPhoneNumber { get; set; }
+        public string ClientEGN { get; set; }
+        public string ClientFirstName { get; set; }
+        public string ClientLastName { get; set; }
+        public string ClientEmail { get; set; }
 
         public ICollection<Loan> Loans { get; set; }
     }

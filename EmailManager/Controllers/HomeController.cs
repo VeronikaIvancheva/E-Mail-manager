@@ -5,13 +5,23 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using EmailManager.Models;
+using EmailManager.Services.Contracts;
 
 namespace EmailManager.Controllers
 {
     public class HomeController : Controller
     {
-        public IActionResult Index()
+        private readonly IEmailService _emailService;
+
+        public HomeController(IEmailService emailService)
         {
+            this._emailService = emailService;
+        }
+
+        public async Task<IActionResult> Index()
+        {
+            await _emailService.SaveEmailsToDB();
+
             return View();
         }
 
