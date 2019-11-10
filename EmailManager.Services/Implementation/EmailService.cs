@@ -19,6 +19,9 @@ namespace EmailManager.Services.Implementation
     public class EmailService : IEmailService
     {
         private readonly EmailManagerContext _context;
+        static string[] Scopes = { GmailService.Scope.GmailModify };
+        static string ApplicationName = "Gmail API .NET Quickstart";
+        static string EmailAddress = "emailmanager13@gmail.com";
 
         public EmailService(EmailManagerContext context)
         {
@@ -29,8 +32,6 @@ namespace EmailManager.Services.Implementation
         {
             // If modifying these scopes, delete your previously saved credentials
             // at ~/.credentials/gmail-dotnet-quickstart.json
-            string[] Scopes = { GmailService.Scope.GmailReadonly };
-            string ApplicationName = "Gmail API .NET Quickstart";
 
             UserCredential credential;
 
