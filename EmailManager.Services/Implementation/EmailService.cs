@@ -8,8 +8,10 @@ using Google.Apis.Util.Store;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
+using System.Configuration;
 using System.Reflection.Emit;
 using System.Threading;
 using System.Threading.Tasks;
@@ -97,9 +99,66 @@ namespace EmailManager.Services.Implementation
                 Console.WriteLine("No labels found.");
             }
 
-
             //Къде да сефйна, за да ги запазва и DB?
+            // Redirect site: https://localhost:44368/ ???
             await _context.SaveChangesAsync();
+        }
+
+        public bool SaveRefreshToken(string gmailId, string refreshToken)
+        {
+            SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DbConnection"].ConnectionString);
+            string query = "INSERT INTO Member (GmailId,RefreshToken) VALUES (@GmailId,@RefreshToken)";
+            SqlCommand cmd = new SqlCommand(query, connection);
+            cmd.Parameters.AddWithValue("GmailId", gmailId);
+            cmd.Parameters.AddWithValue("RefreshToken", refreshToken);
+            connection.Open();
+
+            int result = cmd.ExecuteNonQuery();
+
+            connection.Close();
+
+            return result > 0 ? true : false;
+        }
+
+        public string GetRefreshToken(string gmailId)
+        {
+            SqlConnection connection = new SqlConnection(ConfigurationManager
+                                                                            .ConnectionStrings["DbConnection"]
+                                                                            .ConnectionString);
+            
+            string query = "SELECT RefreshToken FROM Member WHERE GmailId-@GmailId";
+            
+            SqlCommand cmd = new SqlCommand(query, connection);
+            
+            cmd.Parameters.AddWithValue("GmailId", gmailId);
+            connection.Open();
+
+            object result = cmd.ExecuteScalar();
+
+            connection.Close();
+
+            return result == null ? string.Empty : Convert.ToString(result);
+        }
+
+        public bool UpdateRefreshToken(string gmailId, string refreshToken)
+        {
+            SqlConnection connection = new SqlConnection(ConfigurationManager
+                                    .ConnectionStrings["DbConnection"]
+                                    .ConnectionString);
+
+            string query = "UPDATE Member SET RefreshToken-@RefreshToken WHERE GmailId-@GmailId";
+
+            SqlCommand cmd = new SqlCommand(query, connection);
+
+            cmd.Parameters.AddWithValue("GmailId", gmailId);
+            cmd.Parameters.AddWithValue("RefreshToken", refreshToken);
+            connection.Open();
+
+            int result = cmd.ExecuteNonQuery();
+
+            connection.Close();
+
+            return result > 0 ? true : false;
         }
 
         public Email GetEmail(int emailId)
