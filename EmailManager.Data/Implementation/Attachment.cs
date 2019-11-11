@@ -9,9 +9,10 @@ namespace EmailManager.Data.Implementation
     {
         [Key]
         public int AttachmentId { get; set; }
+
+        [StringLength(50)]
         public string FileName { get; set; }
         public double? AttachmentSize { get; set; }
-
         public int? EmailId { get; set; }
         public Email Email { get; set; }
     }

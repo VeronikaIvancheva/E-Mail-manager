@@ -10,6 +10,9 @@ namespace EmailManager.Data.Enums
         [Display(Name = "Approved")]
         Approved = 1,
         [Display(Name = "Rejected")]
-        Rejected = 2
+        Rejected = 2,
+        [Display(Name = "NotReviewed")]
+        NotReviewed,
+
     }
 }

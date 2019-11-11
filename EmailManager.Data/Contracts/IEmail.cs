@@ -1,4 +1,5 @@
-﻿using EmailManager.Data.Implementation;
+﻿using EmailManager.Data.Enums;
+using EmailManager.Data.Implementation;
 using System;
 using System.Collections.Generic;
 
@@ -14,7 +15,7 @@ namespace EmailManager.Data.Contracts
         int LoanId { get; set; }
         DateTime ReceiveDate { get; set; }
         string Sender { get; set; }
-        Status Status { get; set; }
+        EmailStatus Status { get; set; }
         string Subject { get; set; }
         string Body { get; set; }
         DateTime TerminalStatus { get; set; }

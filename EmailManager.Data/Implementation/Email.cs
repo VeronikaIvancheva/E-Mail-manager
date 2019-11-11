@@ -1,4 +1,5 @@
 ﻿using EmailManager.Data.Contracts;
+using EmailManager.Data.Enums;
 using EmailManager.Data.Implementation;
 using System;
 using System.Collections.Generic;
@@ -30,7 +31,7 @@ namespace EmailManager.Data
 
         public User User { get; set; }
 
-        public Status Status { get; set; }
+        public EmailStatus Status { get; set; }
 
         public ICollection<Attachment> Attachments { get; set; }
     }

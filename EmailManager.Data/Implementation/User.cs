@@ -11,7 +11,6 @@ namespace EmailManager.Data.Implementation
             this.UserEmails = new List<Email>();
         }
 
-        //Мисля Role Enum както каза Мадин
         public string Role { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
