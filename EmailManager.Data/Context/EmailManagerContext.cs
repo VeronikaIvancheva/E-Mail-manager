@@ -17,7 +17,6 @@ namespace EmailManager.Data.Context
         public DbSet<Email> Emails { get; set; }
         public DbSet<Status> Status { get; set; }
         public DbSet<Attachment> Attachments { get; set; }
-        public DbSet<GmailToken> GmailTokens { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
