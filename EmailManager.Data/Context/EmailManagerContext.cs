@@ -73,6 +73,14 @@ namespace EmailManager.Data.Context
             //    .OnDelete(DeleteBehavior.Restrict);
             #endregion
 
+            #region Email-EmailBody One-To-One
+            modelBuilder.Entity<Email>()
+                .HasOne(m=>m.EmailBody)
+                .WithOne(m=>m.Email)
+                .HasForeignKey<Email>(m=>m.EmailId)
+                .OnDelete(DeleteBehavior.Restrict);
+            #endregion
+
             base.OnModelCreating(modelBuilder);
         }
 

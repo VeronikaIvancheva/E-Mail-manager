@@ -26,7 +26,7 @@ namespace EmailManager.Data
         public DateTime TerminalStatus { get; set; }
         public int LoanId { get; set; }
         public Loan Loan { get; set; }
-
+        public EmailBody EmailBody { get; set; }
         public User User { get; set; }
 
         public Status Status { get; set; }

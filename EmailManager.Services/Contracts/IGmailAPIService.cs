@@ -5,10 +5,7 @@ namespace EmailManager.Services.Contracts
 {
     public interface IGmailAPIService
     {
-        Email GetEmail(int emailId);
-        string GetRefreshToken(string gmailId);
+        Email GetEmail(string emailId);
         Task SaveEmailsToDB();
-        bool SaveRefreshToken(string gmailId, string refreshToken);
-        bool UpdateRefreshToken(string gmailId, string refreshToken);
     }
 }

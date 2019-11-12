@@ -17,11 +17,11 @@ using System.Threading.Tasks;
 
 namespace EmailManager.Services.Implementation
 {
-    public class EmailService : IEmailService
+    public class GmailAPIService : IGmailAPIService
     {
         private readonly EmailManagerContext _context;
 
-        public EmailService(EmailManagerContext context)
+        public GmailAPIService(EmailManagerContext context)
         {
             this._context = context;
         }
@@ -97,7 +97,7 @@ namespace EmailManager.Services.Implementation
                         {
                             subject = name;
                         }
-                        else if(name == "From")
+                        else if (name == "From")
                         {
                             sender = value;
                         }
@@ -107,11 +107,16 @@ namespace EmailManager.Services.Implementation
                         //}
                     }
 
+                    EmailBody emailBody = new EmailBody
+                    {
+                        Body = emailFullResponse.Snippet,
+                    };
+
                     Email emailParts = new Email
                     {
                         EmailId = emailFullResponse.Id,
                         //Attachments = attachmentParts,
-                        Body = emailFullResponse.Snippet,
+                        EmailBody = emailBody,
                         EnumStatus = EmailStatus.NotReviewed,
                         CurrentStatus = DateTime.UtcNow,
                         //ReceiveDate = Convert.ToDateTime(emailFullResponse.InternalDate),

@@ -18,9 +18,9 @@ namespace EmailManager.Controllers
 {
 	public class HomeController : Controller
 	{
-		private readonly IEmailService _emailService;
+		private readonly IGmailAPIService _emailService;
 
-		public HomeController(IEmailService emailService)
+		public HomeController(IGmailAPIService emailService)
 		{
 			this._emailService = emailService;
 		}

@@ -7,7 +7,7 @@ namespace EmailManager.Data.Contracts
     public interface IEmail
     {
         DateTime CurrentStatus { get; set; }
-        int EmailId { get; set; }
+        string EmailId { get; set; }
         DateTime FirstRegistration { get; set; }
         bool IsValid { get; set; }
         Loan Loan { get; set; }

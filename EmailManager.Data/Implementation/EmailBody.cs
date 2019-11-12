@@ -4,11 +4,11 @@ using System.Text;
 
 namespace EmailManager.Data.Implementation
 {
-   public class EmailBody
+    public class EmailBody : IEmailBody
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
 
-        public int Body { get; set; }
+        public string Body { get; set; }
 
         public Email Email { get; set; }
     }
