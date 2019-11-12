@@ -28,27 +28,37 @@ namespace EmailManager.Data.Context
                 .OnDelete(DeleteBehavior.Restrict);
             #endregion
 
-            #region Loan-Email - One-To-One
+            #region Loan-Email - One-To-One          
+            modelBuilder.Entity<Loan>()
+                .HasKey(l => new { l.LoanEmailId });
+
             modelBuilder.Entity<Loan>()
                 .HasOne(m => m.LoanEmail)
                 .WithOne(m => m.Loan)
                 .HasForeignKey<Email>(m => m.LoanId)
                 .OnDelete(DeleteBehavior.Restrict);
+            #endregion
 
-            //Кара се с това при създаване на връзка
-            //modelBuilder.Entity<Email>()
-            //    .HasOne(m => m.Loan)
-            //    .WithOne(m => m.LoanEmail)
-            //    .HasForeignKey<Loan>(m => m.LoanEmailId)
-            //    .OnDelete(DeleteBehavior.Restrict);
+            #region Email-Loan - One-To-One 
+            modelBuilder.Entity<Email>()
+                .HasKey(l => new { l.LoanId });
+
+            modelBuilder.Entity<Email>()
+                .HasOne(m => m.Loan)
+                .WithOne(m => m.LoanEmail)
+                .HasForeignKey<Loan>(m => m.LoanEmailId)
+                .OnDelete(DeleteBehavior.Restrict);
             #endregion
 
             #region Email-Status - One-To-Many
+            modelBuilder.Entity<Email>();
+                //.HasKey(l => new { l.StatusId });
+
             modelBuilder.Entity<Email>()
                 .HasOne(m => m.Status)
                 .WithMany(m => m.Emails)
-                .OnDelete(DeleteBehavior.Restrict)
-                .IsRequired();
+                //.HasForeignKey(m => m.StatusId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             //modelBuilder.Entity<Status>()
             //    .HasMany(m => m.Emails)

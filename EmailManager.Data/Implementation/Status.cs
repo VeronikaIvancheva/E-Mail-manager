@@ -1,4 +1,5 @@
 ﻿using EmailManager.Data.Contracts;
+using EmailManager.Data.Enums;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -14,11 +15,7 @@ namespace EmailManager.Data.Implementation
 
         [Key]
         public int StatusID { get; set; }
-        public string New { get; set; }
-        public string Opened { get; set; }
-        public string Closed { get; set; }
-        public string NotReviewed { get; set; }
-        public string InitialApplication { get; set; }
+        public EmailStatus EmailStatus { get; set; }
         public DateTime NewStatus { get; set; }
         public DateTime LastStatus { get; set; }
         public DateTime TimeStamp { get; set; }

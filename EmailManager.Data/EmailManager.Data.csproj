@@ -5,6 +5,31 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20191111204732_Initial.cs" />
+    <Compile Remove="Migrations\20191111204732_Initial.Designer.cs" />
+    <Compile Remove="Migrations\20191112200746_I.cs" />
+    <Compile Remove="Migrations\20191112200746_I.Designer.cs" />
+    <Compile Remove="Migrations\20191112202532_II.cs" />
+    <Compile Remove="Migrations\20191112202532_II.Designer.cs" />
+    <Compile Remove="Migrations\20191112203446_I.cs" />
+    <Compile Remove="Migrations\20191112203446_I.Designer.cs" />
+    <Compile Remove="Migrations\20191112203804_I.cs" />
+    <Compile Remove="Migrations\20191112203804_I.Designer.cs" />
+    <Compile Remove="Migrations\20191112203941_I.cs" />
+    <Compile Remove="Migrations\20191112203941_I.Designer.cs" />
+    <Compile Remove="Migrations\20191112204126_I.cs" />
+    <Compile Remove="Migrations\20191112204126_I.Designer.cs" />
+    <Compile Remove="Migrations\20191112205725_I.cs" />
+    <Compile Remove="Migrations\20191112205725_I.Designer.cs" />
+    <Compile Remove="Migrations\20191112205936_I.cs" />
+    <Compile Remove="Migrations\20191112205936_I.Designer.cs" />
+    <Compile Remove="Migrations\20191112210943_I.cs" />
+    <Compile Remove="Migrations\20191112210943_I.Designer.cs" />
+    <Compile Remove="Migrations\20191112211626_I.cs" />
+    <Compile Remove="Migrations\20191112211626_I.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="2.2.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.6" />
     <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="2.2.0" />
