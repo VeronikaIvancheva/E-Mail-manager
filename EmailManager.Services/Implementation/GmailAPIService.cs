@@ -18,11 +18,11 @@ using System.Threading.Tasks;
 
 namespace EmailManager.Services.Implementation
 {
-    public class EmailService : IEmailService
+    public class GmailAPIService : IGmailAPIService
     {
         private readonly EmailManagerContext _context;
 
-        public EmailService(EmailManagerContext context)
+        public GmailAPIService(EmailManagerContext context)
         {
             this._context = context;
         }
@@ -125,11 +125,11 @@ namespace EmailManager.Services.Implementation
             SqlConnection connection = new SqlConnection(ConfigurationManager
                                                                             .ConnectionStrings["DbConnection"]
                                                                             .ConnectionString);
-            
+
             string query = "SELECT RefreshToken FROM Member WHERE GmailId-@GmailId";
-            
+
             SqlCommand cmd = new SqlCommand(query, connection);
-            
+
             cmd.Parameters.AddWithValue("GmailId", gmailId);
             connection.Open();
 

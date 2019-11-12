@@ -61,7 +61,7 @@ namespace EmailManager
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddRouting(options => options.LowercaseUrls = true);
 
-            services.AddScoped<IEmailService, EmailService>();
+            services.AddScoped<IEmailService, GmailAPIService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
