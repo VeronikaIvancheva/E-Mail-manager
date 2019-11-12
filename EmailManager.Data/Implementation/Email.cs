@@ -1,4 +1,5 @@
 ﻿using EmailManager.Data.Contracts;
+using EmailManager.Data.Enums;
 using EmailManager.Data.Implementation;
 using System;
 using System.Collections.Generic;
@@ -13,11 +14,12 @@ namespace EmailManager.Data
             this.Attachments = new List<Attachment>();
         }
 
-        public int EmailId { get; set; }
+        public string EmailId { get; set; }
         public bool IsValid { get; set; }
         public string Sender { get; set; }
         public DateTime ReceiveDate { get; set; }
         public string Subject { get; set; }
+        public EmailStatus EnumStatus { get; set; }
         public DateTime FirstRegistration { get; set; }
         //questionable
         public DateTime CurrentStatus { get; set; }

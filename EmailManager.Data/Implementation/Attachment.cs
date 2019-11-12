@@ -8,11 +8,11 @@ namespace EmailManager.Data.Implementation
     public class Attachment : IAttachment
     {
         [Key]
-        public int AttachmentId { get; set; }
+        public string AttachmentId { get; set; }
         public string FileName { get; set; }
         public double? AttachmentSize { get; set; }
 
-        public int? EmailId { get; set; }
+        public string EmailId { get; set; }
         public Email Email { get; set; }
     }
 }

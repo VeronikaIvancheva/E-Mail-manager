@@ -6,11 +6,11 @@ namespace EmailManager.Data.Contracts
 {
     public interface IAttachment
     {
-        int AttachmentId { get; set; }
+        string AttachmentId { get; set; }
         string FileName { get; set; }
         double? AttachmentSize { get; set; }
 
-        int? EmailId { get; set; }
+        string EmailId { get; set; }
         Email Email { get; set; }
     }
 }
