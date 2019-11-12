@@ -34,6 +34,13 @@ namespace EmailManager.Data.Context
                 .WithOne(m => m.Loan)
                 .HasForeignKey<Email>(m => m.LoanId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            //Кара се с това при създаване на връзка
+            //modelBuilder.Entity<Email>()
+            //    .HasOne(m => m.Loan)
+            //    .WithOne(m => m.LoanEmail)
+            //    .HasForeignKey<Loan>(m => m.LoanEmailId)
+            //    .OnDelete(DeleteBehavior.Restrict);
             #endregion
 
             #region Email-Status - One-To-Many
