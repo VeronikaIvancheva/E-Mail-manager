@@ -52,19 +52,11 @@ namespace EmailManager.Data.Context
 
             #region Email-Status - One-To-Many
             modelBuilder.Entity<Email>();
-                //.HasKey(l => new { l.StatusId });
 
             modelBuilder.Entity<Email>()
                 .HasOne(m => m.Status)
                 .WithMany(m => m.Emails)
-                //.HasForeignKey(m => m.StatusId)
                 .OnDelete(DeleteBehavior.Restrict);
-
-            //modelBuilder.Entity<Status>()
-            //    .HasMany(m => m.Emails)
-            //    .WithOne(m => m.Status)
-            //    .HasForeignKey(m => m.EmailId)
-            //    .OnDelete(DeleteBehavior.Restrict);
             #endregion
 
             #region Email-User - Many-To-One

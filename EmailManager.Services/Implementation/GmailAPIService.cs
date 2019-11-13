@@ -72,40 +72,30 @@ namespace EmailManager.Services.Implementation
                 {
                     var emailRequest = service.Users.Messages.Get("emailmanager13@gmail.com", email.Id);
 
-                    //Collection with full email response.
+                    //Collection with full email response
                     var emailFullResponse = emailRequest.ExecuteAsync().Result;
 
-                    Attachment attachmentParts = new Attachment
+                    Attachment attachmentParts = null;
+
+                    if (emailFullResponse.Payload.Body.AttachmentId != null)
                     {
-                        AttachmentId = emailFullResponse.Payload.Body.AttachmentId,
-                        AttachmentSize = emailFullResponse.Payload.Body.Size,
-                        FileName = emailFullResponse.Payload.Filename,
-                        EmailId = emailFullResponse.Id,
-                    };
-
-                    var headersExtract = emailFullResponse.Payload.Headers;
-                    string subject = string.Empty;
-                    string sender = string.Empty;
-                    //DateTime date;
-
-                    foreach (var header in headersExtract)
-                    {
-                        var name = header.Name;
-                        var value = header.Value;
-
-                        if (name == "Subject")
+                        attachmentParts = new Attachment
                         {
-                            subject = name;
-                        }
-                        else if (name == "From")
-                        {
-                            sender = value;
-                        }
-                        //else if (name == "Date")
-                        //{
-                        //    date = value;
-                        //}
-                    }
+                            AttachmentId = emailFullResponse.Payload.Body.AttachmentId,
+                            AttachmentSize = emailFullResponse.Payload.Body.Size,
+                            FileName = emailFullResponse.Payload.Filename,
+                            EmailId = emailFullResponse.Id,
+                        };
+                    }                    
+
+                    string subject = emailFullResponse.Payload.Headers
+                        .FirstOrDefault(s => s.Name == "Subject").Value;
+
+                    string sender = emailFullResponse.Payload.Headers
+                        .FirstOrDefault(s => s.Name == "From").Value;
+
+                    string date = emailFullResponse.Payload.Headers
+                        .FirstOrDefault(d => d.Name == "Date").Value;
 
                     EmailBody emailBody = new EmailBody
                     {
@@ -115,11 +105,11 @@ namespace EmailManager.Services.Implementation
                     Email emailParts = new Email
                     {
                         EmailId = emailFullResponse.Id,
-                        //Attachments = attachmentParts,
+                        //Attachments = attachmentParts.Email.Attachments,
                         EmailBody = emailBody,
                         EnumStatus = EmailStatus.NotReviewed,
                         CurrentStatus = DateTime.UtcNow,
-                        //ReceiveDate = Convert.ToDateTime(emailFullResponse.InternalDate),
+                        //ReceiveDate = emailFullResponse.InternalDate.Value,
                         Subject = subject,
                         Sender = sender,
                     };
@@ -149,6 +139,11 @@ namespace EmailManager.Services.Implementation
                 Console.WriteLine("No labels found.");
             }
         }
+
+        //public void PassEmailParams()
+        //{
+
+        //}
 
         //public bool SaveRefreshToken(string gmailId, string refreshToken)
         //{
@@ -206,20 +201,5 @@ namespace EmailManager.Services.Implementation
 
         //    return result > 0 ? true : false;
         //}
-
-        public Email GetEmail(string emailId)
-        {
-            var email = _context.Emails
-                .Include(m => m.Attachments)
-                .Include(m => m.Status)
-                .FirstOrDefault(m => m.EmailId == emailId);
-
-            if (email == null)
-            {
-                throw new ArgumentException();
-            }
-
-            return email;
-        }
     }
 }
