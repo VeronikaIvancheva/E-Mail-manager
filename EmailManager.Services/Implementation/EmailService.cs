@@ -47,5 +47,24 @@ namespace EmailManager.Services.Implementation
 
             return email.EnumStatus;                
         }
+
+        public async Task MarkNewStatus(int loanId, string userId)
+        {
+            var email = await _context.Emails
+                .FirstOrDefaultAsync(a => a.LoanId == loanId);
+            var status = await _context.Status
+                .FirstOrDefaultAsync(a => a.StatusID == email.Status.StatusID);
+            var user = await _context.User
+                .FirstOrDefaultAsync(c => c.Id == userId);
+
+            email.Status.NewStatus = DateTime.Now;
+
+            user.UserEmails.Add(email);
+
+            email.EnumStatus = EmailStatus.New;
+            //да сложим другите datetime и ест, които ги има в таблицата на Status
+
+            await _context.SaveChangesAsync();
+        }
     }
 }

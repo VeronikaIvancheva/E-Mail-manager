@@ -12,5 +12,6 @@ namespace EmailManager.Services.Contracts
         Task<IEnumerable<Email>> GetAllEmails();
         EmailStatus GetStatus(string emailId);
         Email GetEmail(int emailId);
+        Task MarkNewStatus(int loanId, string userId);
     }
 }

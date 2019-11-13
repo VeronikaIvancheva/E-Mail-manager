@@ -106,6 +106,13 @@ namespace EmailManager.Services.Implementation
                             };
                         }
 
+                        Status status = new Status
+                        {
+                            ActionTaken = "Changed",
+                            NewStatus = DateTime.UtcNow,
+                            LastStatus = DateTime.UtcNow,
+                        };
+
                         EmailBody emailBody = new EmailBody
                         {
                             Body = emailFullResponse.Snippet,
@@ -121,6 +128,7 @@ namespace EmailManager.Services.Implementation
                             //ReceiveDate = emailFullResponse.InternalDate.Value,
                             Subject = subject,
                             Sender = sender,
+                            Status = status,
                         };
 
                         await _context.AddAsync(emailParts);

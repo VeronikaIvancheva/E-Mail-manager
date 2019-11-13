@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using EmailManager.Models.EmailViewModel;
 using EmailManager.Services.Contracts;
+using EmailManager.Services.Implementation;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EmailManager.Controllers
@@ -50,5 +52,49 @@ namespace EmailManager.Controllers
 
             return View("Detail", emailModel);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> MarkNew(EmailViewModel viewModel)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            int loanId = viewModel.LoanId;
+
+            try
+            {
+                var markNew = _emailService.MarkNewStatus(loanId, userId);
+            }
+            catch (Exception ex)
+            {
+                TempData["markNewError"] = ex.Message;
+
+                return RedirectToAction("Index", new { id = loanId });
+            }
+
+            return RedirectToAction("Index", new { id = loanId });
+        }
+
+        //[HttpPost]
+        //public async Task<IActionResult> MarkClosed(int id)
+        //{
+
+        //}
+
+        //[HttpPost]
+        //public async Task<IActionResult> MarkInvalid(int id)
+        //{
+
+        //}
+
+        //[HttpPost]
+        //public async Task<IActionResult> MarkOpen(int id)
+        //{
+
+        //}
+
+        //[HttpPost]
+        //public async Task<IActionResult> MarkNotReviewed(int id)
+        //{
+
+        //}
     }
 }

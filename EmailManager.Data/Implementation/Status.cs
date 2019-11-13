@@ -18,6 +18,7 @@ namespace EmailManager.Data.Implementation
         public EmailStatus EmailStatus { get; set; }
         public DateTime NewStatus { get; set; }
         public DateTime LastStatus { get; set; }
+        //DateTime на change на статуса
         public DateTime TimeStamp { get; set; }
         //Not sure about the type
         public string ActionTaken { get; set; }
