@@ -1,5 +1,6 @@
 ﻿using EmailManager.Data;
 using EmailManager.Data.Context;
+using EmailManager.Data.Enums;
 using EmailManager.Services.Contracts;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -22,24 +23,29 @@ namespace EmailManager.Services.Implementation
         public async Task<IEnumerable<Email>> GetAllEmails()
         {
             return await _context.Emails
+                .Include(m => m.EmailBody)
                 .Include(m => m.Attachments)
                 .Include(m => m.Status)
                 .ToListAsync();
         }
 
-        public Email GetEmail(string emailId)
+        public Email GetEmail(int loanId)
         {
             var email = _context.Emails
+                .Include(m => m.EmailBody)
                 .Include(m => m.Attachments)
                 .Include(m => m.Status)
-                .FirstOrDefault(m => m.EmailId == emailId);
-
-            if (email == null)
-            {
-                throw new ArgumentException();
-            }
+                .FirstOrDefault(m => m.LoanId == loanId);
 
             return email;
+        }
+
+        public EmailStatus GetStatus(string emailId)
+        {
+            var email = _context.Emails
+                .FirstOrDefault(b => b.EmailId == emailId);
+
+            return email.EnumStatus;                
         }
     }
 }

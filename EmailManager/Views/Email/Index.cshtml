@@ -1,0 +1,46 @@
+﻿@model EmailIndexViewModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<table class="greenTable">
+    <thead>
+        <tr>
+            <th>№</th>
+            <th>Sender</th>
+            <th>Receive Date</th>
+            <th>Subject</th>
+            <th>Body</th>
+            <th>Enum Status</th>
+            <th>Attachments</th>
+        </tr>
+    </thead>
+    <tfoot>
+        <tr>
+            <td colspan="7">
+                <div class="links"><a href="#">&laquo;</a> <a class="active" href="#">1</a> <a href="#">2</a> <a href="#">3</a> <a href="#">4</a> <a href="#">&raquo;</a></div>
+            </td>
+        </tr>
+    </tfoot>
+    <tbody>
+        @foreach (var email in Model.Emails)
+        {
+            <tr>
+                <td>@email.LoanId</td>
+                <td>@email.Sender</td>
+                <td>@email.ReceiveDate</td>
+                <td class="nav-link">
+                    <a asp-route-id="@email.LoanId" asp-action="Detail" asp-controller="Email">
+                        @email.Subject
+                    </a>
+                </td>
+                <td>@email.Body</td>
+                <td>@email.EnumStatus</td>
+                <td>@email.AttachmentsCount</td>
+            </tr>
+        }
+    </tbody>
+</table>

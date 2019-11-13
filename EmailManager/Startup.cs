@@ -11,6 +11,8 @@ using EmailManager.Data.Context;
 using EmailManager.Data.Implementation;
 using EmailManager.Services.Contracts;
 using EmailManager.Services.Implementation;
+using EmailManager.Data.Contracts;
+using EmailManager.Data;
 
 namespace EmailManager
 {
@@ -56,6 +58,7 @@ namespace EmailManager
 
             services.AddScoped<IGmailAPIService, GmailAPIService>();
             services.AddScoped<IEmailService, EmailService>();
+            services.AddScoped<IEmail, Email>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

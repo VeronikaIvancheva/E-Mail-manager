@@ -75,21 +75,10 @@ namespace EmailManager.Services.Implementation
                     //Collection with full email response
                     var emailFullResponse = emailRequest.ExecuteAsync().Result;
 
-                    Attachment attachmentParts = null;
 
-                    if (emailFullResponse.Payload.Body.AttachmentId != null)
-                    {
-                        attachmentParts = new Attachment
-                        {
-                            AttachmentId = emailFullResponse.Payload.Body.AttachmentId,
-                            AttachmentSize = emailFullResponse.Payload.Body.Size,
-                            FileName = emailFullResponse.Payload.Filename,
-                            EmailId = emailFullResponse.Id,
-                        };
-                    }                    
-
+                    //Getting email Subject, From and Date
                     string subject = emailFullResponse.Payload.Headers
-                        .FirstOrDefault(s => s.Name == "Subject").Value;
+                            .FirstOrDefault(s => s.Name == "Subject").Value;
 
                     string sender = emailFullResponse.Payload.Headers
                         .FirstOrDefault(s => s.Name == "From").Value;
@@ -97,25 +86,46 @@ namespace EmailManager.Services.Implementation
                     string date = emailFullResponse.Payload.Headers
                         .FirstOrDefault(d => d.Name == "Date").Value;
 
-                    EmailBody emailBody = new EmailBody
+                    //Checking whether the emails are saved or not 
+                    Email emailCheck = _context.Emails
+                        .FirstOrDefault(e => e.EmailBody.Body == emailFullResponse.Snippet && e.Sender == sender);
+                    
+                    //TODO - може да се счупи, когато започнем да криптираме клиента
+                    if (emailCheck == null)
                     {
-                        Body = emailFullResponse.Snippet,
-                    };
+                        Attachment attachmentParts = null;
 
-                    Email emailParts = new Email
-                    {
-                        EmailId = emailFullResponse.Id,
-                        //Attachments = attachmentParts.Email.Attachments,
-                        EmailBody = emailBody,
-                        EnumStatus = EmailStatus.NotReviewed,
-                        CurrentStatus = DateTime.UtcNow,
-                        //ReceiveDate = emailFullResponse.InternalDate.Value,
-                        Subject = subject,
-                        Sender = sender,
-                    };
+                        if (emailFullResponse.Payload.Body.AttachmentId != null)
+                        {
+                            attachmentParts = new Attachment
+                            {
+                                AttachmentId = emailFullResponse.Payload.Body.AttachmentId,
+                                AttachmentSize = emailFullResponse.Payload.Body.Size,
+                                FileName = emailFullResponse.Payload.Filename,
+                                EmailId = emailFullResponse.Id,
+                            };
+                        }
 
-                    await _context.AddAsync(emailParts);
-                    await _context.SaveChangesAsync();
+                        EmailBody emailBody = new EmailBody
+                        {
+                            Body = emailFullResponse.Snippet,
+                        };
+
+                        Email emailParts = new Email
+                        {
+                            EmailId = emailFullResponse.Id,
+                            //Attachments = attachmentParts.Email.Attachments,
+                            EmailBody = emailBody,
+                            EnumStatus = EmailStatus.NotReviewed,
+                            CurrentStatus = DateTime.UtcNow,
+                            //ReceiveDate = emailFullResponse.InternalDate.Value,
+                            Subject = subject,
+                            Sender = sender,
+                        };
+
+                        await _context.AddAsync(emailParts);
+                        await _context.SaveChangesAsync();
+                    }                    
                 }
             }
 

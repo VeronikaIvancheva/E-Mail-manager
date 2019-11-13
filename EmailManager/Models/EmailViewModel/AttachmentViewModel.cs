@@ -4,7 +4,7 @@ namespace EmailManager.Models.EmailViewModel
 {
     public class AttachmentViewModel
     {
-        public int AttachmentId { get; set; }
+        public string AttachmentId { get; set; }
         public string FileName { get; set; }
         public double? AttachmentSize { get; set; }
 
