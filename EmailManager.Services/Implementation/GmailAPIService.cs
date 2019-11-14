@@ -7,9 +7,7 @@ using Google.Apis.Auth.OAuth2;
 using Google.Apis.Gmail.v1;
 using Google.Apis.Services;
 using Google.Apis.Util.Store;
-using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -114,7 +112,9 @@ namespace EmailManager.Services.Implementation
                             ActionTaken = "Changed",
                             NewStatus = DateTime.UtcNow,
                             LastStatus = DateTime.UtcNow,
-                        };
+                            EmailStatus = EmailStatus.NotReviewed                           
+                        };                       
+
 
                         EmailBody emailBody = new EmailBody
                         {
@@ -125,13 +125,13 @@ namespace EmailManager.Services.Implementation
                         {
                             EmailId = emailFullResponse.Id,
                             //Attachments = attachmentParts.Email.Attachments,
-                            EmailBody = emailBody,
-                            EnumStatus = EmailStatus.NotReviewed,
+                            EmailBody = emailBody,                           
                             CurrentStatus = DateTime.UtcNow,
                             ReceiveDate = editedDate,
                             Subject = subject,
                             Sender = sender,
-                            Status = status,
+                            Status = status
+                            
                         };
 
                         await _context.AddAsync(emailParts);

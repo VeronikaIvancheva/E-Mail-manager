@@ -53,15 +53,16 @@ namespace EmailManager.Controllers
             return View("Detail", emailModel);
         }
 
+        // Prerabotete go v async 
         [HttpPost]
-        public IActionResult MarkNew(EmailViewModel viewModel)
+        public async Task<IActionResult> MarkNew(EmailViewModel viewModel)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             int emailId = viewModel.Id;
 
             try
             {
-                var markNew = _emailService.MarkNewStatus(emailId, userId);
+               await _emailService.MarkNewStatus(emailId, userId);
 
                 //if (markNew == false)
                 //{
@@ -74,8 +75,8 @@ namespace EmailManager.Controllers
 
                 return RedirectToAction("Index", new { id = emailId });
             }
-
-            return RedirectToAction("Index", new { id = emailId });
+           
+           return RedirectToAction("Index", new { id = emailId });
         }
 
         [HttpPost]
