@@ -29,19 +29,19 @@ namespace EmailManager.Data.Context
             #endregion
 
             #region Loan-Email - One-To-One          
-            modelBuilder.Entity<Loan>()
-                .HasKey(l => new { l.LoanEmailId });
+            //modelBuilder.Entity<Loan>()
+            //    .HasKey(l => l.LoanId);
 
-            modelBuilder.Entity<Loan>()
-                .HasOne(m => m.LoanEmail)
-                .WithOne(m => m.Loan)
-                .HasForeignKey<Email>(m => m.LoanId)
-                .OnDelete(DeleteBehavior.Restrict);
+            //modelBuilder.Entity<Loan>()
+            //    .HasOne(m => m.LoanEmail)
+            //    .WithOne(m => m.Loan)
+            //    .HasForeignKey<Email>(m => m.LoanId)
+            //    .OnDelete(DeleteBehavior.Restrict);
             #endregion
 
             #region Email-Loan - One-To-One 
             modelBuilder.Entity<Email>()
-                .HasKey(l => new { l.LoanId });
+                .HasKey(l => l.Id );
 
             modelBuilder.Entity<Email>()
                 .HasOne(m => m.Loan)

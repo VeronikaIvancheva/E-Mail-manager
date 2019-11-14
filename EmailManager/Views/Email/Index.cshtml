@@ -29,11 +29,11 @@
         @foreach (var email in Model.Emails)
         {
             <tr>
-                <td>@email.LoanId</td>
+                <td>@email.Id</td>
                 <td>@email.Sender</td>
                 <td>@email.ReceiveDate</td>
                 <td class="nav-link">
-                    <a asp-route-id="@email.LoanId" asp-action="Detail" asp-controller="Email">
+                    <a asp-route-id="@email.Id" asp-action="Detail" asp-controller="Email">
                         @email.Subject
                     </a>
                 </td>

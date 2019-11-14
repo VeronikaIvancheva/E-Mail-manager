@@ -26,7 +26,7 @@ namespace EmailManager.Controllers
             var emailsListing = emailsAllResults
                 .Select(e => new EmailViewModel
                 {
-                    LoanId = e.LoanId,
+                    Id = e.Id,
                     Subject = e.Subject,
                     Sender = e.Sender,
                     Body = e.EmailBody.Body,
@@ -57,20 +57,20 @@ namespace EmailManager.Controllers
         public async Task<IActionResult> MarkNew(EmailViewModel viewModel)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            int loanId = viewModel.LoanId;
+            int emailId = viewModel.Id;
 
             try
             {
-                var markNew = _emailService.MarkNewStatus(loanId, userId);
+                var markNew = _emailService.MarkNewStatus(emailId, userId);
             }
             catch (Exception ex)
             {
                 TempData["markNewError"] = ex.Message;
 
-                return RedirectToAction("Index", new { id = loanId });
+                return RedirectToAction("Index", new { id = emailId });
             }
 
-            return RedirectToAction("Index", new { id = loanId });
+            return RedirectToAction("Index", new { id = emailId });
         }
 
         //[HttpPost]

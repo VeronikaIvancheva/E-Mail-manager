@@ -29,13 +29,13 @@ namespace EmailManager.Services.Implementation
                 .ToListAsync();
         }
 
-        public Email GetEmail(int loanId)
+        public Email GetEmail(int mailId)
         {
             var email = _context.Emails
                 .Include(m => m.EmailBody)
                 .Include(m => m.Attachments)
                 .Include(m => m.Status)
-                .FirstOrDefault(m => m.LoanId == loanId);
+                .FirstOrDefault(m => m.Id == mailId);
 
             return email;
         }
@@ -48,23 +48,30 @@ namespace EmailManager.Services.Implementation
             return email.EnumStatus;                
         }
 
-        public async Task MarkNewStatus(int loanId, string userId)
+        public async Task MarkNewStatus(int emailId, string userId)
         {
             var email = await _context.Emails
-                .FirstOrDefaultAsync(a => a.LoanId == loanId);
+                .FirstOrDefaultAsync(a => a.Id == emailId);
             var status = await _context.Status
                 .FirstOrDefaultAsync(a => a.StatusID == email.Status.StatusID);
             var user = await _context.User
                 .FirstOrDefaultAsync(c => c.Id == userId);
 
-            email.Status.NewStatus = DateTime.Now;
+            //var lastStatus = email.Status.LastStatus;
+            //var currentStat = email.Status.NewStatus;
+            //email.Status.LastStatus = currentStat - lastStatus; //за DateTime LastStatus - кара се
+            email.Status.NewStatus = DateTime.UtcNow;
+            email.Status.TimeStamp = DateTime.UtcNow;
+            email.Status.ActionTaken = "Changed";
 
             user.UserEmails.Add(email);
 
             email.EnumStatus = EmailStatus.New;
-            //да сложим другите datetime и ест, които ги има в таблицата на Status
 
             await _context.SaveChangesAsync();
+
+            //за запазване: enum EmailStatus, DateTime NewStatus, DateTime LastStatus, DateTime TimeStamp (when changed)
+            // string ActionTaken
         }
     }
 }

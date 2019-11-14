@@ -12,7 +12,7 @@ namespace EmailManager.Models.EmailViewModel
 
         public EmailViewModel(Email email)
         {
-            this.LoanId = email.LoanId;
+            this.Id = email.Id;
             this.EmailId = email.EmailId;
             this.Body = email.EmailBody.Body;
             this.EnumStatus = email.EnumStatus;
@@ -22,6 +22,7 @@ namespace EmailManager.Models.EmailViewModel
             this.Subject = email.Subject;
         }
 
+        public int Id { get; set; }
         public int LoanId { get; set; }
         public string EmailId { get; set; }
         public string Sender { get; set; }

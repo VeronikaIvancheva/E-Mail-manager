@@ -88,7 +88,7 @@ namespace EmailManager.Services.Implementation
 
                     //Checking whether the emails are saved or not 
                     Email emailCheck = _context.Emails
-                        .FirstOrDefault(e => e.EmailBody.Body == emailFullResponse.Snippet && e.Sender == sender);
+                        .FirstOrDefault(e => e.Sender == sender && e.Subject == subject/* && e.ReceiveDate == date*/);
                     
                     //TODO - може да се счупи, когато започнем да криптираме клиента
                     if (emailCheck == null)
@@ -140,84 +140,27 @@ namespace EmailManager.Services.Implementation
             // Define parameters of request.
             UsersResource.LabelsResource.ListRequest request = service.Users.Labels.List("emailmanager13@gmail.com");
 
-            // List labels.
-            var labels = request.Execute().Labels;
+            //// List labels.
+            //var labels = request.Execute().Labels;
 
-            Console.WriteLine("Labels:");
+            //Console.WriteLine("Labels:");
 
-            if (labels != null && labels.Count > 0)
-            {
-                foreach (var labelItem in labels)
-                {
-                    Console.WriteLine("{0}", labelItem.Name);
-                }
-            }
-            else
-            {
-                Console.WriteLine("No labels found.");
-            }
+            //if (labels != null && labels.Count > 0)
+            //{
+            //    foreach (var labelItem in labels)
+            //    {
+            //        Console.WriteLine("{0}", labelItem.Name);
+            //    }
+            //}
+            //else
+            //{
+            //    Console.WriteLine("No labels found.");
+            //}
         }
 
         //public void PassEmailParams()
         //{
 
-        //}
-
-        //public bool SaveRefreshToken(string gmailId, string refreshToken)
-        //{
-        //    SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DbConnection"].ConnectionString);
-        //    string query = "INSERT INTO Member (GmailId,RefreshToken) VALUES (@GmailId,@RefreshToken)";
-        //    SqlCommand cmd = new SqlCommand(query, connection);
-        //    cmd.Parameters.AddWithValue("GmailId", gmailId);
-        //    cmd.Parameters.AddWithValue("RefreshToken", refreshToken);
-        //    connection.Open();
-
-        //    int result = cmd.ExecuteNonQuery();
-
-        //    connection.Close();
-
-        //    return result > 0 ? true : false;
-        //}
-
-        //public string GetRefreshToken(string gmailId)
-        //{
-        //    SqlConnection connection = new SqlConnection(ConfigurationManager
-        //                                                                    .ConnectionStrings["DbConnection"]
-        //                                                                    .ConnectionString);
-
-        //    string query = "SELECT RefreshToken FROM Member WHERE GmailId-@GmailId";
-
-        //    SqlCommand cmd = new SqlCommand(query, connection);
-
-        //    cmd.Parameters.AddWithValue("GmailId", gmailId);
-        //    connection.Open();
-
-        //    object result = cmd.ExecuteScalar();
-
-        //    connection.Close();
-
-        //    return result == null ? string.Empty : Convert.ToString(result);
-        //}
-
-        //public bool UpdateRefreshToken(string gmailId, string refreshToken)
-        //{
-        //    SqlConnection connection = new SqlConnection(ConfigurationManager
-        //                            .ConnectionStrings["DbConnection"]
-        //                            .ConnectionString);
-
-        //    string query = "UPDATE Member SET RefreshToken-@RefreshToken WHERE GmailId-@GmailId";
-
-        //    SqlCommand cmd = new SqlCommand(query, connection);
-
-        //    cmd.Parameters.AddWithValue("GmailId", gmailId);
-        //    cmd.Parameters.AddWithValue("RefreshToken", refreshToken);
-        //    connection.Open();
-
-        //    int result = cmd.ExecuteNonQuery();
-
-        //    connection.Close();
-
-        //    return result > 0 ? true : false;
         //}
     }
 }

@@ -3,6 +3,7 @@ using EmailManager.Data.Enums;
 using EmailManager.Data.Implementation;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace EmailManager.Data
 {
@@ -14,6 +15,8 @@ namespace EmailManager.Data
             this.Attachments = new List<Attachment>();
         }
 
+        [Key]
+        public int Id { get; set; }
         public string EmailId { get; set; }
         public bool IsValid { get; set; }
         public string Sender { get; set; }
@@ -24,7 +27,7 @@ namespace EmailManager.Data
         //questionable
         public DateTime CurrentStatus { get; set; }
         public DateTime TerminalStatus { get; set; }
-        public int LoanId { get; set; }
+        //public int LoanId { get; set; }
         public Loan Loan { get; set; }
         public EmailBody EmailBody { get; set; }
         public User User { get; set; }
