@@ -52,8 +52,6 @@ namespace EmailManager.Services.Implementation
         {
             var email = await _context.Emails
                 .FirstOrDefaultAsync(a => a.Id == emailId);
-            var status = await _context.Status
-                .FirstOrDefaultAsync(a => a.StatusID == email.Status.StatusID);
             var user = await _context.User
                 .FirstOrDefaultAsync(c => c.Id == userId);
 
