@@ -78,11 +78,25 @@ namespace EmailManager.Controllers
             return RedirectToAction("Index", new { id = emailId });
         }
 
-        //[HttpPost]
-        //public async Task<IActionResult> MarkClosed(int id)
-        //{
+        [HttpPost]
+        public async Task<IActionResult> MarkClosed(EmailViewModel viewModel)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            int emailId = viewModel.Id;
 
-        //}
+            try
+            {
+                var markNew = _emailService.MarkClosedStatus(emailId, userId);
+            }
+            catch (Exception ex)
+            {
+                TempData["markNewError"] = ex.Message;
+
+                return RedirectToAction("Index", new { id = emailId });
+            }
+
+            return RedirectToAction("Index", new { id = emailId });
+        }
 
         //[HttpPost]
         //public async Task<IActionResult> MarkInvalid(int id)

@@ -71,5 +71,22 @@ namespace EmailManager.Services.Implementation
             //за запазване: enum EmailStatus, DateTime NewStatus, DateTime LastStatus, DateTime TimeStamp (when changed)
             // string ActionTaken
         }
+
+        public async Task MarkClosedStatus(int emailId, string userId)
+        {
+            var email= await _context.Emails
+                .FirstOrDefaultAsync(a => a.Id == emailId);
+            var user = await _context.User
+               .FirstOrDefaultAsync(c => c.Id == userId);
+
+            email.Status.TimeStamp = DateTime.Now;
+            email.Status.ActionTaken = "Changed";
+
+            user.UserEmails.Add(email);
+
+            email.EnumStatus = EmailStatus.Closed;
+
+            await _context.SaveChangesAsync();
+        }
     }
 }
