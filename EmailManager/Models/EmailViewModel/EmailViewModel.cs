@@ -20,6 +20,7 @@ namespace EmailManager.Models.EmailViewModel
             this.Attachments = email.Attachments;
             this.Sender = email.Sender;
             this.Subject = email.Subject;
+            this.ReceiveDate = email.ReceiveDate;
         }
 
         public int Id { get; set; }
