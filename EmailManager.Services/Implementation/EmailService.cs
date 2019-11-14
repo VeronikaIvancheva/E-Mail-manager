@@ -55,14 +55,15 @@ namespace EmailManager.Services.Implementation
             var user = await _context.User
                 .FirstOrDefaultAsync(c => c.Id == userId);
 
-            //var lastStatus = email.Status.LastStatus;
-            //var currentStat = email.Status.NewStatus;
-            //email.Status.LastStatus = currentStat - lastStatus; //за DateTime LastStatus - кара се
+            //var status = await _context.Status.FirstOrDefaultAsync(s => s.EmailStatus == email.Status.EmailStatus);
+            //var stat = status.NewStatus;
+
+            email.Status.LastStatus = email.Status.NewStatus;
             email.Status.NewStatus = DateTime.UtcNow;
             email.Status.TimeStamp = DateTime.UtcNow;
             email.Status.ActionTaken = "Changed";
 
-            user.UserEmails.Add(email);
+            //user.UserEmails.Add(email);
 
             email.EnumStatus = EmailStatus.New;
 
