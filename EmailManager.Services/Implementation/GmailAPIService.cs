@@ -86,10 +86,13 @@ namespace EmailManager.Services.Implementation
                     string date = emailFullResponse.Payload.Headers
                         .FirstOrDefault(d => d.Name == "Date").Value;
 
+                    var editedDate = date.Remove(date.IndexOf('+')-1);
+
                     //Checking whether the emails are saved or not 
                     Email emailCheck = _context.Emails
                         .FirstOrDefault(e => e.Sender == sender && e.Subject == subject && e.ReceiveDate == date);
-                    
+
+
                     //TODO - може да се счупи, когато започнем да криптираме клиента
                     if (emailCheck == null)
                     {
@@ -125,7 +128,7 @@ namespace EmailManager.Services.Implementation
                             EmailBody = emailBody,
                             EnumStatus = EmailStatus.NotReviewed,
                             CurrentStatus = DateTime.UtcNow,
-                            ReceiveDate = date,
+                            ReceiveDate = editedDate,
                             Subject = subject,
                             Sender = sender,
                             Status = status,
