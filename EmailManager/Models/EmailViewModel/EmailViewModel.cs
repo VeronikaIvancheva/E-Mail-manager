@@ -26,7 +26,7 @@ namespace EmailManager.Models.EmailViewModel
         public int LoanId { get; set; }
         public string EmailId { get; set; }
         public string Sender { get; set; }
-        public DateTime ReceiveDate { get; set; }
+        public string ReceiveDate { get; set; }
         public string Subject { get; set; }
         public string Body { get; set; }
         public EmailStatus EnumStatus { get; set; }

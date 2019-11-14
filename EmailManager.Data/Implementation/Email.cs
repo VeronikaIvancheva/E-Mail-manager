@@ -20,7 +20,7 @@ namespace EmailManager.Data
         public string EmailId { get; set; }
         public bool IsValid { get; set; }
         public string Sender { get; set; }
-        public DateTime ReceiveDate { get; set; }
+        public string ReceiveDate { get; set; }
         public string Subject { get; set; }
         public EmailStatus EnumStatus { get; set; }
         public DateTime FirstRegistration { get; set; }

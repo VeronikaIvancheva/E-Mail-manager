@@ -88,7 +88,7 @@ namespace EmailManager.Services.Implementation
 
                     //Checking whether the emails are saved or not 
                     Email emailCheck = _context.Emails
-                        .FirstOrDefault(e => e.Sender == sender && e.Subject == subject/* && e.ReceiveDate == date*/);
+                        .FirstOrDefault(e => e.Sender == sender && e.Subject == subject && e.ReceiveDate == date);
                     
                     //TODO - може да се счупи, когато започнем да криптираме клиента
                     if (emailCheck == null)
@@ -125,7 +125,7 @@ namespace EmailManager.Services.Implementation
                             EmailBody = emailBody,
                             EnumStatus = EmailStatus.NotReviewed,
                             CurrentStatus = DateTime.UtcNow,
-                            //ReceiveDate = emailFullResponse.InternalDate.Value,
+                            ReceiveDate = date,
                             Subject = subject,
                             Sender = sender,
                             Status = status,

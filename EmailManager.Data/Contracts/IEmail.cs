@@ -13,7 +13,7 @@ namespace EmailManager.Data.Contracts
         bool IsValid { get; set; }
         Loan Loan { get; set; }
         //int LoanId { get; set; }
-        DateTime ReceiveDate { get; set; }
+        string ReceiveDate { get; set; }
         string Sender { get; set; }
         Status Status { get; set; }
         string Subject { get; set; }
