@@ -87,6 +87,8 @@
     <Compile Remove="Migrations\20191115095609_I.Designer.cs" />
     <Compile Remove="Migrations\20191115100016_I.cs" />
     <Compile Remove="Migrations\20191115100016_I.Designer.cs" />
+    <Compile Remove="Migrations\20191115101139_I.cs" />
+    <Compile Remove="Migrations\20191115101139_I.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

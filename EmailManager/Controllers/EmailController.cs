@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using EmailManager.Data.Implementation;
 using EmailManager.Models.EmailViewModel;
 using EmailManager.Services.Contracts;
 using EmailManager.Services.Implementation;
@@ -53,32 +54,29 @@ namespace EmailManager.Controllers
             return View("Detail", emailModel);
         }
 
-        // Prerabotete go v async 
         [HttpPost]
-        public async Task<IActionResult> MarkNew(EmailViewModel viewModel)
+        public async Task<IActionResult> MarkNew(int id)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            int emailId = viewModel.Id;
+            int emailId = id;
 
-            await _emailService.MarkNewStatus(emailId, userId);
+            try
+            {
+                await _emailService.MarkNewStatus(emailId, userId);
+
+                //if (markNew == false)
+                //{
+                //    throw new ArgumentException("You cannot change the status because it is already changed.");
+                //}
+            }
+            catch (Exception ex)
+            {
+                TempData["error"] = ex.Message;
+
+                return RedirectToAction("Index", new { id = emailId });
+            }
+
             return RedirectToAction("Index", new { id = emailId });
-            // try
-            // {
-            //    await _emailService.MarkNewStatus(emailId, userId);
-
-            //     //if (markNew == false)
-            //     //{
-            //     //    throw new ArgumentException("You cannot change the status because it is already changed.");
-            //     //}
-            // }
-            // catch (Exception ex)
-            // {
-            //     TempData["markNewError"] = ex.Message;
-
-            //     return RedirectToAction("Index", new { id = emailId });
-            // }
-
-            //return RedirectToAction("Index", new { id = emailId });
         }
 
         [HttpPost]
@@ -93,7 +91,7 @@ namespace EmailManager.Controllers
             }
             catch (Exception ex)
             {
-                TempData["markNewError"] = ex.Message;
+                TempData["error"] = ex.Message;
 
                 return RedirectToAction("Index", new { id = emailId });
             }
@@ -101,22 +99,65 @@ namespace EmailManager.Controllers
             return RedirectToAction("Index", new { id = emailId });
         }
 
-        //[HttpPost]
-        //public async Task<IActionResult> MarkInvalid(int id)
-        //{
+        [HttpPost]
+        public async Task<IActionResult> MarkInvalid(EmailViewModel viewModel)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            int emailId = viewModel.Id;
+            //var value = viewModel.EnumStatus.["NotValid"];
 
-        //}
+            try
+            {
+                await _emailService.MarkInvalidStatus(emailId, userId);
+            }
+            catch (Exception ex)
+            {
+                TempData["error"] = ex.Message;
 
-        //[HttpPost]
-        //public async Task<IActionResult> MarkOpen(int id)
-        //{
+                return RedirectToAction("Index", new { id = emailId });
+            }
 
-        //}
+            return RedirectToAction("Index", new { id = emailId });
+        }
 
-        //[HttpPost]
-        //public async Task<IActionResult> MarkNotReviewed(int id)
-        //{
+        [HttpPost]
+        public async Task<IActionResult> MarkOpen(EmailViewModel viewModel)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            int emailId = viewModel.Id;
 
-        //}
+            try
+            {
+                await _emailService.MarkOpenStatus(emailId, userId);
+            }
+            catch (Exception ex)
+            {
+                TempData["error"] = ex.Message;
+
+                return RedirectToAction("Index", new { id = emailId });
+            }
+
+            return RedirectToAction("Index", new { id = emailId });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> MarkNotReviewed(EmailViewModel viewModel)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            int emailId = viewModel.Id;
+
+            try
+            {
+                await _emailService.MarkNotReviewStatus(emailId, userId);
+            }
+            catch (Exception ex)
+            {
+                TempData["error"] = ex.Message;
+
+                return RedirectToAction("Index", new { id = emailId });
+            }
+
+            return RedirectToAction("Index", new { id = emailId });
+        }
     }
 }

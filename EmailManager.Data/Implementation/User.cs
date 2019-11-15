@@ -8,7 +8,7 @@ namespace EmailManager.Data.Implementation
     {
         public User()
         {
-            this.UserEmails = new List<Email>();
+            this.UserEmails = new HashSet<Email>();
         }
 
         public string Role { get; set; }

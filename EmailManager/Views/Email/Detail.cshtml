@@ -33,9 +33,14 @@
 
 <p></p>
 <form method="post">
-    <button asp-route-Id="@Model.Id" asp-controller="Email" asp-action="MarkInvalid" type="submit" class="btn btn-lg btn-danger">Mark as Invalid</button>
-    <button asp-route-Id="@Model.Id" asp-controller="Email" asp-action="MarkNew" type="submit" class="btn btn-lg btn-info">Mark as New</button>
-    <button asp-route-Id="@Model.Id" asp-controller="Email" asp-action="MarkOpen" type="submit" class="btn btn-lg btn-success">Mark as Open</button>
-    <button asp-route-Id="@Model.Id" asp-controller="Email" asp-action="MarkClosed" type="submit" class="btn btn-lg btn-danger">Mark as Closed</button>
-    <button asp-route-Id="@Model.Id" asp-controller="Email" asp-action="MarkNotReviewed" type="submit" class="btn btn-lg btn-info">Mark as Not Reviewed</button>
+    <button asp-route-Id="@Model.Id" asp-controller="Email" asp-action="MarkInvalid" name="NotValid" type="submit" class="btn btn-lg btn-danger">Mark as Invalid</button>
+    <button asp-route-Id="@Model.Id" asp-controller="Email" asp-action="MarkNew" name="New" type="submit" class="btn btn-lg btn-info">Mark as New</button>
+    <button asp-route-Id="@Model.Id" asp-controller="Email" asp-action="MarkOpen" name="Open" type="submit" class="btn btn-lg btn-success">Mark as Open</button>
+    <button asp-route-Id="@Model.Id" asp-controller="Email" asp-action="MarkClosed" name="Closed" type="submit" class="btn btn-lg btn-danger">Mark as Closed</button>
+    <button asp-route-Id="@Model.Id" asp-controller="Email" asp-action="MarkNotReviewed" name="NotReviewed" type="submit" class="btn btn-lg btn-info">Mark as Not Reviewed</button>
 </form>
+
+@*@using (Html.BeginForm(FormMethod.Post))
+    {
+        <input asp-route-Id="@Model.Id" asp-all-route-data="New" asp-controller="Email" asp-action="MarkNew" name="New" type="submit"/>
+    }*@

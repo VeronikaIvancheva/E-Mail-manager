@@ -12,7 +12,7 @@ namespace EmailManager.Data
     {
         public Email()
         {
-            this.Attachments = new List<Attachment>();
+            this.Attachments = new HashSet<Attachment>();
         }
 
         [Key]

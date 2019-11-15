@@ -89,8 +89,6 @@ namespace EmailManager.Services.Implementation
 
                     //Checking whether the emails are saved or not 
                     //TODO - може да се счупи, когато започнем да криптираме клиента
-                    //TODO - ЗА КИРО - тук сейфа различните части на email-ите, вкарва и статута в таблицата, но 
-                    // PassStatusParams записва статута със Id = 0 и всяко следващо е така, а в базата се записват коректно
                     Email emailCheck = _context.Emails
                         .FirstOrDefault(e => e.Sender == sender && e.Subject == subject && e.ReceiveDate == editedDate);
 
@@ -100,9 +98,6 @@ namespace EmailManager.Services.Implementation
                     }
                 }
             }
-            //Трябва ли ни?
-            // Define parameters of request.
-            //UsersResource.LabelsResource.ListRequest request = service.Users.Labels.List("emailmanager13@gmail.com");
         }
 
         public EmailBody PassEmailBodyParams(Message emailFullResponse)
@@ -128,7 +123,7 @@ namespace EmailManager.Services.Implementation
                 EmailStatus = EmailStatus.NotReviewed
             };
 
-            _context.Status.AddAsync(status);
+            _context.Statuses.AddAsync(status);
             _context.SaveChangesAsync();
 
             return status;

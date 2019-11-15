@@ -8,7 +8,7 @@ namespace EmailManager.Data.Implementation
     {
         public Client()
         {
-            this.Loans = new List<Loan>();
+            this.Loans = new HashSet<Loan>();
         }
 
         [Key]

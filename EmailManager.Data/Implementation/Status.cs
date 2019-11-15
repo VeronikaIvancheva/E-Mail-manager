@@ -10,7 +10,7 @@ namespace EmailManager.Data.Implementation
     {
         public Status()
         {
-            this.Emails = new List<Email>();
+            this.Emails = new HashSet<Email>();
         }
 
         [Key]
@@ -20,7 +20,7 @@ namespace EmailManager.Data.Implementation
 
         [Display(Name = "New status since")]
         public DateTime NewStatus { get; set; }
-        [Display(Name = "Las status since")]
+        [Display(Name = "Last status since")]
         public DateTime LastStatus { get; set; }
         //DateTime на change на статуса
         [Display(Name = "Last status change since")]

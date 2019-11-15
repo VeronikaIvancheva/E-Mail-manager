@@ -46,6 +46,24 @@ namespace EmailManager.Services.Implementation
             return email;
         }
 
+
+        //TODO - to make new status every time and to save it to the db
+        //public async Task MakeNewStatus(Email email)
+        //{
+        //    var lastStatus = email.Status.NewStatus;
+
+        //    Status status = new Status
+        //    {
+        //        LastStatus = lastStatus,
+        //        ActionTaken = "Changed",
+        //        TimeStamp = DateTime.UtcNow,
+        //        NewStatus = DateTime.UtcNow
+        //    };
+
+        //    await _context.Statuses.AddAsync(status);
+        //    await _context.SaveChangesAsync();
+        //}
+
         public EmailStatus GetStatus(string emailId)
         {
             var email = _context.Emails
@@ -54,55 +72,63 @@ namespace EmailManager.Services.Implementation
             return email.EnumStatus;
         }
 
-        //TODO - ЗА КИРО
-        // има коментари до test1, test2, test3 и до "email.Status.LastStatus = email.Status.NewStatus;"
         public async Task MarkNewStatus(int emailId, string userId)
         {
-            var email = await _context.Emails
-                .FirstOrDefaultAsync(a => a.Id == emailId);
-            //var test1 = email.Status.StatusID; //null - NullReferenceException
-            //var test3 = email.Status; //null - вече минава
-            //var test2 = _context.Status; // break - вече минава
+            var email = EmailRepeatedPart(emailId, userId);
 
-            //var user = _context.Users.FirstOrDefault(x => x.Id == userId);
-            //await _context.Users
-            //    .FirstOrDefaultAsync(c => c.Id == userId);
-
-            //var status = await _context.Status.FirstOrDefaultAsync(s => s.EmailStatus == email.Status.EmailStatus);
-            //var stat = status.NewStatus;
-
-            if (email.Status == null)
-            {
-                email.Status.LastStatus = email.Status.NewStatus; // NullReferenceException
-                email.Status.NewStatus = DateTime.UtcNow;
-                email.Status.TimeStamp = DateTime.UtcNow;
-                email.Status.ActionTaken = "Changed";
-                email.User.Id = userId;
-                //user.UserEmails.Add(email);
-
-                email.EnumStatus = EmailStatus.New;
-                await _context.SaveChangesAsync();
-            }
-
-            //за запазване: enum EmailStatus, DateTime NewStatus, DateTime LastStatus, DateTime TimeStamp (when changed)
-            // string ActionTaken
+            email.Result.EnumStatus = EmailStatus.New;
+            await _context.SaveChangesAsync();
         }
 
         public async Task MarkClosedStatus(int emailId, string userId)
         {
-            var email = await _context.Emails
+            var email = EmailRepeatedPart(emailId, userId);
+
+            email.Result.EnumStatus = EmailStatus.Closed;
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task MarkOpenStatus(int emailId, string userId)
+        {
+            var email = EmailRepeatedPart(emailId, userId);
+
+            email.Result.EnumStatus = EmailStatus.Open;
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task MarkNotReviewStatus(int emailId, string userId)
+        {
+            var email = EmailRepeatedPart(emailId, userId);
+
+            email.Result.EnumStatus = EmailStatus.NotReviewed;
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task MarkInvalidStatus(int emailId, string userId)
+        {
+            var email = EmailRepeatedPart(emailId, userId);
+
+            email.Result.EnumStatus = EmailStatus.NotValid;
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<Email> EmailRepeatedPart(int emailId, string userId)
+        {
+            Email email = await _context.Emails
+                .Include(a => a.Status)
+                .Include(a => a.User)
                 .FirstOrDefaultAsync(a => a.Id == emailId);
-            var user = await _context.Users
-               .FirstOrDefaultAsync(c => c.Id == userId);
 
-            email.Status.TimeStamp = DateTime.Now;
+            var user = _context.Users.FirstOrDefault(x => x.Id == userId);
+
+            email.Status.LastStatus = email.Status.NewStatus;
+            email.Status.NewStatus = DateTime.UtcNow;
+            email.Status.TimeStamp = DateTime.UtcNow;
             email.Status.ActionTaken = "Changed";
-
+            email.User = user;
             user.UserEmails.Add(email);
 
-            email.EnumStatus = EmailStatus.Closed;
-
-            await _context.SaveChangesAsync();
+            return email;
         }
     }
 }

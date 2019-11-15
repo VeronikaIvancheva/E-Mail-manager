@@ -11,6 +11,5 @@ namespace EmailManager.Data.Enums
         Open,
         Closed,
         New
-
     }
 }
