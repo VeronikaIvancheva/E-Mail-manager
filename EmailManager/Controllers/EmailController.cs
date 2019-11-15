@@ -34,7 +34,7 @@ namespace EmailManager.Controllers
                     ReceiveDate = e.ReceiveDate,
                     EnumStatus = _emailService.GetStatus(e.EmailId),
                 })
-                .OrderBy(t => t.ReceiveDate)
+                .OrderBy(t => t.Id)
                 .ToList();
 
             var emailModel = new EmailIndexViewModel
@@ -87,7 +87,7 @@ namespace EmailManager.Controllers
 
             try
             {
-                var markNew = _emailService.MarkClosedStatus(emailId, userId);
+                await _emailService.MarkClosedStatus(emailId, userId);
             }
             catch (Exception ex)
             {

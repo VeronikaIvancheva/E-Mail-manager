@@ -31,6 +31,7 @@ namespace EmailManager.Services.Implementation
                 .Include(m => m.EmailBody)
                 .Include(m => m.Attachments)
                 .Include(m => m.Status)
+                .OrderBy(m => m.EmailId)
                 .ToListAsync();
         }
 
@@ -57,6 +58,10 @@ namespace EmailManager.Services.Implementation
         {
             var email = await _context.Emails
                 .FirstOrDefaultAsync(a => a.Id == emailId);
+            var test1 = email.Status.StatusID; //null
+            var test3 = email.Status; //null
+            var test2 = _context.Status; // break
+
             //var user = _context.Users.FirstOrDefault(x => x.Id == userId);
             //await _context.Users
             //    .FirstOrDefaultAsync(c => c.Id == userId);

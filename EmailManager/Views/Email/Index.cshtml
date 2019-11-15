@@ -11,9 +11,9 @@
         <tr>
             <th>№</th>
             <th>Sender</th>
-            <th>Receive Date</th>
             <th>Subject</th>
             <th>Body</th>
+            <th>Receive Date</th>
             <th>Enum Status</th>
             <th>Attachments</th>
             <th></th>
@@ -38,18 +38,17 @@
         {
             <tr>
                 <td>@email.Id</td>
-                <td>@email.Sender</td>
-                <td>@email.ReceiveDate</td>
                 <td class="nav-link">
                     <a asp-route-id="@email.Id" asp-action="Detail" asp-controller="Email">
-                        @email.Subject
+                        @email.Sender
                     </a>
                 </td>
+                <td>@email.Subject</td>
                 <td>@email.Body</td>
+                <td>@email.ReceiveDate</td>
                 <td>@email.EnumStatus</td>
                 <td>@email.AttachmentsCount</td>
                 <td>
-
                 </td>
             </tr>
         }

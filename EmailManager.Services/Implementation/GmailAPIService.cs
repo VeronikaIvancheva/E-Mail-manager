@@ -88,8 +88,7 @@ namespace EmailManager.Services.Implementation
 
                     //Checking whether the emails are saved or not 
                     Email emailCheck = _context.Emails
-                        .FirstOrDefault(e => e.Sender == sender && e.Subject == subject && e.ReceiveDate == date);
-
+                        .FirstOrDefault(e => e.Sender == sender && e.Subject == subject && e.ReceiveDate == editedDate);
 
                     //TODO - може да се счупи, когато започнем да криптираме клиента
                     if (emailCheck == null)
@@ -124,6 +123,7 @@ namespace EmailManager.Services.Implementation
                         Email emailParts = new Email
                         {
                             EmailId = emailFullResponse.Id,
+                            //Все още чупи програмата с null
                             //Attachments = attachmentParts.Email.Attachments,
                             EmailBody = emailBody,                           
                             CurrentStatus = DateTime.UtcNow,
@@ -142,23 +142,6 @@ namespace EmailManager.Services.Implementation
 
             // Define parameters of request.
             UsersResource.LabelsResource.ListRequest request = service.Users.Labels.List("emailmanager13@gmail.com");
-
-            //// List labels.
-            //var labels = request.Execute().Labels;
-
-            //Console.WriteLine("Labels:");
-
-            //if (labels != null && labels.Count > 0)
-            //{
-            //    foreach (var labelItem in labels)
-            //    {
-            //        Console.WriteLine("{0}", labelItem.Name);
-            //    }
-            //}
-            //else
-            //{
-            //    Console.WriteLine("No labels found.");
-            //}
         }
 
         //public void PassEmailParams()
