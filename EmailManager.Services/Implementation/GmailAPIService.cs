@@ -5,6 +5,7 @@ using EmailManager.Data.Implementation;
 using EmailManager.Services.Contracts;
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.Gmail.v1;
+using Google.Apis.Gmail.v1.Data;
 using Google.Apis.Services;
 using Google.Apis.Util.Store;
 using System;
@@ -71,7 +72,7 @@ namespace EmailManager.Services.Implementation
                     var emailRequest = service.Users.Messages.Get("emailmanager13@gmail.com", email.Id);
 
                     //Collection with full email response
-                    var emailFullResponse = emailRequest.ExecuteAsync().Result;
+                    Message emailFullResponse = emailRequest.ExecuteAsync().Result;
 
 
                     //Getting email Subject, From and Date
@@ -84,69 +85,97 @@ namespace EmailManager.Services.Implementation
                     string date = emailFullResponse.Payload.Headers
                         .FirstOrDefault(d => d.Name == "Date").Value;
 
-                    var editedDate = date.Remove(date.IndexOf('+')-1);
+                    string editedDate = date.Remove(date.IndexOf('+') - 1);
 
                     //Checking whether the emails are saved or not 
+                    //TODO - може да се счупи, когато започнем да криптираме клиента
                     Email emailCheck = _context.Emails
                         .FirstOrDefault(e => e.Sender == sender && e.Subject == subject && e.ReceiveDate == editedDate);
 
-                    //TODO - може да се счупи, когато започнем да криптираме клиента
                     if (emailCheck == null)
                     {
-                        Attachment attachmentParts = null;
-
-                        if (emailFullResponse.Payload.Body.AttachmentId != null)
-                        {
-                            attachmentParts = new Attachment
-                            {
-                                AttachmentId = emailFullResponse.Payload.Body.AttachmentId,
-                                AttachmentSize = emailFullResponse.Payload.Body.Size,
-                                FileName = emailFullResponse.Payload.Filename,
-                                EmailId = emailFullResponse.Id,
-                            };
-                        }
-
-                        Status status = new Status
-                        {
-                            ActionTaken = "Changed",
-                            NewStatus = DateTime.UtcNow,
-                            LastStatus = DateTime.UtcNow,
-                            EmailStatus = EmailStatus.NotReviewed                           
-                        };                       
-
-
-                        EmailBody emailBody = new EmailBody
-                        {
-                            Body = emailFullResponse.Snippet,
-                        };
-
-                        Email emailParts = new Email
-                        {
-                            EmailId = emailFullResponse.Id,
-                            //Все още чупи програмата с null
-                            //Attachments = attachmentParts.Email.Attachments,
-                            EmailBody = emailBody,                           
-                            CurrentStatus = DateTime.UtcNow,
-                            ReceiveDate = editedDate,
-                            Subject = subject,
-                            Sender = sender,
-                            Status = status
-                            
-                        };
-
-                        await _context.AddAsync(emailParts);
-                        await _context.SaveChangesAsync();
-                    }                    
+                        PassEmailParams(emailFullResponse, editedDate, subject, sender);
+                    }
                 }
             }
-
+            //Трябва ли ни?
             // Define parameters of request.
-            UsersResource.LabelsResource.ListRequest request = service.Users.Labels.List("emailmanager13@gmail.com");
+            //UsersResource.LabelsResource.ListRequest request = service.Users.Labels.List("emailmanager13@gmail.com");
         }
 
-        //public void PassEmailParams()
-        //{
+        public EmailBody PassEmailBodyParams(Message emailFullResponse)
+        {
+            EmailBody emailBody = new EmailBody
+            {
+                Body = emailFullResponse.Snippet,
+            };
 
-        //}
+            _context.EmailBodies.AddAsync(emailBody);
+            _context.SaveChangesAsync();
+
+            return emailBody;
+        }
+
+        public Status PassStatusParams()
+        {
+            Status status = new Status
+            {
+                ActionTaken = "Changed",
+                NewStatus = DateTime.UtcNow,
+                LastStatus = DateTime.UtcNow,
+                EmailStatus = EmailStatus.NotReviewed
+            };
+
+            _context.Status.AddAsync(status);
+            _context.SaveChangesAsync();
+
+            return status;
+        }
+
+        public bool PassAttachmentParams(Message emailFullResponse)
+        {
+            //Attachment attachmentParts = null;
+
+            if (emailFullResponse.Payload.Body.AttachmentId != null)
+            {
+                Attachment attachmentParts = new Attachment
+                {
+                    AttachmentId = emailFullResponse.Payload.Body.AttachmentId,
+                    AttachmentSize = emailFullResponse.Payload.Body.Size,
+                    FileName = emailFullResponse.Payload.Filename,
+                    EmailId = emailFullResponse.Id,
+                };
+
+                _context.Attachments.AddAsync(attachmentParts);
+                _context.SaveChangesAsync();
+
+                return true;
+            }
+
+            return false;
+        }
+
+        public void PassEmailParams(Message emailFullResponse, string editedDate, string subject, string sender)
+        {
+            var body = PassEmailBodyParams(emailFullResponse);
+            var status = PassStatusParams();
+            var attachmentBool = PassAttachmentParams(emailFullResponse);
+
+            Email emailParts = new Email
+            {
+                EmailId = emailFullResponse.Id,
+                HasAttachments = attachmentBool,
+                EmailBody = body,
+                CurrentStatus = DateTime.UtcNow,
+                ReceiveDate = editedDate,
+                Subject = subject,
+                Sender = sender,
+                Status = status
+
+            };
+
+            _context.AddAsync(emailParts);
+            _context.SaveChangesAsync();
+        }
     }
 }

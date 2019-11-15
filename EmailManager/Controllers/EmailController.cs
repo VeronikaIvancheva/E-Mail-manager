@@ -60,23 +60,25 @@ namespace EmailManager.Controllers
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             int emailId = viewModel.Id;
 
-            try
-            {
-               await _emailService.MarkNewStatus(emailId, userId);
+            await _emailService.MarkNewStatus(emailId, userId);
+            return RedirectToAction("Index", new { id = emailId });
+            // try
+            // {
+            //    await _emailService.MarkNewStatus(emailId, userId);
 
-                //if (markNew == false)
-                //{
-                //    throw new ArgumentException("You cannot change the status because it is already changed.");
-                //}
-            }
-            catch (Exception ex)
-            {
-                TempData["markNewError"] = ex.Message;
+            //     //if (markNew == false)
+            //     //{
+            //     //    throw new ArgumentException("You cannot change the status because it is already changed.");
+            //     //}
+            // }
+            // catch (Exception ex)
+            // {
+            //     TempData["markNewError"] = ex.Message;
 
-                return RedirectToAction("Index", new { id = emailId });
-            }
-           
-           return RedirectToAction("Index", new { id = emailId });
+            //     return RedirectToAction("Index", new { id = emailId });
+            // }
+
+            //return RedirectToAction("Index", new { id = emailId });
         }
 
         [HttpPost]

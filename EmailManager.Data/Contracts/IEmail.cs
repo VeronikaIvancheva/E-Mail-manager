@@ -19,6 +19,7 @@ namespace EmailManager.Data.Contracts
         string Subject { get; set; }
         DateTime TerminalStatus { get; set; }
         User User { get; set; }
+        bool HasAttachments { get; set; }
         ICollection<Attachment> Attachments { get; set; }
     }
 }

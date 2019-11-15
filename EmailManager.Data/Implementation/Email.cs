@@ -34,6 +34,8 @@ namespace EmailManager.Data
 
         public Status Status { get; set; }
 
+        public bool HasAttachments { get; set; }
+
         public ICollection<Attachment> Attachments { get; set; }
     }
 }

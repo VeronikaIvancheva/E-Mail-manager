@@ -15,6 +15,7 @@ namespace EmailManager.Data.Context
         public DbSet<Loan> Loans { get; set; }
         public DbSet<Client> Clients { get; set; }
         public DbSet<Email> Emails { get; set; }
+        public DbSet<EmailBody> EmailBodies { get; set; }
         public DbSet<Status> Status { get; set; }
         public DbSet<Attachment> Attachments { get; set; }
 
