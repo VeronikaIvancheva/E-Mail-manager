@@ -89,6 +89,8 @@ namespace EmailManager.Services.Implementation
 
                     //Checking whether the emails are saved or not 
                     //TODO - може да се счупи, когато започнем да криптираме клиента
+                    //TODO - ЗА КИРО - тук сейфа различните части на email-ите, вкарва и статута в таблицата, но 
+                    // PassStatusParams записва статута със Id = 0 и всяко следващо е така, а в базата се записват коректно
                     Email emailCheck = _context.Emails
                         .FirstOrDefault(e => e.Sender == sender && e.Subject == subject && e.ReceiveDate == editedDate);
 
@@ -134,9 +136,7 @@ namespace EmailManager.Services.Implementation
 
         public bool PassAttachmentParams(Message emailFullResponse)
         {
-            //Attachment attachmentParts = null;
-
-            if (emailFullResponse.Payload.Body.AttachmentId != null)
+            if (emailFullResponse.Payload.Body.Size != 0)
             {
                 Attachment attachmentParts = new Attachment
                 {

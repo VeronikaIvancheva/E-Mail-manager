@@ -17,7 +17,7 @@ namespace EmailManager.Models.EmailViewModel
             this.Body = email.EmailBody.Body;
             this.EnumStatus = email.EnumStatus;
             //this.AttachmentsCount = email.Attachments
-            this.Attachments = email.Attachments;
+            this.HasAttachments = email.HasAttachments;
             this.Sender = email.Sender;
             this.Subject = email.Subject;
             this.ReceiveDate = email.ReceiveDate;
@@ -32,7 +32,7 @@ namespace EmailManager.Models.EmailViewModel
         public string Body { get; set; }
         public EmailStatus EnumStatus { get; set; }
 
-        public int AttachmentsCount { get; set; }
+        public bool HasAttachments { get; set; }
         public ICollection<Attachment> Attachments { get; set; }
     }
 }

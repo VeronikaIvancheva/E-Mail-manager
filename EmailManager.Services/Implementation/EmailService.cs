@@ -18,7 +18,7 @@ namespace EmailManager.Services.Implementation
     public class EmailService : IEmailService
     {
         private readonly EmailManagerContext _context;
-        private readonly UserManager<User> _userManager;
+        //private readonly UserManager<User> _userManager;
 
         public EmailService(EmailManagerContext context)
         {
@@ -54,13 +54,15 @@ namespace EmailManager.Services.Implementation
             return email.EnumStatus;
         }
 
+        //TODO - ЗА КИРО
+        // има коментари до test1, test2, test3 и до "email.Status.LastStatus = email.Status.NewStatus;"
         public async Task MarkNewStatus(int emailId, string userId)
         {
             var email = await _context.Emails
                 .FirstOrDefaultAsync(a => a.Id == emailId);
-            var test1 = email.Status.StatusID; //null
-            var test3 = email.Status; //null
-            var test2 = _context.Status; // break
+            //var test1 = email.Status.StatusID; //null - NullReferenceException
+            //var test3 = email.Status; //null - вече минава
+            //var test2 = _context.Status; // break - вече минава
 
             //var user = _context.Users.FirstOrDefault(x => x.Id == userId);
             //await _context.Users
@@ -71,7 +73,7 @@ namespace EmailManager.Services.Implementation
 
             if (email.Status == null)
             {
-                email.Status.LastStatus = email.Status.NewStatus;
+                email.Status.LastStatus = email.Status.NewStatus; // NullReferenceException
                 email.Status.NewStatus = DateTime.UtcNow;
                 email.Status.TimeStamp = DateTime.UtcNow;
                 email.Status.ActionTaken = "Changed";

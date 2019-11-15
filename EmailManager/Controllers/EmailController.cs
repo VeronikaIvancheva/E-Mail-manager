@@ -30,7 +30,7 @@ namespace EmailManager.Controllers
                     Subject = e.Subject,
                     Sender = e.Sender,
                     Body = e.EmailBody.Body,
-                    AttachmentsCount = e.Attachments.Count,
+                    HasAttachments = e.HasAttachments,
                     ReceiveDate = e.ReceiveDate,
                     EnumStatus = _emailService.GetStatus(e.EmailId),
                 })
