@@ -1,18 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
+﻿using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using EmailManager.Models;
 using EmailManager.Services.Contracts;
-using EmailManager.Data.Contracts;
 using System.Net.Http;
-using Newtonsoft.Json;
 using EmailManager.Data.DTO;
-using EmailManager.Services.Implementation;
-using EmailManager.Data.Implementation;
-using System.Text;
 
 namespace EmailManager.Controllers
 {

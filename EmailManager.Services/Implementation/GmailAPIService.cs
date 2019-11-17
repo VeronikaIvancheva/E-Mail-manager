@@ -8,6 +8,7 @@ using Google.Apis.Gmail.v1;
 using Google.Apis.Gmail.v1.Data;
 using Google.Apis.Services;
 using Google.Apis.Util.Store;
+using Microsoft.Extensions.Logging;
 using System;
 using System.IO;
 using System.Linq;
@@ -19,10 +20,12 @@ namespace EmailManager.Services.Implementation
     public class GmailAPIService : IGmailAPIService
     {
         private readonly EmailManagerContext _context;
+        private readonly ILogger _logger;
 
-        public GmailAPIService(EmailManagerContext context)
+        public GmailAPIService(EmailManagerContext context, ILogger<GmailAPIService> logger)
         {
             this._context = context;
+            this._logger = logger;
         }
 
         public async Task SaveEmailsToDB()
@@ -94,6 +97,7 @@ namespace EmailManager.Services.Implementation
 
                     if (emailCheck == null)
                     {
+                        _logger.LogInformation("Start creating new emails.");
                         PassEmailParams(emailFullResponse, editedDate, subject, sender);
                     }
                 }

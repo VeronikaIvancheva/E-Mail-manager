@@ -1,8 +1,51 @@
-﻿@{
+﻿@model EmailViewModel
+
+@using Microsoft.AspNetCore.Identity
+@using EmailManager.Data.Implementation
+
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h2>to</h2>
+    <h2>"Ode of Emails"</h2>
+    @if (!SignInManager.IsSignedIn(User))
+    {
+        <p></p>
+        <p></p>
+        <h3>Please, <ins>login</ins> or <ins>register</ins> to use the system.</h3>
+    }
+</div>
+
+<div class="text-center">
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <p>@User.Identity.Name, what do you want to do today?</p>
+
+        <form method="post">
+            <button asp-controller="Email" asp-action="Index" type="submit" class="btn btn-lg btn-outline-info">
+                See all emails
+            </button>
+            @*<button asp-route-Id="@Model.EnumStatus" asp-controller="Email" asp-action="ListAllNotReviewEmails" type="submit" class="btn btn-lg btn-outline-secondary">
+                Not Reviewed emails
+            </button>
+            <button asp-route-Id="@Model.EnumStatus" asp-controller="Email" asp-action="ListAllNewEmails" type="submit" class="btn btn-lg btn-outline-success">
+                New emails
+            </button>
+            <button asp-route-Id="@Model.EnumStatus" asp-controller="Email" asp-action="ListAllOpenEmails" type="submit" class="btn btn-lg btn-outline-primary">
+                Open emails
+            </button>
+            <button asp-route-Id="@Model.EnumStatus" asp-controller="Email" asp-action="ListAllClosedEmails" type="submit" class="btn btn-lg btn-outline-secondary">
+                Closed emails
+            </button>
+            <button asp-route-Id="@Model.EnumStatus" asp-controller="Email" asp-action="ListAllInvalidEmails" type="submit" class="btn btn-lg btn-outline-secondary">
+                Invalid emails
+            </button>*@
+        </form>
+    }
 </div>

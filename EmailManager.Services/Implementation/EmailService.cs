@@ -12,28 +12,111 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using EmailManager.Data.Implementation;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 
 namespace EmailManager.Services.Implementation
 {
     public class EmailService : IEmailService
     {
         private readonly EmailManagerContext _context;
+        private readonly ILogger _logger;
         //private readonly UserManager<User> _userManager;
 
-        public EmailService(EmailManagerContext context)
+        public EmailService(EmailManagerContext context, ILogger<EmailService> logger)
         {
             this._context = context;
+            this._logger = logger;
         }
 
         public async Task<IEnumerable<Email>> GetAllEmails()
         {
-            return await _context.Emails
+            _logger.LogInformation("System listing all emails.");
+
+            IEnumerable<Email> emailAll = await _context.Emails
                 .Include(m => m.EmailBody)
                 .Include(m => m.Attachments)
                 .Include(m => m.Status)
-                .OrderBy(m => m.EmailId)
+                .OrderBy(m => m.Id)
                 .ToListAsync();
+
+            return emailAll;
         }
+
+        public async Task<IEnumerable<Email>> GetAllOpenedEmails()
+        {
+            _logger.LogInformation("System listing all emails - status Open.");
+
+            IEnumerable<Email> emailAllOpen = await _context.Emails
+                .Where(s => s.EnumStatus == (EmailStatus.New))
+                .Include(m => m.EmailBody)
+                .Include(m => m.Attachments)
+                .Include(m => m.Status)
+                .OrderByDescending(m => m.ReceiveDate)
+                .ToListAsync();
+
+            return emailAllOpen;
+        }
+
+        public async Task<IEnumerable<Email>> GetAllClosedEmails()
+        {
+            _logger.LogInformation("System listing all emails - status Close.");
+
+            IEnumerable<Email> emailAllClosed = await _context.Emails
+                .Where(s => s.EnumStatus == (EmailStatus.Closed))
+                .Include(m => m.EmailBody)
+                .Include(m => m.Attachments)
+                .Include(m => m.Status)
+                .OrderByDescending(m => m.ReceiveDate)
+                .ToListAsync();
+
+            return emailAllClosed;
+        }
+
+        public async Task<IEnumerable<Email>> GetAllNewEmails()
+        {
+            _logger.LogInformation("System listing all emails - status New.");
+
+            IEnumerable<Email> emailAllNew = await _context.Emails
+                .Where(s => s.EnumStatus == (EmailStatus.New))
+                .Include(m => m.EmailBody)
+                .Include(m => m.Attachments)
+                .Include(m => m.Status)
+                .OrderByDescending(m => m.ReceiveDate)
+                .ToListAsync();
+
+            return emailAllNew;
+        }
+
+        public async Task<IEnumerable<Email>> GetAllNotReviewedEmails()
+        {
+            _logger.LogInformation("System listing all emails - status Not Reviewed.");
+
+            IEnumerable<Email> emailAllNotReviewed = await _context.Emails
+                .Where(s => s.EnumStatus == (EmailStatus.NotReviewed))
+                .Include(m => m.EmailBody)
+                .Include(m => m.Attachments)
+                .Include(m => m.Status)
+                .OrderByDescending(m => m.ReceiveDate)
+                .ToListAsync();
+
+            return emailAllNotReviewed;
+        }
+
+        public async Task<IEnumerable<Email>> GetAllNotValidEmails()
+        {
+            _logger.LogInformation("System listing all emails - status Not Valid.");
+
+            IEnumerable<Email> emailAllNotValid = await _context.Emails
+                .Where(s => s.EnumStatus == (EmailStatus.NotValid))
+                .Include(m => m.EmailBody)
+                .Include(m => m.Attachments)
+                .Include(m => m.Status)
+                .OrderByDescending(m => m.ReceiveDate)
+                .ToListAsync();
+
+            return emailAllNotValid;
+        }
+
 
         public Email GetEmail(int mailId)
         {
@@ -43,10 +126,17 @@ namespace EmailManager.Services.Implementation
                 .Include(m => m.Status)
                 .FirstOrDefault(m => m.Id == mailId);
 
+            if (email == null)
+            {
+                _logger.LogWarning($"System didn't find email with id: {mailId}");
+            }
+
+            _logger.LogWarning($"User look for email with id: {mailId}");
+
             return email;
         }
 
-
+        #region
         //TODO - to make new status every time and to save it to the db
         //public async Task MakeNewStatus(Email email)
         //{
@@ -63,14 +153,18 @@ namespace EmailManager.Services.Implementation
         //    await _context.Statuses.AddAsync(status);
         //    await _context.SaveChangesAsync();
         //}
+        #endregion
 
         public EmailStatus GetStatus(string emailId)
         {
             var email = _context.Emails
                 .FirstOrDefault(b => b.EmailId == emailId);
 
+            _logger.LogInformation($"Email status sent. Email id: {emailId}");
+
             return email.EnumStatus;
         }
+
 
         public async Task MarkNewStatus(int emailId, string userId)
         {
@@ -78,6 +172,8 @@ namespace EmailManager.Services.Implementation
 
             email.Result.EnumStatus = EmailStatus.New;
             await _context.SaveChangesAsync();
+
+            _logger.LogInformation($"Changed email status to new. Email Id: {emailId}");
         }
 
         public async Task MarkClosedStatus(int emailId, string userId)
@@ -86,6 +182,8 @@ namespace EmailManager.Services.Implementation
 
             email.Result.EnumStatus = EmailStatus.Closed;
             await _context.SaveChangesAsync();
+
+            _logger.LogInformation($"Changed email status to closed. Email Id: {emailId}");
         }
 
         public async Task MarkOpenStatus(int emailId, string userId)
@@ -94,6 +192,8 @@ namespace EmailManager.Services.Implementation
 
             email.Result.EnumStatus = EmailStatus.Open;
             await _context.SaveChangesAsync();
+
+            _logger.LogInformation($"Changed email status to open. Email Id: {emailId}");
         }
 
         public async Task MarkNotReviewStatus(int emailId, string userId)
@@ -102,6 +202,8 @@ namespace EmailManager.Services.Implementation
 
             email.Result.EnumStatus = EmailStatus.NotReviewed;
             await _context.SaveChangesAsync();
+
+            _logger.LogInformation($"Changed email status to not review. Email Id: {emailId}");
         }
 
         public async Task MarkInvalidStatus(int emailId, string userId)
@@ -110,6 +212,8 @@ namespace EmailManager.Services.Implementation
 
             email.Result.EnumStatus = EmailStatus.NotValid;
             await _context.SaveChangesAsync();
+
+            _logger.LogInformation($"Changed email status to invalid. Email Id: {emailId}");
         }
 
         public async Task<Email> EmailRepeatedPart(int emailId, string userId)
@@ -127,6 +231,8 @@ namespace EmailManager.Services.Implementation
             email.Status.ActionTaken = "Changed";
             email.User = user;
             user.UserEmails.Add(email);
+
+            _logger.LogInformation($"Changed general email statuses. Email Id: {emailId}");
 
             return email;
         }

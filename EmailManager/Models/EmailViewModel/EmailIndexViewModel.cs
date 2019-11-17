@@ -4,6 +4,6 @@ namespace EmailManager.Models.EmailViewModel
 {
     public class EmailIndexViewModel
     {
-        public IReadOnlyCollection<EmailViewModel> Emails { get; set; }
+        public IEnumerable<EmailViewModel> Emails { get; set; }
     }
 }

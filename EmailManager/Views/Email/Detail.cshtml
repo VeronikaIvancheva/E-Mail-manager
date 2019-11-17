@@ -39,8 +39,3 @@
     <button asp-route-Id="@Model.Id" asp-controller="Email" asp-action="MarkClosed" name="Closed" type="submit" class="btn btn-lg btn-danger">Mark as Closed</button>
     <button asp-route-Id="@Model.Id" asp-controller="Email" asp-action="MarkNotReviewed" name="NotReviewed" type="submit" class="btn btn-lg btn-info">Mark as Not Reviewed</button>
 </form>
-
-@*@using (Html.BeginForm(FormMethod.Post))
-    {
-        <input asp-route-Id="@Model.Id" asp-all-route-data="New" asp-controller="Email" asp-action="MarkNew" name="New" type="submit"/>
-    }*@
