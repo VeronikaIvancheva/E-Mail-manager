@@ -2,6 +2,7 @@
 using EmailManager.Data.DTO;
 using EmailManager.Data.Enums;
 using EmailManager.Data.Implementation;
+using EmailManager.Services.Contracts;
 using EmailManager.Services.Exeptions;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -12,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace EmailManager.Services.Implementation
 {
-    public class LoanServices
+    public class LoanServices : ILoanServices
     {
         private readonly EmailManagerContext _context;
         private readonly EncryptionAndDecryptionServices _security;
@@ -71,7 +72,7 @@ namespace EmailManager.Services.Implementation
             int expectedResult = int.Parse(approveLoanDto.Approved);
 
             var loan = await this._context.Clients
-                .Where(e =>e.EmailId == approveLoanDto.EmailId)
+                .Where(e => e.EmailId == approveLoanDto.EmailId)
                 .FirstOrDefaultAsync();
 
             var email = await this._context.Emails
@@ -104,7 +105,7 @@ namespace EmailManager.Services.Implementation
         }
         public ClientDTO ValidationMethod(ClientDTO clientDto)
         {
-            if (clientDto.ClientName == null ||clientDto.ClientEGN == null|| clientDto.ClientPhoneNumber == null)
+            if (clientDto.ClientName == null || clientDto.ClientEGN == null || clientDto.ClientPhoneNumber == null)
             {
                 throw new LoanExeptions("Тhe details of the loan request have not been filled in correctly");
             }
