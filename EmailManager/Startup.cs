@@ -57,6 +57,7 @@ namespace EmailManager
             services.AddRouting(options => options.LowercaseUrls = true);
 
 
+            services.AddScoped<ILoggingServices, LoggingServices>();
             services.AddScoped<ILoanServices, LoanServices>();
             services.AddScoped<IUserServices, UserServices>();
             services.AddScoped<IEncryptionAndDecryptionServices,EncryptionAndDecryptionServices>();
