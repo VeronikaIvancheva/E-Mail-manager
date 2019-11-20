@@ -24,6 +24,7 @@ namespace EmailManager.Data
         public string ReceiveDate { get; set; }
         public string Subject { get; set; }
         public EmailStatus EnumStatus { get; set; }
+        public int EmailStatusId { get; set; } = (int)EmailStatus.NotReviewed;
         public Loan Loan { get; set; }
         public EmailBody EmailBody { get; set; }
         public User User { get; set; }
@@ -36,5 +37,6 @@ namespace EmailManager.Data
         public DateTime? SetCurrentStatus { get; set; }
         public DateTime? IsDeleted { get; set; }
         public DateTime DeletionDate { get; set; }
+        public DateTime? LastRegistration { get; set; }
     }
 }

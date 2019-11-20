@@ -7,6 +7,7 @@ namespace EmailManager.Data.Utilities
     interface IAuditableRegistration
     {
         DateTime? InitialRegistration { get; set; }
+        DateTime? LastRegistration { get; set; }
 
         DateTime? SetCurrentStatus { get; set; }
 

@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace EmailManager.Data.Implementation
 {
-    public class Client : IClient,DataModelHasId
+    public class Client : IClient
     {
         public Client()
         {
@@ -20,9 +20,12 @@ namespace EmailManager.Data.Implementation
         public string ClientEmail { get; set; }
         public ICollection<Loan> Loans { get; set; }
         public bool IsApproved { get; set; }
-        //Not needed for now,but the Client and Loab classes should be reviewed
-        //public virtual Email Email { get; set; }
-        //public int? EmailId { get; set; }
-        
+        //Testing
+        public User User { get; set; }
+        public string UserId { get; set; }
+        public virtual Email Email { get; set; }
+        //string or int
+        public string EmailId { get; set; }
+
     }
 }

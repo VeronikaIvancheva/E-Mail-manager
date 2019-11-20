@@ -4,11 +4,11 @@ using System.Text;
 
 namespace EmailManager.Services.Exeptions
 {
-    public class UserExeptions : Exception
+    public class LoanExeptions:Exception
     {
-        public UserExeptions(string message)
-        : base(String.Format(message))
+        public LoanExeptions(string message) : base(String.Format(message))
         {
+
         }
     }
 }
