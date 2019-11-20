@@ -24,18 +24,15 @@ namespace EmailManager.Data
         public string Subject { get; set; }
         public EmailStatus EnumStatus { get; set; }
         public DateTime FirstRegistration { get; set; }
-        //questionable
         public DateTime CurrentStatus { get; set; }
         public DateTime TerminalStatus { get; set; }
-        //public int LoanId { get; set; }
         public Loan Loan { get; set; }
         public EmailBody EmailBody { get; set; }
         public User User { get; set; }
-
+        public string UserId { get; set; }
+        public bool IsSeen { get; set; }
         public Status Status { get; set; }
-
         public bool HasAttachments { get; set; }
-
         public ICollection<Attachment> Attachments { get; set; }
     }
 }

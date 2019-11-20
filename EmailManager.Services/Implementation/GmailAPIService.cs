@@ -140,7 +140,7 @@ namespace EmailManager.Services.Implementation
                 Attachment attachmentParts = new Attachment
                 {
                     AttachmentId = emailFullResponse.Payload.Body.AttachmentId,
-                    AttachmentSize = emailFullResponse.Payload.Body.Size,
+                    AttachmentSizeKb = emailFullResponse.Payload.Body.Size,
                     FileName = emailFullResponse.Payload.Filename,
                     EmailId = emailFullResponse.Id,
                 };

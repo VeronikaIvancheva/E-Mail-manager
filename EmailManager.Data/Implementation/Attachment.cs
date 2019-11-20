@@ -10,7 +10,7 @@ namespace EmailManager.Data.Implementation
         [Key]
         public string AttachmentId { get; set; }
         public string FileName { get; set; }
-        public double? AttachmentSize { get; set; }
+        public double? AttachmentSizeKb { get; set; }
 
         public string EmailId { get; set; }
         public Email Email { get; set; }

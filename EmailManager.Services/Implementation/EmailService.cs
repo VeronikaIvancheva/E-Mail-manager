@@ -13,6 +13,8 @@ using Microsoft.AspNetCore.Identity;
 using EmailManager.Data.Implementation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using EmailManager.Data.DTO;
+using EmailManager.Services.Exeptions;
 
 namespace EmailManager.Services.Implementation
 {
@@ -21,11 +23,13 @@ namespace EmailManager.Services.Implementation
         private readonly EmailManagerContext _context;
         private readonly ILogger _logger;
         //private readonly UserManager<User> _userManager;
-
-        public EmailService(EmailManagerContext context, ILogger<EmailService> logger)
+        private readonly IEncryptionAndDecryptionServices _security;
+        public EmailService(EmailManagerContext context, ILogger<EmailService> logger,
+            IEncryptionAndDecryptionServices security)
         {
             this._context = context;
             this._logger = logger;
+            this._security = security;
         }
 
         public async Task<IEnumerable<Email>> GetAllEmails()
@@ -116,7 +120,6 @@ namespace EmailManager.Services.Implementation
 
             return emailAllNotValid;
         }
-
 
         public Email GetEmail(int mailId)
         {
@@ -234,6 +237,80 @@ namespace EmailManager.Services.Implementation
 
             _logger.LogInformation($"Changed general email statuses. Email Id: {emailId}");
 
+            return email;
+        }
+
+        public async Task AddAttachmentAsync(EmailAttachmentDTO attachmentDTO)
+        {
+            if (attachmentDTO.FileName.Length < 5 || attachmentDTO.FileName.Length > 100)
+            {
+                throw new EmailExeptions("Lenght of attachment name is not correct!");
+            }
+
+            if (attachmentDTO.EmailId.Length < 5 || attachmentDTO.EmailId.Length > 100)
+            {
+                throw new EmailExeptions("Lenght of EmailId is not correct!");
+            }
+
+            var gmaiId = await this._context.Emails
+               .FirstOrDefaultAsync(id => id.EmailId == attachmentDTO.EmailId);
+
+            if (gmaiId == null)
+            {
+                var attachment = new Attachment
+                {
+                    FileName = attachmentDTO.FileName,
+                    AttachmentSizeKb = attachmentDTO.AttachmentSizeKb,
+                    EmailId = attachmentDTO.EmailId
+                };
+
+                await this._context.Attachments.AddAsync(attachment);
+                await this._context.SaveChangesAsync();
+            }
+        }
+        public async Task<Email> AddBodyToCurrentEmailAsync(EmailBodyDTO emailBodyDto)
+        {
+            var email = await this._context.Emails
+                .Include(u => u.User)
+                .Where(gMail => gMail.EmailId == emailBodyDto.UserId)
+                .SingleOrDefaultAsync();
+
+            var emailBody = await this._context.EmailBodies
+                .Include(b => b.Email)
+                .Where(b => b.EmailId == emailBodyDto.EmailId)
+                .SingleOrDefaultAsync();
+                
+            var currentUser = await this._context.Users
+                .Where(id => id.Id == emailBodyDto.UserId)
+                .SingleOrDefaultAsync();
+
+            if (emailBodyDto.Body == null)
+            {
+                throw new EmailExeptions($"The Email with Id {emailBodyDto.Email} does not exist");
+            }
+
+            if (emailBodyDto.Body.Length > 1000)
+            {
+                throw new EmailExeptions($"Body of email is to long!");
+            }
+
+            if (emailBody != null)
+            {
+                throw new EmailExeptions($"Email with the following id {emailBodyDto.Email} contains body");
+            }
+
+            var decodeBody = this._security.Base64Decrypt(emailBodyDto.Body);
+
+            var encriptBody = this._security.Encrypt(decodeBody);
+
+            if (email.EmailBody == null)
+            {
+                emailBody.Body = encriptBody;
+                email.User = currentUser;
+                email.UserId = emailBodyDto.UserId;
+                email.IsSeen = true;
+                await this._context.SaveChangesAsync();
+            }
             return email;
         }
     }

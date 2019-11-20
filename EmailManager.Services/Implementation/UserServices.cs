@@ -15,22 +15,22 @@ namespace EmailManager.Services.Implementation
 {
     public class UserServices
     {
-        private readonly ILogger<UserServices> logger;
-        private readonly EmailManagerContext context;
-        private readonly UserManager<User> userManager;
+        private readonly ILogger<UserServices> _logger;
+        private readonly EmailManagerContext _context;
+        private readonly UserManager<User> _userManager;
 
         public UserServices(EmailManagerContext context, UserManager<User> userManager, ILogger<UserServices> logger)
         {
-            this.context = context;
-            this.userManager = userManager;
-            this.logger = logger;
+            this._context = context;
+            this._userManager = userManager;
+            this._logger = logger;
         }
 
         public async Task RegisterAccountAsync(RegisterAccountDTO registerAccountDto)
         {
             var validationMethod = ValidationMethod(registerAccountDto);
 
-            var user = await this.context.Users
+            var user = await this._context.Users
                 .Where(name => name.UserName == validationMethod.UserName)
                 .Select(username => username.UserName)
                 .SingleOrDefaultAsync();

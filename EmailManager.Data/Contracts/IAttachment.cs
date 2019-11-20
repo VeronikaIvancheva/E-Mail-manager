@@ -8,7 +8,7 @@ namespace EmailManager.Data.Contracts
     {
         string AttachmentId { get; set; }
         string FileName { get; set; }
-        double? AttachmentSize { get; set; }
+        double? AttachmentSizeKb { get; set; }
 
         string EmailId { get; set; }
         Email Email { get; set; }

@@ -4,6 +4,7 @@
     {
         string Body { get; set; }
         Email Email { get; set; }
-        string Id { get; set; }
+        string EmailId { get; set; }
+        string UserId { get; set; }
     }
 }
