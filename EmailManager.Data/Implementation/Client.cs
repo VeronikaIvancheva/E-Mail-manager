@@ -1,10 +1,11 @@
 ﻿using EmailManager.Data.Contracts;
+using EmailManager.Data.Utilities;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace EmailManager.Data.Implementation
 {
-    public class Client : IClient
+    public class Client : IClient,DataModelHasId
     {
         public Client()
         {

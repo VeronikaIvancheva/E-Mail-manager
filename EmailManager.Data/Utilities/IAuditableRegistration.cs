@@ -4,12 +4,12 @@ using System.Text;
 
 namespace EmailManager.Data.Utilities
 {
-    interface IAuditable
+    interface IAuditableRegistration
     {
         DateTime? InitialRegistration { get; set; }
 
         DateTime? SetCurrentStatus { get; set; }
 
-        DateTime? SetTerminalState { get; set; }
+        
     }
 }

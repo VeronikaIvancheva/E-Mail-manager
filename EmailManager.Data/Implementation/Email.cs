@@ -9,7 +9,7 @@ using System.ComponentModel.DataAnnotations;
 namespace EmailManager.Data
 {
     [Serializable]
-    public class Email : IEmail,IAuditable
+    public class Email : IEmail,IAuditableRegistration,IDeletable
     {
         public Email()
         {
@@ -34,6 +34,7 @@ namespace EmailManager.Data
         public ICollection<Attachment> Attachments { get; set; }
         public DateTime? InitialRegistration { get; set; }
         public DateTime? SetCurrentStatus { get; set; }
-        public DateTime? SetTerminalState { get; set; }
+        public DateTime? IsDeleted { get; set; }
+        public DateTime DeletionDate { get; set; }
     }
 }
