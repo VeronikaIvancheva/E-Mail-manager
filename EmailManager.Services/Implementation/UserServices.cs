@@ -1,6 +1,7 @@
 ﻿using EmailManager.Data.Context;
 using EmailManager.Data.DTO;
 using EmailManager.Data.Implementation;
+using EmailManager.Services.Contracts;
 using EmailManager.Services.Exeptions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -13,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace EmailManager.Services.Implementation
 {
-    public class UserServices
+    public class UserServices : IUserServices
     {
         private readonly ILogger<UserServices> _logger;
         private readonly EmailManagerContext _context;

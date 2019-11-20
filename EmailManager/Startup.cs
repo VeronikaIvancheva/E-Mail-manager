@@ -56,6 +56,10 @@ namespace EmailManager
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddRouting(options => options.LowercaseUrls = true);
 
+
+
+            services.AddScoped<IUserServices, UserServices>();
+            services.AddScoped<IEncryptionAndDecryptionServices,EncryptionAndDecryptionServices>();
             services.AddScoped<IGmailAPIService, GmailAPIService>();
             services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<IEmail, Email>();
