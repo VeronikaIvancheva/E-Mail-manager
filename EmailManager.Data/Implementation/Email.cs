@@ -1,6 +1,7 @@
 ﻿using EmailManager.Data.Contracts;
 using EmailManager.Data.Enums;
 using EmailManager.Data.Implementation;
+using EmailManager.Data.Utilities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -8,7 +9,7 @@ using System.ComponentModel.DataAnnotations;
 namespace EmailManager.Data
 {
     [Serializable]
-    public class Email : IEmail
+    public class Email : IEmail,IAuditable
     {
         public Email()
         {
@@ -23,9 +24,6 @@ namespace EmailManager.Data
         public string ReceiveDate { get; set; }
         public string Subject { get; set; }
         public EmailStatus EnumStatus { get; set; }
-        public DateTime FirstRegistration { get; set; }
-        public DateTime CurrentStatus { get; set; }
-        public DateTime TerminalStatus { get; set; }
         public Loan Loan { get; set; }
         public EmailBody EmailBody { get; set; }
         public User User { get; set; }
@@ -34,5 +32,8 @@ namespace EmailManager.Data
         public Status Status { get; set; }
         public bool HasAttachments { get; set; }
         public ICollection<Attachment> Attachments { get; set; }
+        public DateTime? InitialRegistration { get; set; }
+        public DateTime? SetCurrentStatus { get; set; }
+        public DateTime? SetTerminalState { get; set; }
     }
 }

@@ -165,7 +165,7 @@ namespace EmailManager.Services.Implementation
                 EmailId = emailFullResponse.Id,
                 HasAttachments = attachmentBool,
                 EmailBody = body,
-                CurrentStatus = DateTime.UtcNow,
+                SetCurrentStatus = DateTime.UtcNow,
                 ReceiveDate = editedDate,
                 Subject = subject,
                 Sender = sender,

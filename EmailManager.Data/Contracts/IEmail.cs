@@ -7,9 +7,7 @@ namespace EmailManager.Data.Contracts
     public interface IEmail
     {
         int Id { get; set; }
-        DateTime CurrentStatus { get; set; }
         string EmailId { get; set; }
-        DateTime FirstRegistration { get; set; }
         bool IsValid { get; set; }
         Loan Loan { get; set; }
         //int LoanId { get; set; }
@@ -17,7 +15,6 @@ namespace EmailManager.Data.Contracts
         string Sender { get; set; }
         Status Status { get; set; }
         string Subject { get; set; }
-        DateTime TerminalStatus { get; set; }
         User User { get; set; }
         bool HasAttachments { get; set; }
         ICollection<Attachment> Attachments { get; set; }
