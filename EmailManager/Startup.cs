@@ -62,7 +62,6 @@ namespace EmailManager
             services.AddScoped<IUserServices, UserServices>();
             services.AddScoped<IGmailAPIService, GmailAPIService>();
             services.AddScoped<IEmailService, EmailService>();
-            services.AddScoped<IEmail, Email>();
 
             services.AddScoped<IEncryptionServices, EncryptionServices>(); 
             services.AddScoped<IDecryptionServices, DecryptionServices>();

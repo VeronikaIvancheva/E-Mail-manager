@@ -39,6 +39,7 @@ namespace EmailManager.Services.Implementation
             IEnumerable<Email> emailAll = await _context.Emails
                 .Include(m => m.EmailBody)
                 .Include(m => m.Attachments)
+                .Include(m => m.User)
                 .Include(m => m.Status)
                 .OrderBy(m => m.Id)
                 .ToListAsync();

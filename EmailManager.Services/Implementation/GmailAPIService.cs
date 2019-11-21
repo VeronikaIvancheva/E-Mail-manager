@@ -135,21 +135,25 @@ namespace EmailManager.Services.Implementation
 
         public bool PassAttachmentParams(Message emailFullResponse)
         {
-            if (emailFullResponse.Payload.Body.Size != 0)
+            var parts = emailFullResponse.Payload.Parts;
+            foreach (var item in parts)
             {
-                Attachment attachmentParts = new Attachment
+                if (item.Body.AttachmentId != null)
                 {
-                    AttachmentId = emailFullResponse.Payload.Body.AttachmentId,
-                    AttachmentSizeKb = emailFullResponse.Payload.Body.Size,
-                    FileName = emailFullResponse.Payload.Filename,
-                    EmailId = emailFullResponse.Id,
-                };
+                    Attachment attachmentParts = new Attachment
+                    {
+                        AttachmentId = item.Body.AttachmentId,
+                        AttachmentSizeKb = item.Body.Size,
+                        FileName = item.Filename,
+                        EmailId = emailFullResponse.Id,
+                    };
 
-                _context.Attachments.AddAsync(attachmentParts);
-                _context.SaveChangesAsync();
+                    _context.Attachments.AddAsync(attachmentParts);
+                    _context.SaveChangesAsync();
 
-                return true;
-            }
+                    return true;
+                }
+            }            
 
             return false;
         }
@@ -169,7 +173,7 @@ namespace EmailManager.Services.Implementation
                 ReceiveDate = editedDate,
                 Subject = subject,
                 Sender = sender,
-                Status = status,  
+                Status = status,
                 UserId = "NoUser",
             };
 

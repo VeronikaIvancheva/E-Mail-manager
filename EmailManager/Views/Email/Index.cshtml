@@ -39,6 +39,7 @@
             <tr>
                 <td>@email.Id</td>
                 <td class="nav-link">
+                    @*asp-route-page=""*@
                     <a asp-route-id="@email.Id" asp-action="Detail" asp-controller="Email">
                         @email.Sender
                     </a>

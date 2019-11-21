@@ -44,7 +44,7 @@ namespace EmailManager.Controllers
             return View(emailModel);
         }
 
-        public async Task<IActionResult> ListAllStatusEmails(string statusEmail)
+        public async Task<IActionResult> ListAllStatusEmails(string statusEmail /*int page*/)
         {
             var emailsAllNewResults = await _emailService.GetAllStatusEmails(statusEmail);
 
@@ -53,7 +53,7 @@ namespace EmailManager.Controllers
             var emailModel = EmailMapper.MapFromEmailIndex(emailsListing);
 
             _logger.LogInformation("Displayed all open email list.");
-
+            
             return View(emailModel);
         }
 
