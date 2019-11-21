@@ -41,12 +41,9 @@ namespace EmailManager.Areas.Identity.Pages.Account
 
         public class InputModel
         {
-            //[Required]
-            //[EmailAddress]
-            //public string Email { get; set; }
-
             [Required]
-            public string UserName { get; set; }
+            [EmailAddress]
+            public string Email { get; set; }
 
             [Required]
             [DataType(DataType.Password)]
@@ -78,13 +75,13 @@ namespace EmailManager.Areas.Identity.Pages.Account
             returnUrl = returnUrl ?? Url.Content("~/");
 
             var login = await _userManager
-               .FindByNameAsync(Input.UserName);
+               .FindByNameAsync(Input.Email);
 
             if (ModelState.IsValid)
             {
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await _signInManager.PasswordSignInAsync(Input.UserName, Input.Password, Input.RememberMe, lockoutOnFailure: true);
+                var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: true);
                 if (result.Succeeded)
                 {
                     await _logging.SaveLastLoginUser(login);

@@ -13,7 +13,8 @@ using Microsoft.Extensions.Logging;
 
 namespace EmailManager.Areas.Identity.Pages.Account
 {
-    [AllowAnonymous]
+    [Area("Manager")]
+    [Authorize(Roles = "Manager")]
     public class RegisterModel : PageModel
     {
         private readonly SignInManager<User> _signInManager;
@@ -69,6 +70,9 @@ namespace EmailManager.Areas.Identity.Pages.Account
             {
                 var user = new User { UserName = Input.Email, Email = Input.Email };
                 var result = await _userManager.CreateAsync(user, Input.Password);
+
+                await _userManager.AddToRoleAsync(user, "Operator");
+
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");

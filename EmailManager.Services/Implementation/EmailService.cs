@@ -46,7 +46,7 @@ namespace EmailManager.Services.Implementation
             return emailAll;
         }
 
-        public async Task<IEnumerable<Email>> GetAllOpenedEmails()
+        public async Task<IEnumerable<Email>> GetAllOpenedEmails(string statusEmail)
         {
             _logger.LogInformation("System listing all emails - status Open.");
 
@@ -61,7 +61,7 @@ namespace EmailManager.Services.Implementation
             return emailAllOpen;
         }
 
-        public async Task<IEnumerable<Email>> GetAllClosedEmails()
+        public async Task<IEnumerable<Email>> GetAllClosedEmails(string statusEmail)
         {
             _logger.LogInformation("System listing all emails - status Close.");
 
@@ -76,7 +76,7 @@ namespace EmailManager.Services.Implementation
             return emailAllClosed;
         }
 
-        public async Task<IEnumerable<Email>> GetAllNewEmails()
+        public async Task<IEnumerable<Email>> GetAllNewEmails(string statusEmail)
         {
             _logger.LogInformation("System listing all emails - status New.");
 
@@ -91,7 +91,7 @@ namespace EmailManager.Services.Implementation
             return emailAllNew;
         }
 
-        public async Task<IEnumerable<Email>> GetAllNotReviewedEmails()
+        public async Task<IEnumerable<Email>> GetAllNotReviewedEmails(string statusEmail)
         {
             _logger.LogInformation("System listing all emails - status Not Reviewed.");
 
@@ -106,7 +106,7 @@ namespace EmailManager.Services.Implementation
             return emailAllNotReviewed;
         }
 
-        public async Task<IEnumerable<Email>> GetAllNotValidEmails()
+        public async Task<IEnumerable<Email>> GetAllNotValidEmails(string statusEmail)
         {
             _logger.LogInformation("System listing all emails - status Not Valid.");
 
@@ -167,8 +167,7 @@ namespace EmailManager.Services.Implementation
 
             return email.EnumStatus;
         }
-
-
+        
         public async Task MarkNewStatus(int emailId, string userId)
         {
             var email = EmailRepeatedPart(emailId, userId);

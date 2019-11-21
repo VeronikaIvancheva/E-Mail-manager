@@ -1,4 +1,5 @@
 ﻿using EmailManager.Data.Implementation;
+using EmailManager.Data.Seed;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -83,6 +84,8 @@ namespace EmailManager.Data.Context
                 .HasForeignKey<Email>(m=>m.EmailId)
                 .OnDelete(DeleteBehavior.Restrict);
             #endregion
+
+            modelBuilder.UpdateDatabase();
 
             base.OnModelCreating(modelBuilder);
         }
