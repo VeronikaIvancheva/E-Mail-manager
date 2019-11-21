@@ -124,7 +124,7 @@ namespace EmailManager.Services.Implementation
                 ActionTaken = "Changed",
                 NewStatus = DateTime.UtcNow,
                 LastStatus = DateTime.UtcNow,
-                EmailStatus = EmailStatus.NotReviewed
+                EmailStatus = EmailStatus.NotReviewed,
             };
 
             _context.Statuses.AddAsync(status);
@@ -169,7 +169,8 @@ namespace EmailManager.Services.Implementation
                 ReceiveDate = editedDate,
                 Subject = subject,
                 Sender = sender,
-                Status = status
+                Status = status,  
+                UserId = "NoUser",
             };
 
             _context.AddAsync(emailParts);
