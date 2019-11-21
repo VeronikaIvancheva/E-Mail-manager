@@ -263,6 +263,7 @@ namespace EmailManager.Services.Implementation
 
             var encriptBody = this._securityEncrypt.Encrypt(decodeBody);
 
+
             if (email.EmailBody == null)
             {
                 emailBody.Body = encriptBody;

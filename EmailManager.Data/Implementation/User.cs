@@ -14,9 +14,7 @@ namespace EmailManager.Data.Implementation
         }
 
         public string Role { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-
+        public string Name { get; set; }
         public ICollection<Email> UserEmails { get; set; }
         public ICollection<Client> Clients { get; set; }
        

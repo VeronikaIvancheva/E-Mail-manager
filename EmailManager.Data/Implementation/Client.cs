@@ -2,6 +2,7 @@
 using EmailManager.Data.Utilities;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EmailManager.Data.Implementation
 {
@@ -23,8 +24,9 @@ namespace EmailManager.Data.Implementation
         //Testing
         public User User { get; set; }
         public string UserId { get; set; }
+        [NotMapped]
         public virtual Email Email { get; set; }
-        //string or int
+        [NotMapped]
         public string EmailId { get; set; }
 
     }

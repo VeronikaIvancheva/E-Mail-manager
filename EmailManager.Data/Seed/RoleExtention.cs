@@ -18,8 +18,7 @@ namespace EmailManager.Data.Seed
             var adminUser = new User
             {
                 Id = "1",
-                FirstName = "Jik",
-                LastName = "Tak",
+                Name = "Jik Tak",
                 UserName = "admin",
                 NormalizedUserName = "admin".ToUpper(),
                 Email = "admin@abv.bg",
@@ -30,7 +29,36 @@ namespace EmailManager.Data.Seed
                 SecurityStamp = Guid.NewGuid().ToString("D"),
                 Role = "Manager"
             };
+            
+            var Managore = new User
+            {
+                Id = "2",
+                Name = "El Managore",
+                UserName = "adminNumbertwo",
+                NormalizedUserName = "admin".ToUpper(),
+                Email = "banana@abv.bg",
+                NormalizedEmail = "banana@abv.bg".ToUpper(),
+                EmailConfirmed = true,
+                PhoneNumber = "+0895674532",
+                PhoneNumberConfirmed = true,
+                SecurityStamp = Guid.NewGuid().ToString("D"),
+                Role = "Manager"
+            };
 
+            var NoUser = new User
+            {
+                Id = "NoUser",
+                Name = "Godzilla",
+                UserName = "Operator",
+                NormalizedUserName = "admin".ToUpper(),
+                Email = "cloumba@abv.bg",
+                NormalizedEmail = "cloumba@abv.bg".ToUpper(),
+                EmailConfirmed = true,
+                PhoneNumber = "+0895645254",
+                PhoneNumberConfirmed = true,
+                SecurityStamp = Guid.NewGuid().ToString("D"),
+                Role = "Operator"
+            };
             var hashePass = new PasswordHasher<User>().HashPassword(adminUser, "manager");
             adminUser.PasswordHash = hashePass;
 
