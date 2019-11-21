@@ -21,6 +21,8 @@ namespace EmailManager.Models.EmailViewModel
             this.Sender = email.Sender;
             this.Subject = email.Subject;
             this.ReceiveDate = email.ReceiveDate;
+            this.InCurrentStatusSince = email.Status.NewStatus;
+            this.StatusChangedBy = email.User.UserName;
         }
 
         public int Id { get; set; }
@@ -31,6 +33,8 @@ namespace EmailManager.Models.EmailViewModel
         public string Subject { get; set; }
         public string Body { get; set; }
         public EmailStatus EnumStatus { get; set; }
+        public DateTime InCurrentStatusSince { get; set; }
+        public string StatusChangedBy { get; set; }
 
         public bool HasAttachments { get; set; }
         public ICollection<Attachment> Attachments { get; set; }

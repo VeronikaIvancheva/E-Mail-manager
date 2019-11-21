@@ -12,14 +12,19 @@
             <th>Subject</th>
             <th>Body</th>
             <th>Receive Date</th>
-            <th>Enum Status</th>
+            <th>Status</th>
+            <th>In current status since</th>
             <th>Attachments</th>
+            @if (User.IsInRole("Manager"))
+            {
+                <th>Changed by</th>
+            }
             <th></th>
         </tr>
     </thead>
     <tfoot>
         <tr>
-            <td colspan="8">
+            <td colspan="11">
                 <div class="links">
                     <a href="#">&laquo;</a>
                     <a class="active" href="#">1</a>
@@ -45,7 +50,12 @@
                 <td>@email.Body</td>
                 <td>@email.ReceiveDate</td>
                 <td>@email.EnumStatus</td>
+                <td>@email.InCurrentStatusSince</td>
                 <td>@email.HasAttachments</td>
+                @if (User.IsInRole("Manager"))
+                {
+                    <th>@email.StatusChangedBy</th>
+                }
                 <td>
                 </td>
             </tr>

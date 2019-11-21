@@ -170,7 +170,6 @@ namespace EmailManager.Services.Implementation
                 Subject = subject,
                 Sender = sender,
                 Status = status
-
             };
 
             _context.AddAsync(emailParts);

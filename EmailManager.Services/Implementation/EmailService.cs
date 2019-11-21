@@ -6,12 +6,8 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using System.Security.Claims;
-using Microsoft.AspNetCore.Identity;
 using EmailManager.Data.Implementation;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using EmailManager.Data.DTO;
 using EmailManager.Services.Exeptions;
@@ -44,6 +40,7 @@ namespace EmailManager.Services.Implementation
                 .Include(m => m.EmailBody)
                 .Include(m => m.Attachments)
                 .Include(m => m.Status)
+                .Include(m => m.User)
                 .OrderBy(m => m.Id)
                 .ToListAsync();
 
@@ -87,15 +84,16 @@ namespace EmailManager.Services.Implementation
 
             _logger.LogInformation("System listing all emails - status Open.");
 
-            IEnumerable<Email> emailAllOpen = await _context.Emails
+            IEnumerable<Email> emailAllStatus = await _context.Emails
                 .Where(s => s.EnumStatus == (status))
                 .Include(m => m.EmailBody)
                 .Include(m => m.Attachments)
                 .Include(m => m.Status)
-                .OrderByDescending(m => m.ReceiveDate)
+                .Include(m => m.User)
+                .OrderByDescending(m => m.Status.NewStatus)
                 .ToListAsync();
 
-            return emailAllOpen;
+            return emailAllStatus;
         }
 
         public Email GetEmail(int mailId)
@@ -114,26 +112,7 @@ namespace EmailManager.Services.Implementation
             _logger.LogWarning($"User look for email with id: {mailId}");
 
             return email;
-        }
-
-        #region
-        //TODO - to make new status every time and to save it to the db
-        //public async Task MakeNewStatus(Email email)
-        //{
-        //    var lastStatus = email.Status.NewStatus;
-
-        //    Status status = new Status
-        //    {
-        //        LastStatus = lastStatus,
-        //        ActionTaken = "Changed",
-        //        TimeStamp = DateTime.UtcNow,
-        //        NewStatus = DateTime.UtcNow
-        //    };
-
-        //    await _context.Statuses.AddAsync(status);
-        //    await _context.SaveChangesAsync();
-        //}
-        #endregion
+        }       
 
         public EmailStatus GetStatus(string emailId)
         {
@@ -144,7 +123,7 @@ namespace EmailManager.Services.Implementation
 
             return email.EnumStatus;
         }
-        
+
         public async Task MarkNewStatus(int emailId, string userId)
         {
             var email = EmailRepeatedPart(emailId, userId);
@@ -204,10 +183,15 @@ namespace EmailManager.Services.Implementation
 
             var user = _context.Users.FirstOrDefault(x => x.Id == userId);
 
-            email.Status.LastStatus = email.Status.NewStatus;
-            email.Status.NewStatus = DateTime.UtcNow;
-            email.Status.TimeStamp = DateTime.UtcNow;
-            email.Status.ActionTaken = "Changed";
+            var status = new Status
+            {
+                LastStatus = email.Status.LastStatus = email.Status.NewStatus,
+                NewStatus = email.Status.NewStatus = DateTime.UtcNow,
+                TimeStamp = email.Status.TimeStamp = DateTime.UtcNow,
+                ActionTaken = email.Status.ActionTaken = "Changed",                
+            };
+            
+
             email.User = user;
             user.UserEmails.Add(email);
 
@@ -218,12 +202,12 @@ namespace EmailManager.Services.Implementation
 
         public async Task AddAttachmentAsync(EmailAttachmentDTO attachmentDTO)
         {
-            if (attachmentDTO.FileName.Length < 5 || attachmentDTO.FileName.Length > 100)
+            if (attachmentDTO.FileName.Length < 1 || attachmentDTO.FileName.Length > 100)
             {
                 throw new EmailExeptions("Lenght of attachment name is not correct!");
             }
 
-            if (attachmentDTO.EmailId.Length < 5 || attachmentDTO.EmailId.Length > 100)
+            if (attachmentDTO.EmailId.Length < 1 || attachmentDTO.EmailId.Length > 100)
             {
                 throw new EmailExeptions("Lenght of EmailId is not correct!");
             }
