@@ -40,7 +40,6 @@ namespace EmailManager.Services.Implementation
                 .Include(m => m.EmailBody)
                 .Include(m => m.Attachments)
                 .Include(m => m.Status)
-                .Include(m => m.User)
                 .OrderBy(m => m.Id)
                 .ToListAsync();
 
@@ -102,6 +101,7 @@ namespace EmailManager.Services.Implementation
                 .Include(m => m.EmailBody)
                 .Include(m => m.Attachments)
                 .Include(m => m.Status)
+                .Include(m => m.User)
                 .FirstOrDefault(m => m.Id == mailId);
 
             if (email == null)

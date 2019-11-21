@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using EmailManager.Data;
 using EmailManager.Mappers;
 using EmailManager.Models.EmailViewModel;
 using EmailManager.Services.Contracts;
@@ -34,7 +31,7 @@ namespace EmailManager.Controllers
             return View("Detail", emailModel);
         }
 
-        public async Task<IActionResult> Index(string Id)
+        public async Task<IActionResult> Index()
         {
             var emailsAllResults = await _emailService.GetAllEmails();
             
