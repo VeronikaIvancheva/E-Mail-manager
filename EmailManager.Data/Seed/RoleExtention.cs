@@ -18,8 +18,7 @@ namespace EmailManager.Data.Seed
             var adminUser = new User
             {
                 Id = "1",
-                FirstName = "Jik",
-                LastName = "Tak",
+                Name = "Jik Tak",
                 UserName = "admin",
                 NormalizedUserName = "admin".ToUpper(),
                 Email = "admin@abv.bg",
