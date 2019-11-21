@@ -24,7 +24,7 @@ namespace EmailManager.Services.Implementation
                 return false;
             }
 
-            user.LastRegistration = DateTime.Now;
+          //  user.LastRegistration = DateTime.Now;
             await this._context.SaveChangesAsync();
 
             return true;
