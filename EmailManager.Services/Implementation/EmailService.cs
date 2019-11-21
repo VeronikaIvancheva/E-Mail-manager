@@ -34,16 +34,16 @@ namespace EmailManager.Services.Implementation
 
         public async Task<IEnumerable<Email>> GetAllEmails()
         {
-            _logger.LogInformation("System listing all emails.");
-
             IEnumerable<Email> emailAll = await _context.Emails
                 .Include(m => m.EmailBody)
                 .Include(m => m.Attachments)
-                .Include(m => m.User)
                 .Include(m => m.Status)
-                .OrderBy(m => m.Id)
+                .Include(m => m.User)
+                .OrderByDescending(m => m.Id)
                 .ToListAsync();
 
+            _logger.LogInformation("System listing all emails.");
+            
             return emailAll;
         }
 
@@ -82,7 +82,7 @@ namespace EmailManager.Services.Implementation
                 throw new Exception("There are no status like this in the enums.");
             }
 
-            _logger.LogInformation("System listing all emails - status Open.");
+            _logger.LogInformation($"System listing all emails - status {statusEmail}.");
 
             IEnumerable<Email> emailAllStatus = await _context.Emails
                 .Where(s => s.EnumStatus == (status))
@@ -96,28 +96,46 @@ namespace EmailManager.Services.Implementation
             return emailAllStatus;
         }
 
-        public Email GetEmail(int mailId)
+        public Email GetEmail(int emailId)
         {
-            var email = _context.Emails
+            Email email = _context.Emails
                 .Include(m => m.EmailBody)
                 .Include(m => m.Attachments)
                 .Include(m => m.Status)
                 .Include(m => m.User)
-                .FirstOrDefault(m => m.Id == mailId);
+                .FirstOrDefault(m => m.Id == emailId);
 
             if (email == null)
             {
-                _logger.LogWarning($"System didn't find email with id: {mailId}");
+                _logger.LogWarning($"System didn't find email with id: {emailId}");
             }
 
-            _logger.LogWarning($"User look for email with id: {mailId}");
+            _logger.LogWarning($"User look for email with id: {emailId}");
 
             return email;
-        }       
+        }
+        
+        public Attachment GetAttachment(int emailId)
+        {
+            Email email = _context.Emails
+                .Include(m => m.EmailBody)
+                .Include(m => m.Attachments)
+                .Include(m => m.Status)
+                .Include(m => m.User)
+                .FirstOrDefault(m => m.Id == emailId);
+
+            var attachment = _context.Attachments
+                .Include(a => a.Email)
+                .FirstOrDefault(e => email.Id == emailId);
+
+            _logger.LogInformation($"Server fetch attachment for email with Id: {emailId}");
+
+            return attachment;
+        }
 
         public EmailStatus GetStatus(string emailId)
         {
-            var email = _context.Emails
+            Email email = _context.Emails
                 .FirstOrDefault(b => b.EmailId == emailId);
 
             _logger.LogInformation($"Email status sent. Email id: {emailId}");
@@ -206,11 +224,6 @@ namespace EmailManager.Services.Implementation
             if (attachmentDTO.FileName.Length < 1 || attachmentDTO.FileName.Length > 100)
             {
                 throw new EmailExeptions("Lenght of attachment name is not correct!");
-            }
-
-            if (attachmentDTO.EmailId.Length < 1 || attachmentDTO.EmailId.Length > 100)
-            {
-                throw new EmailExeptions("Lenght of EmailId is not correct!");
             }
 
             var gmaiId = await this._context.Emails

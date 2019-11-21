@@ -136,6 +136,7 @@ namespace EmailManager.Services.Implementation
         public bool PassAttachmentParams(Message emailFullResponse)
         {
             var parts = emailFullResponse.Payload.Parts;
+
             foreach (var item in parts)
             {
                 if (item.Body.AttachmentId != null)

@@ -23,16 +23,16 @@ namespace EmailManager.Controllers
 
 			return View();
 		}
-		
-		public async Task<bool> ReadGmail(HttpClient client, GmailCredentialsDTO userData)
-		{
-			client.DefaultRequestHeaders.Add("Authorization", "Bearer " + userData.AccessToken);
 
-			var res = await client.GetAsync("https://www.googleapis.com/gmail/v1/users/me/messages");
-			//var content = await res.Content.ReadAsStringAsync();
+		//public async Task<bool> ReadGmail(HttpClient client, GmailCredentialsDTO userData)
+		//{
+		//    client.DefaultRequestHeaders.Add("Authorization", "Bearer " + userData.AccessToken);
 
-			return res.IsSuccessStatusCode;
-		}
+		//    var res = await client.GetAsync("https://www.googleapis.com/gmail/v1/users/me/messages");
+		//    //var content = await res.Content.ReadAsStringAsync();
+
+		//    return res.IsSuccessStatusCode;
+		//}
 
 		public IActionResult Privacy()
 		{
