@@ -23,11 +23,7 @@ namespace EmailManager.Controllers
             return View();
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Manager")]
-        public async Task<IActionResult> Registration()
-
+     
 
     }
 }
