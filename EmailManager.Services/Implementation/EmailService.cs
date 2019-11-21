@@ -22,7 +22,7 @@ namespace EmailManager.Services.Implementation
     {
         private readonly EmailManagerContext _context;
         private readonly ILogger _logger;
-        //private readonly UserManager<User> _userManager;
+        private readonly UserManager<User> _userManager;
         private readonly IEncryptionAndDecryptionServices _security;
         public EmailService(EmailManagerContext context, ILogger<EmailService> logger,
             IEncryptionAndDecryptionServices security)

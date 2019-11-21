@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace EmailManager.Data.Implementation
 {
-    public class User : IdentityUser, IUser,IAuditableRegistration
+    public class User : IdentityUser, IUser
     {
         public User()
         {
@@ -19,8 +19,6 @@ namespace EmailManager.Data.Implementation
 
         public ICollection<Email> UserEmails { get; set; }
         public ICollection<Client> Clients { get; set; }
-        public DateTime? InitialRegistration { get; set; }
-        public DateTime? LastRegistration { get; set; }
-        public DateTime? SetCurrentStatus { get; set; }
+       
     }
 }
