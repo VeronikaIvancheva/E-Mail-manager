@@ -21,6 +21,7 @@ namespace EmailManager.Models.EmailViewModel
             this.ReceiveDate = email.ReceiveDate;
             this.InCurrentStatusSince = email.Status.NewStatus;
             this.StatusChangedBy = email.User.UserName;
+            this.CurrentUser = email.User.UserName;
             this.HasAttachments = email.HasAttachments;
             this.AttachmentName = emailAttachments.FileName;
             this.AttachmentSize = emailAttachments.AttachmentSizeKb;
@@ -36,6 +37,7 @@ namespace EmailManager.Models.EmailViewModel
         public EmailStatus EnumStatus { get; set; }
         public DateTime InCurrentStatusSince { get; set; }
         public string StatusChangedBy { get; set; }
+        public string CurrentUser { get; set; }
 
         public bool HasAttachments { get; set; }
         public double? AttachmentSize { get; set; }
