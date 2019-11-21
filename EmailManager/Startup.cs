@@ -60,10 +60,12 @@ namespace EmailManager
             services.AddScoped<ILoggingServices, LoggingServices>();
             services.AddScoped<ILoanServices, LoanServices>();
             services.AddScoped<IUserServices, UserServices>();
-            services.AddScoped<IEncryptionAndDecryptionServices,EncryptionAndDecryptionServices>();
             services.AddScoped<IGmailAPIService, GmailAPIService>();
             services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<IEmail, Email>();
+
+            services.AddScoped<IEncryptionServices, EncryptionServices>(); 
+            services.AddScoped<IDecryptionServices, DecryptionServices>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
