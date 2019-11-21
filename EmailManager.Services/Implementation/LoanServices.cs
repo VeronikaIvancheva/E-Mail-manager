@@ -16,12 +16,12 @@ namespace EmailManager.Services.Implementation
     public class LoanServices : ILoanServices
     {
         private readonly EmailManagerContext _context;
-        private readonly EncryptionAndDecryptionServices _security;
+        private readonly IEncryptionServices _securityEncrypt;
 
-        public LoanServices(EmailManagerContext context, EncryptionAndDecryptionServices security)
+        public LoanServices(EmailManagerContext context, IEncryptionServices securityEncrypt)
         {
             this._context = context;
-            this._security = security;
+            this._securityEncrypt = securityEncrypt;
         }
 
         public async Task<Client> ClientLoanApplication(ClientDTO clientDto)
@@ -34,9 +34,9 @@ namespace EmailManager.Services.Implementation
                 .FirstOrDefaultAsync();
 
 
-            var encodeName = this._security.Encrypt(validationMethod.ClientName);
-            var encodeEGN = this._security.Encrypt(validationMethod.ClientEGN);
-            var encodePhoneNumber = this._security.Encrypt(validationMethod.ClientPhoneNumber);
+            var encodeName = this._securityEncrypt.Encrypt(validationMethod.ClientName);
+            var encodeEGN = this._securityEncrypt.Encrypt(validationMethod.ClientEGN);
+            var encodePhoneNumber = this._securityEncrypt.Encrypt(validationMethod.ClientPhoneNumber);
 
 
             var email = await this._context.Emails

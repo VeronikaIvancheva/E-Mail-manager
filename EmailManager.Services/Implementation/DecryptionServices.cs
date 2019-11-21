@@ -8,33 +8,11 @@ using System.Text;
 
 namespace EmailManager.Services.Implementation
 {
-    public class EncryptionAndDecryptionServices : IEncryptionAndDecryptionServices
+    public class DecryptionServices : IDecryptionServices
     {
-        public string Encrypt(string clearText)
-        {
-            string EncryptionKey = "abc123";
-            byte[] clearBytes = Encoding.Unicode.GetBytes(clearText);
-            using (Aes encryptor = Aes.Create())
-            {
-                Rfc2898DeriveBytes pdb = new Rfc2898DeriveBytes(EncryptionKey, new byte[] { 0x49, 0x76, 0x61, 0x6e, 0x20, 0x4d, 0x65, 0x64, 0x76, 0x65, 0x64, 0x65, 0x76 });
-                encryptor.Key = pdb.GetBytes(32);
-                encryptor.IV = pdb.GetBytes(16);
-                using (MemoryStream ms = new MemoryStream())
-                {
-                    using (CryptoStream cs = new CryptoStream(ms, encryptor.CreateEncryptor(), CryptoStreamMode.Write))
-                    {
-                        cs.Write(clearBytes, 0, clearBytes.Length);
-                        cs.Close();
-                    }
-                    clearText = Convert.ToBase64String(ms.ToArray());
-                }
-            }
-            return clearText;
-        }
-
         public string Decrypt(string cipherText)
         {
-            string EncryptionKey = "abc123";
+            string EncryptionKey = "banana";
             cipherText = cipherText.Replace(" ", "+");
             byte[] cipherBytes = Convert.FromBase64String(cipherText);
             using (Aes encryptor = Aes.Create())
@@ -42,14 +20,14 @@ namespace EmailManager.Services.Implementation
                 Rfc2898DeriveBytes pdb = new Rfc2898DeriveBytes(EncryptionKey, new byte[] { 0x49, 0x76, 0x61, 0x6e, 0x20, 0x4d, 0x65, 0x64, 0x76, 0x65, 0x64, 0x65, 0x76 });
                 encryptor.Key = pdb.GetBytes(32);
                 encryptor.IV = pdb.GetBytes(16);
-                using (MemoryStream ms = new MemoryStream())
+                using (MemoryStream stream = new MemoryStream())
                 {
-                    using (CryptoStream cs = new CryptoStream(ms, encryptor.CreateDecryptor(), CryptoStreamMode.Write))
+                    using (CryptoStream cs = new CryptoStream(stream, encryptor.CreateDecryptor(), CryptoStreamMode.Write))
                     {
                         cs.Write(cipherBytes, 0, cipherBytes.Length);
                         cs.Close();
                     }
-                    cipherText = Encoding.Unicode.GetString(ms.ToArray());
+                    cipherText = Encoding.Unicode.GetString(stream.ToArray());
                 }
             }
             return cipherText;
@@ -60,14 +38,7 @@ namespace EmailManager.Services.Implementation
             var base64EncodedBytes = Convert.FromBase64String(base64EncodedData);
             return Encoding.UTF8.GetString(base64EncodedBytes);
         }
-
-        public string Base64Encrypt(string plainText)
-        {
-            var plainTextBytes = Encoding.UTF8.GetBytes(plainText);
-            return Convert.ToBase64String(plainTextBytes);
-        }
-
-        public Client DecodeLoanApplicant(Client client)
+        public Client DecodeClient(Client client)
         {
             var name = Decrypt(client.ClientName);
             var egn = Decrypt(client.ClientEGN);
@@ -85,14 +56,14 @@ namespace EmailManager.Services.Implementation
         }
         public IEnumerable<Client> DecryptClientList(IEnumerable<Client> client)
         {
-            var applicants = new List<Client>();
+            var clients = new List<Client>();
 
             foreach (var item in client)
             {
                 var name = Decrypt(item.ClientName);
-                applicants.Add(new Client { ClientName = name, ClientId = item.ClientId });
+                clients.Add(new Client { ClientName = name, ClientId = item.ClientId });
             }
-            return applicants;
+            return clients;
         }
         public string ReplaceSign(string body)
         {
