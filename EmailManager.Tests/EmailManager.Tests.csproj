@@ -19,4 +19,8 @@
     <ProjectReference Include="..\EmailManager\EmailManager.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="EmailTests\" />
+  </ItemGroup>
+
 </Project>
