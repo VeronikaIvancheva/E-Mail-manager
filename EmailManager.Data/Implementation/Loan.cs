@@ -1,11 +1,10 @@
-﻿using EmailManager.Data.Contracts;
-using EmailManager.Data.Enums;
+﻿using EmailManager.Data.Enums;
 using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace EmailManager.Data.Implementation
 {
-    public class Loan : ILoan
+    public class Loan 
     {
         [Key]
         public int LoanId { get; set; }

@@ -1,5 +1,4 @@
-﻿using EmailManager.Data.Contracts;
-using EmailManager.Data.Enums;
+﻿using EmailManager.Data.Enums;
 using EmailManager.Data.Utilities;
 using System;
 using System.Collections.Generic;
@@ -7,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace EmailManager.Data.Implementation
 {
-    public class Status : IStatus, IAuditableStatus
+    public class Status : IAuditableStatus
     {
         public Status()
         {

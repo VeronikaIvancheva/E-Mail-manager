@@ -1,11 +1,10 @@
-﻿using EmailManager.Data.Contracts;
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace EmailManager.Data.Implementation
 {
     [Serializable]
-    public class Attachment : IAttachment
+    public class Attachment 
     {
         [Key]
         public string AttachmentId { get; set; }

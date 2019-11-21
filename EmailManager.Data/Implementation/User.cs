@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using EmailManager.Data.Contracts;
-using EmailManager.Data.Utilities;
 using Microsoft.AspNetCore.Identity;
 
 namespace EmailManager.Data.Implementation
 {
-    public class User : IdentityUser, IUser
+    public class User : IdentityUser
     {
         public User()
         {

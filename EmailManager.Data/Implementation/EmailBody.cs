@@ -1,12 +1,11 @@
-﻿using EmailManager.Data.Contracts;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace EmailManager.Data.Implementation
 {
-    public class EmailBody : IEmailBody
+    public class EmailBody 
     {
         [Key]
         public string EmailId { get; set; }

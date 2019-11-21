@@ -1,5 +1,4 @@
-﻿using EmailManager.Data.Contracts;
-using EmailManager.Data.Enums;
+﻿using EmailManager.Data.Enums;
 using EmailManager.Data.Implementation;
 using EmailManager.Data.Utilities;
 using System;
@@ -9,7 +8,7 @@ using System.ComponentModel.DataAnnotations;
 namespace EmailManager.Data
 {
     [Serializable]
-    public class Email : IEmail,IAuditableRegistration,IDeletable
+    public class Email : IAuditableRegistration,IDeletable
     {
         public Email()
         {
