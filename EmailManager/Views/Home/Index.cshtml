@@ -31,19 +31,19 @@
             <button asp-controller="Email" asp-action="Index" type="submit" class="btn btn-lg btn-outline-info">
                 See all emails
             </button>
-            <button asp-route-statusEmail="NotReviewed" asp-controller="Email" asp-action="ListAllNotReviewEmails" type="submit" class="btn btn-lg btn-outline-secondary">
+            <button asp-route-statusEmail="NotReviewed" asp-controller="Email" asp-action="ListAllStatusEmails" type="submit" class="btn btn-lg btn-outline-secondary">
                 Not Reviewed emails
             </button>
-            <button asp-route-statusEmail="New" asp-controller="Email" asp-action="ListAllNewEmails" type="submit" class="btn btn-lg btn-outline-success">
+            <button asp-route-statusEmail="New" asp-controller="Email" asp-action="ListAllStatusEmails" type="submit" class="btn btn-lg btn-outline-success">
                 New emails
             </button>
-            <button asp-route-statusEmail="Open" asp-controller="Email" asp-action="ListAllOpenEmails" type="submit" class="btn btn-lg btn-outline-primary">
+            <button asp-route-statusEmail="Open" asp-controller="Email" asp-action="ListAllStatusEmails" type="submit" class="btn btn-lg btn-outline-primary">
                 Open emails
             </button>
-            <button asp-route-statusEmail="Closed" asp-controller="Email" asp-action="ListAllClosedEmails" type="submit" class="btn btn-lg btn-outline-secondary">
+            <button asp-route-statusEmail="Closed" asp-controller="Email" asp-action="ListAllStatusEmails" type="submit" class="btn btn-lg btn-outline-secondary">
                 Closed emails
             </button>
-            <button asp-route-statusEmail="NotValid" asp-controller="Email" asp-action="ListAllInvalidEmails" type="submit" class="btn btn-lg btn-outline-secondary">
+            <button asp-route-statusEmail="NotValid" asp-controller="Email" asp-action="ListAllStatusEmails" type="submit" class="btn btn-lg btn-outline-secondary">
                 Invalid emails
             </button>
         </form>

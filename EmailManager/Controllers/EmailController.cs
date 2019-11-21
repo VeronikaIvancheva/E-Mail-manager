@@ -47,67 +47,15 @@ namespace EmailManager.Controllers
             return View(emailModel);
         }
 
-        public async Task<IActionResult> ListAllNewEmails(string statusEmail)
+        public async Task<IActionResult> ListAllStatusEmails(string statusEmail)
         {
-            var emailsAllNewResults = await _emailService.GetAllNewEmails(statusEmail);
-
-            var emailsListing = emailsAllNewResults
-                .Select(m => EmailMapper.MapFromEmail(m, _emailService));
-            var emailModel = EmailMapper.MapFromEmailIndex(emailsListing);
-
-            _logger.LogInformation("Displayed all new email list.");
-
-            return View(emailModel);
-        }
-
-        public async Task<IActionResult> ListAllClosedEmails(string statusEmail)
-        {
-            var emailsAllNewResults = await _emailService.GetAllClosedEmails(statusEmail);
-
-            var emailsListing = emailsAllNewResults
-                .Select(m => EmailMapper.MapFromEmail(m, _emailService));
-            var emailModel = EmailMapper.MapFromEmailIndex(emailsListing);
-
-            _logger.LogInformation("Displayed all closed email list.");
-
-            return View(emailModel);
-        }
-
-        public async Task<IActionResult> ListAllOpenEmails(string statusEmail)
-        {
-            var emailsAllNewResults = await _emailService.GetAllOpenedEmails(statusEmail);
+            var emailsAllNewResults = await _emailService.GetAllStatusEmails(statusEmail);
 
             var emailsListing = emailsAllNewResults
                 .Select(m => EmailMapper.MapFromEmail(m, _emailService));
             var emailModel = EmailMapper.MapFromEmailIndex(emailsListing);
 
             _logger.LogInformation("Displayed all open email list.");
-
-            return View(emailModel);
-        }
-
-        public async Task<IActionResult> ListAllNotReviewEmails(string statusEmail)
-        {
-            var emailsAllNewResults = await _emailService.GetAllNotReviewedEmails(statusEmail);
-
-            var emailsListing = emailsAllNewResults
-                .Select(m => EmailMapper.MapFromEmail(m, _emailService));
-            var emailModel = EmailMapper.MapFromEmailIndex(emailsListing);
-
-            _logger.LogInformation("Displayed all not review email list.");
-
-            return View(emailModel);
-        }
-
-        public async Task<IActionResult> ListAllInvalidEmails(string statusEmail)
-        {
-            var emailsAllNewResults = await _emailService.GetAllNotValidEmails(statusEmail);
-
-            var emailsListing = emailsAllNewResults
-                .Select(m => EmailMapper.MapFromEmail(m, _emailService));
-            var emailModel = EmailMapper.MapFromEmailIndex(emailsListing);
-
-            _logger.LogInformation("Displayed all invalid email list.");
 
             return View(emailModel);
         }

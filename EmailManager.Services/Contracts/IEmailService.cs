@@ -8,11 +8,7 @@ namespace EmailManager.Services.Contracts
     public interface IEmailService
     {
         Task<IEnumerable<Email>> GetAllEmails();
-        Task<IEnumerable<Email>> GetAllOpenedEmails(string statusEmail);
-        Task<IEnumerable<Email>> GetAllClosedEmails(string statusEmail);
-        Task<IEnumerable<Email>> GetAllNewEmails(string statusEmail);
-        Task<IEnumerable<Email>> GetAllNotReviewedEmails(string statusEmail);
-        Task<IEnumerable<Email>> GetAllNotValidEmails(string statusEmail);
+        Task<IEnumerable<Email>> GetAllStatusEmails(string statusEmail);
 
         EmailStatus GetStatus(string emailId);
 

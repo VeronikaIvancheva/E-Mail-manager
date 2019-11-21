@@ -22,7 +22,7 @@ namespace EmailManager.Services.Implementation
     {
         private readonly EmailManagerContext _context;
         private readonly ILogger _logger;
-        private readonly UserManager<User> _userManager;
+        //private readonly UserManager<User> _userManager;
         private readonly IEncryptionAndDecryptionServices _security;
         public EmailService(EmailManagerContext context, ILogger<EmailService> logger,
             IEncryptionAndDecryptionServices security)
@@ -46,12 +46,45 @@ namespace EmailManager.Services.Implementation
             return emailAll;
         }
 
-        public async Task<IEnumerable<Email>> GetAllOpenedEmails(string statusEmail)
+        public async Task<IEnumerable<Email>> GetAllStatusEmails(string statusEmail)
         {
+            EmailStatus status;
+
+            if (statusEmail == "New")
+            {
+                status = EmailStatus.New;
+                _logger.LogInformation("System listing all emails - status New.");
+            }
+            else if(statusEmail == "Closed")
+            {
+                status = EmailStatus.Closed;
+                _logger.LogInformation("System listing all emails - status Closed.");
+            }
+            else if(statusEmail == "NotReviewed")
+            {
+                status = EmailStatus.NotReviewed;
+                _logger.LogInformation("System listing all emails - status NotReviewed.");
+            }
+            else if(statusEmail == "NotValid")
+            {
+                status = EmailStatus.NotValid;
+                _logger.LogInformation("System listing all emails - status NotValid.");
+            }
+            else if(statusEmail == "Open")
+            {
+                status = EmailStatus.Open;
+                _logger.LogInformation("System listing all emails - status Open.");
+            }
+            else
+            {
+                _logger.LogInformation("System failed to get list of emails statuses.");
+                throw new Exception("There are no status like this in the enums.");
+            }
+
             _logger.LogInformation("System listing all emails - status Open.");
 
             IEnumerable<Email> emailAllOpen = await _context.Emails
-                .Where(s => s.EnumStatus == (EmailStatus.New))
+                .Where(s => s.EnumStatus == (status))
                 .Include(m => m.EmailBody)
                 .Include(m => m.Attachments)
                 .Include(m => m.Status)
@@ -59,66 +92,6 @@ namespace EmailManager.Services.Implementation
                 .ToListAsync();
 
             return emailAllOpen;
-        }
-
-        public async Task<IEnumerable<Email>> GetAllClosedEmails(string statusEmail)
-        {
-            _logger.LogInformation("System listing all emails - status Close.");
-
-            IEnumerable<Email> emailAllClosed = await _context.Emails
-                .Where(s => s.EnumStatus == (EmailStatus.Closed))
-                .Include(m => m.EmailBody)
-                .Include(m => m.Attachments)
-                .Include(m => m.Status)
-                .OrderByDescending(m => m.ReceiveDate)
-                .ToListAsync();
-
-            return emailAllClosed;
-        }
-
-        public async Task<IEnumerable<Email>> GetAllNewEmails(string statusEmail)
-        {
-            _logger.LogInformation("System listing all emails - status New.");
-
-            IEnumerable<Email> emailAllNew = await _context.Emails
-                .Where(s => s.EnumStatus == (EmailStatus.New))
-                .Include(m => m.EmailBody)
-                .Include(m => m.Attachments)
-                .Include(m => m.Status)
-                .OrderByDescending(m => m.ReceiveDate)
-                .ToListAsync();
-
-            return emailAllNew;
-        }
-
-        public async Task<IEnumerable<Email>> GetAllNotReviewedEmails(string statusEmail)
-        {
-            _logger.LogInformation("System listing all emails - status Not Reviewed.");
-
-            IEnumerable<Email> emailAllNotReviewed = await _context.Emails
-                .Where(s => s.EnumStatus == (EmailStatus.NotReviewed))
-                .Include(m => m.EmailBody)
-                .Include(m => m.Attachments)
-                .Include(m => m.Status)
-                .OrderByDescending(m => m.ReceiveDate)
-                .ToListAsync();
-
-            return emailAllNotReviewed;
-        }
-
-        public async Task<IEnumerable<Email>> GetAllNotValidEmails(string statusEmail)
-        {
-            _logger.LogInformation("System listing all emails - status Not Valid.");
-
-            IEnumerable<Email> emailAllNotValid = await _context.Emails
-                .Where(s => s.EnumStatus == (EmailStatus.NotValid))
-                .Include(m => m.EmailBody)
-                .Include(m => m.Attachments)
-                .Include(m => m.Status)
-                .OrderByDescending(m => m.ReceiveDate)
-                .ToListAsync();
-
-            return emailAllNotValid;
         }
 
         public Email GetEmail(int mailId)
