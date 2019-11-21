@@ -22,14 +22,18 @@ namespace EmailManager.Services.Implementation
     {
         private readonly EmailManagerContext _context;
         private readonly ILogger _logger;
+        private readonly IEncryptionServices _securityEncrypt;
+        private readonly IDecryptionServices _securityDecrypt;
+
         //private readonly UserManager<User> _userManager;
-        private readonly IEncryptionAndDecryptionServices _security;
         public EmailService(EmailManagerContext context, ILogger<EmailService> logger,
-            IEncryptionAndDecryptionServices security)
+            IEncryptionServices securityEncrypt,IDecryptionServices securityDecrypt)
         {
             this._context = context;
             this._logger = logger;
-            this._security = security;
+            this._securityEncrypt = securityEncrypt;
+            this._securityDecrypt = securityDecrypt;
+            this._securityEncrypt = securityEncrypt;
         }
 
         public async Task<IEnumerable<Email>> GetAllEmails()
@@ -271,9 +275,9 @@ namespace EmailManager.Services.Implementation
                 throw new EmailExeptions($"Email with the following id {emailBodyDto.Email} contains body");
             }
 
-            var decodeBody = this._security.Base64Decrypt(emailBodyDto.Body);
+            var decodeBody = this._securityDecrypt.Base64Decrypt(emailBodyDto.Body);
 
-            var encriptBody = this._security.Encrypt(decodeBody);
+            var encriptBody = this._securityEncrypt.Encrypt(decodeBody);
 
             if (email.EmailBody == null)
             {
