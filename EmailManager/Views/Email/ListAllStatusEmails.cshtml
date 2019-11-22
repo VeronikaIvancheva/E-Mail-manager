@@ -20,6 +20,7 @@
                 <th>Changed by</th>
             }
             <th></th>
+            <th></th>
         </tr>
     </thead>
     <tfoot>
@@ -41,11 +42,7 @@
         {
             <tr>
                 <td>@email.Id</td>
-                <td class="nav-link">
-                    <a asp-route-id="@email.Id" asp-action="Detail" asp-controller="Email">
-                        @email.Sender
-                    </a>
-                </td>
+                <td>@email.Sender</td>
                 <td>@email.Subject</td>
                 <td>@email.Body</td>
                 <td>@email.ReceiveDate</td>
@@ -57,7 +54,11 @@
                     <td>@email.StatusChangedBy</td>
                 }
                 <td>
+                    <form asp-route-id="@email.Id" asp-action="Detail" asp-controller="Email" method="post">
+                        <button type="submit" class="btn btn-lg btn-info">Details</button>
+                    </form>
                 </td>
+                <td></td>
             </tr>
         }
     </tbody>

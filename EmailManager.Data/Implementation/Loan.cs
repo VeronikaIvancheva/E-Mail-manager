@@ -16,7 +16,7 @@ namespace EmailManager.Data.Implementation
 
         public int ClientId { get; set; }
         public Client Client { get; set; }
-        public LoanStatus LoanStatus { get; set; }
+        public EmailStatus LoanEmailStatus { get; set; }
 
     }
 }

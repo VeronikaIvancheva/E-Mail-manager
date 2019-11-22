@@ -17,7 +17,8 @@ namespace EmailManager.Services.Contracts
         Attachment GetAttachment(int emailId);
 
         Task MarkNewStatus(int loanId, string userId);
-        Task MarkClosedStatus(int loanId, string userId);
+        Task MarkClosedApprovedStatus(int emailId, string userId);
+        Task MarkClosedRejectedStatus(int emailId, string userId);
         Task MarkOpenStatus(int emailId, string userId);
         Task MarkNotReviewStatus(int emailId, string userId);
         Task MarkInvalidStatus(int emailId, string userId);

@@ -83,13 +83,13 @@ namespace EmailManager.Services.Implementation
                 .Where(id => id.Id == approveLoanDto.UserId)
                 .SingleOrDefaultAsync();
 
-            if (expectedResult == (int)LoanStatus.Rejected)
+            if (expectedResult == (int)EmailStatus.Rejected)
             {
                 loan.IsApproved = false;
                 loan.User = user;
             }
 
-            if (expectedResult == (int)LoanStatus.Approved)
+            if (expectedResult == (int)EmailStatus.Approved)
             {
                 loan.IsApproved = true;
                 loan.User = user;

@@ -40,16 +40,17 @@
     {
         @if (Model.EnumStatus.ToString() == "NotReviewed")
         {
-            <button asp-route-Id="@Model.Id" asp-controller="Email" asp-action="MarkInvalid" name="NotValid" type="submit" class="btn btn-lg btn-danger">Mark as Invalid</button>
-            <button asp-route-Id="@Model.Id" asp-controller="Email" asp-action="MarkNew" name="New" type="submit" class="btn btn-lg btn-info">Mark as New</button>
+            <button asp-route-Id="@Model.Id" asp-controller="Email" asp-action="MarkInvalid" name="NotValid" type="submit" class="btn btn-lg btn-outline-danger">Mark as Invalid</button>
+            <button asp-route-Id="@Model.Id" asp-controller="Email" asp-action="MarkNew" name="New" type="submit" class="btn btn-lg btn-outline-info">Mark as New</button>
         }
         else if (Model.EnumStatus.ToString() == "New")
         {
-            <button asp-route-Id="@Model.Id" asp-controller="Email" asp-action="MarkOpen" name="Open" type="submit" class="btn btn-lg btn-success">Mark as Open</button>
+            <button asp-route-Id="@Model.Id" asp-controller="Email" asp-action="MarkOpen" name="Open" type="submit" class="btn btn-lg btn-outline-success">Mark as Open</button>
         }
         else if (Model.EnumStatus.ToString() == "Open" && Model.StatusChangedBy == Model.CurrentUser)
         {
-            <button asp-route-Id="@Model.Id" asp-controller="Email" asp-action="MarkClosed" name="Closed" type="submit" class="btn btn-lg btn-danger">Mark as Closed</button>
+            <button asp-route-Id="@Model.Id" asp-controller="Email" asp-action="MarkClosedApproved" name="ClosedApproved" type="submit" class="btn btn-lg btn-outline-success">Mark as Approved</button>
+            <button asp-route-Id="@Model.Id" asp-controller="Email" asp-action="MarkClosedRejected" name="ClosedRejected" type="submit" class="btn btn-lg btn-outline-danger">Mark as Rejected</button>
         }
     }
 </form>
@@ -61,26 +62,27 @@
 
         @if (Model.EnumStatus.ToString() == "NotReviewed")
         {
-            <button asp-route-Id="@Model.Id" asp-controller="Email" asp-action="MarkInvalid" name="NotValid" type="submit" class="btn btn-lg btn-danger">Mark as Invalid</button>
-            <button asp-route-Id="@Model.Id" asp-controller="Email" asp-action="MarkNew" name="New" type="submit" class="btn btn-lg btn-info">Mark as New</button>
+            <button asp-route-Id="@Model.Id" asp-controller="Email" asp-action="MarkInvalid" name="NotValid" type="submit" class="btn btn-lg btn-outline-danger">Mark as Invalid</button>
+            <button asp-route-Id="@Model.Id" asp-controller="Email" asp-action="MarkNew" name="New" type="submit" class="btn btn-lg btn-outline-info">Mark as New</button>
         }
         else if (Model.EnumStatus.ToString() == "New" || Model.EnumStatus.ToString() == "NotValid")
         {
-            <button asp-route-Id="@Model.Id" asp-controller="Email" asp-action="MarkNotReviewed" name="NotReviewed" type="submit" class="btn btn-lg btn-info">Mark as Not Reviewed</button>
+            <button asp-route-Id="@Model.Id" asp-controller="Email" asp-action="MarkNotReviewed" name="NotReviewed" type="submit" class="btn btn-lg btn-outline-info">Mark as Not Reviewed</button>
 
         }
         else if (Model.EnumStatus.ToString() == "New")
         {
-            <button asp-route-Id="@Model.Id" asp-controller="Email" asp-action="MarkOpen" name="Open" type="submit" class="btn btn-lg btn-success">Mark as Open</button>
+            <button asp-route-Id="@Model.Id" asp-controller="Email" asp-action="MarkOpen" name="Open" type="submit" class="btn btn-lg btn-outline-success">Mark as Open</button>
         }
         else if (Model.EnumStatus.ToString() == "Open")
         {
-            <button asp-route-Id="@Model.Id" asp-controller="Email" asp-action="MarkNew" name="New" type="submit" class="btn btn-lg btn-info">Mark as New</button>
-            <button asp-route-Id="@Model.Id" asp-controller="Email" asp-action="MarkClosed" name="Closed" type="submit" class="btn btn-lg btn-danger">Mark as Closed</button>
+            <button asp-route-Id="@Model.Id" asp-controller="Email" asp-action="MarkNew" name="New" type="submit" class="btn btn-lg btn-outline-info">Mark as New</button>
+            <button asp-route-Id="@Model.Id" asp-controller="Email" asp-action="MarkClosedApproved" name="ClosedApproved" type="submit" class="btn btn-lg btn-outline-success">Mark as Approved</button>
+            <button asp-route-Id="@Model.Id" asp-controller="Email" asp-action="MarkClosedRejected" name="ClosedRejected" type="submit" class="btn btn-lg btn-outline-danger">Mark as Rejected</button>
         }
-        else if (Model.EnumStatus.ToString() == "Closed")
+        else if (Model.EnumStatus.ToString() == "MarkClosedApproved" || Model.EnumStatus.ToString() == "MarkClosedRejected")
         {
-            <button asp-route-Id="@Model.Id" asp-controller="Email" asp-action="MarkNew" name="New" type="submit" class="btn btn-lg btn-info">Mark as New</button>
+            <button asp-route-Id="@Model.Id" asp-controller="Email" asp-action="MarkNew" name="New" type="submit" class="btn btn-lg btn-outline-info">Mark as New</button>
         }
     }
 </form>

@@ -81,7 +81,7 @@ namespace EmailManager.Controllers
             catch (Exception ex)
             {
                 TempData["error"] = ex.Message;
-                _logger.LogError($"User failed to change the email status to new. User Id: {userId} Email Id: {id}");
+                _logger.LogError($"System failed to change the email status to new. User Id: {userId} Email Id: {id}");
 
                 return RedirectToAction("Index", new { id = emailId });
             }
@@ -90,20 +90,42 @@ namespace EmailManager.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> MarkClosed(EmailViewModel viewModel)
+        public async Task<IActionResult> MarkClosedApproved(EmailViewModel viewModel)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             int emailId = viewModel.Id;
 
             try
             {
-                await _emailService.MarkClosedStatus(emailId, userId);
-                _logger.LogInformation($"User changed email status to closed. User Id: {userId} Email Id: {emailId}");
+                await _emailService.MarkClosedApprovedStatus(emailId, userId);
+                _logger.LogInformation($"User changed email status to closed - approved. User Id: {userId} Email Id: {emailId}");
             }
             catch (Exception ex)
             {
                 TempData["error"] = ex.Message;
-                _logger.LogError($"User failed to change the email status to closed. User Id: {userId} Email Id: {emailId}");
+                _logger.LogError($"System failed to change the email status to closed - approved. User Id: {userId} Email Id: {emailId}");
+
+                return RedirectToAction("Index", new { id = emailId });
+            }
+
+            return RedirectToAction("Index", new { id = emailId });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> MarkClosedRejected(EmailViewModel viewModel)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            int emailId = viewModel.Id;
+
+            try
+            {
+                await _emailService.MarkClosedRejectedStatus(emailId, userId);
+                _logger.LogInformation($"User changed email status to closed - rejected. User Id: {userId} Email Id: {emailId}");
+            }
+            catch (Exception ex)
+            {
+                TempData["error"] = ex.Message;
+                _logger.LogError($"System failed to change the email status to closed - rejected. User Id: {userId} Email Id: {emailId}");
 
                 return RedirectToAction("Index", new { id = emailId });
             }
@@ -125,7 +147,7 @@ namespace EmailManager.Controllers
             catch (Exception ex)
             {
                 TempData["error"] = ex.Message;
-                _logger.LogError($"User failed to change the email status to invalid. User Id: {userId} Email Id: {emailId}");
+                _logger.LogError($"System failed to change the email status to invalid. User Id: {userId} Email Id: {emailId}");
 
                 return RedirectToAction("Index", new { id = emailId });
             }
@@ -147,7 +169,7 @@ namespace EmailManager.Controllers
             catch (Exception ex)
             {
                 TempData["error"] = ex.Message;
-                _logger.LogError($"User failed to change the email status to open. User Id: {userId} Email Id: {emailId}");
+                _logger.LogError($"System failed to change the email status to open. User Id: {userId} Email Id: {emailId}");
 
                 return RedirectToAction("Index", new { id = emailId });
             }
@@ -170,7 +192,7 @@ namespace EmailManager.Controllers
             catch (Exception ex)
             {
                 TempData["error"] = ex.Message;
-                _logger.LogError($"User failed to change the email status to not reviewed. User Id: {userId} Email Id: {emailId}");
+                _logger.LogError($"System failed to change the email status to not reviewed. User Id: {userId} Email Id: {emailId}");
 
                 return RedirectToAction("Index", new { id = emailId });
             }

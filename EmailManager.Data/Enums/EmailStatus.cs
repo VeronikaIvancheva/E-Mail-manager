@@ -6,6 +6,8 @@
         NotValid,
         Open,
         Closed,
-        New
+        New,
+        Approved,
+        Rejected,
     }
 }

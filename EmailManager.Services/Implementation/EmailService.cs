@@ -153,14 +153,24 @@ namespace EmailManager.Services.Implementation
             _logger.LogInformation($"Changed email status to new. Email Id: {emailId}");
         }
 
-        public async Task MarkClosedStatus(int emailId, string userId)
+        public async Task MarkClosedApprovedStatus(int emailId, string userId)
         {
             var email = EmailRepeatedPart(emailId, userId);
 
-            email.Result.EnumStatus = EmailStatus.Closed;
+            email.Result.EnumStatus = EmailStatus.Approved;
             await _context.SaveChangesAsync();
 
-            _logger.LogInformation($"Changed email status to closed. Email Id: {emailId}");
+            _logger.LogInformation($"Changed email status to closed - approved. Email Id: {emailId} by user id: {userId}.");
+        }
+
+        public async Task MarkClosedRejectedStatus(int emailId, string userId)
+        {
+            var email = EmailRepeatedPart(emailId, userId);
+
+            email.Result.EnumStatus = EmailStatus.Rejected;
+            await _context.SaveChangesAsync();
+
+            _logger.LogInformation($"Changed email status to closed - rejected. Email Id: {emailId} by user id: {userId}.");
         }
 
         public async Task MarkOpenStatus(int emailId, string userId)
