@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-[assembly: log4net.Config.XmlConfigurator(ConfigFile = "log4net.config")]
+[assembly: log4net.Config.XmlConfigurator(Watch =true)]
 
 namespace EmailManager
 {
@@ -14,6 +14,7 @@ namespace EmailManager
 
         static void Test()
         {
+            //this is how we log
             log.Info("First Log");
             
         }
