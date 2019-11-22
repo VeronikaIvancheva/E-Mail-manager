@@ -29,7 +29,7 @@ namespace EmailManager.Services.Implementation
                     }
                     cipherText = Encoding.Unicode.GetString(stream.ToArray());
                 }
-                key.Dispose();
+                //key.Dispose();
             }
             return cipherText;
         }
