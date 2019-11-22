@@ -56,10 +56,15 @@ namespace EmailManager.Services.Implementation
                 status = EmailStatus.New;
                 _logger.LogInformation("System listing all emails - status New.");
             }
-            else if(statusEmail == "Closed")
+            else if(statusEmail == "Approved")
             {
-                status = EmailStatus.Closed;
-                _logger.LogInformation("System listing all emails - status Closed.");
+                status = EmailStatus.Approved;
+                _logger.LogInformation("System listing all emails - status Approved.");
+            }
+            else if (statusEmail == "Rejected")
+            {
+                status = EmailStatus.Rejected;
+                _logger.LogInformation("System listing all emails - status Rejected.");
             }
             else if(statusEmail == "NotReviewed")
             {
