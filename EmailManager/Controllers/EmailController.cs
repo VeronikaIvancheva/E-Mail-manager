@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using EmailManager.Data.Implementation;
 using EmailManager.Mappers;
 using EmailManager.Models.EmailViewModel;
 using EmailManager.Services.Contracts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -24,7 +27,9 @@ namespace EmailManager.Controllers
         public IActionResult Detail(int id)
         {
             var email = _emailService.GetEmail(id);
-            var emailModel = new EmailViewModel(email);
+            var emailAttachments = _emailService.GetAttachment(id);
+
+            var emailModel = new EmailViewModel(email, emailAttachments);
 
             _logger.LogInformation($"User opened email detail page. Email Id: {id}");
 
@@ -151,6 +156,7 @@ namespace EmailManager.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> MarkNotReviewed(EmailViewModel viewModel)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);

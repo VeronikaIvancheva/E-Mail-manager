@@ -16,11 +16,13 @@ namespace EmailManager.Mappers
                 Subject = email.Subject,
                 Sender = email.Sender,
                 Body = email.EmailBody.Body,
-                //Attachments = email.Attachments,
                 ReceiveDate = email.ReceiveDate,
                 StatusChangedBy = email.User.UserName,
                 InCurrentStatusSince = email.Status.NewStatus,
                 EnumStatus = emailService.GetStatus(email.EmailId),
+                HasAttachments = email.HasAttachments,
+                AttachmentName = emailService.GetAttachment(email.Id).FileName,
+                AttachmentSize = emailService.GetAttachment(email.Id).AttachmentSizeKb,
             };
 
             return emailListing;

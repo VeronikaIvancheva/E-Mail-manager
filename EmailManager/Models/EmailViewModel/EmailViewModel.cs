@@ -10,19 +10,21 @@ namespace EmailManager.Models.EmailViewModel
     {
         public EmailViewModel() { }
 
-        public EmailViewModel(Email email)
+        public EmailViewModel(Email email, Attachment emailAttachments)
         {
             this.Id = email.Id;
             this.EmailId = email.EmailId;
             this.Body = email.EmailBody.Body;
             this.EnumStatus = email.EnumStatus;
-            //this.AttachmentsCount = email.Attachments
-            this.HasAttachments = email.HasAttachments;
             this.Sender = email.Sender;
             this.Subject = email.Subject;
             this.ReceiveDate = email.ReceiveDate;
             this.InCurrentStatusSince = email.Status.NewStatus;
             this.StatusChangedBy = email.User.UserName;
+            this.CurrentUser = email.User.UserName;
+            this.HasAttachments = email.HasAttachments;
+            this.AttachmentName = emailAttachments.FileName;
+            this.AttachmentSize = emailAttachments.AttachmentSizeKb;
         }
 
         public int Id { get; set; }
@@ -35,8 +37,11 @@ namespace EmailManager.Models.EmailViewModel
         public EmailStatus EnumStatus { get; set; }
         public DateTime InCurrentStatusSince { get; set; }
         public string StatusChangedBy { get; set; }
+        public string CurrentUser { get; set; }
 
         public bool HasAttachments { get; set; }
+        public double? AttachmentSize { get; set; }
+        public string AttachmentName { get; set; }
         public ICollection<Attachment> Attachments { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using EmailManager.Data;
 using EmailManager.Data.Enums;
+using EmailManager.Data.Implementation;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -13,6 +14,7 @@ namespace EmailManager.Services.Contracts
         EmailStatus GetStatus(string emailId);
 
         Email GetEmail(int emailId);
+        Attachment GetAttachment(int emailId);
 
         Task MarkNewStatus(int loanId, string userId);
         Task MarkClosedStatus(int loanId, string userId);
