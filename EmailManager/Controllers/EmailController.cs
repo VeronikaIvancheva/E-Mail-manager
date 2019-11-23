@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using EmailManager.Data;
 using EmailManager.Data.Implementation;
 using EmailManager.Mappers;
 using EmailManager.Models.EmailViewModel;
@@ -36,33 +38,83 @@ namespace EmailManager.Controllers
             return View("Detail", emailModel);
         }
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index(/*int? currPage*/)
         {
-            var emailsAllResults = await _emailService.GetAllEmails();
-            
-            var emailsListing = emailsAllResults
-                .Select(m => EmailMapper.MapFromEmail(m, _emailService));
-            var emailModel = EmailMapper.MapFromEmailIndex(emailsListing);
+            //var currentPage = currPage ?? 1;
 
-            _logger.LogInformation("Displayed unfiltered email list.");
+            //int totalPages = await _emailService.GetPageCount(5);
+            //IEnumerable<Email> emailsPP = await _emailService.GetAllStatusEmails(currentPage);
 
-            return View(emailModel);
+            //var emailsListing = emailsPP
+            //    .Select(m => EmailMapper.MapFromEmail(m, _emailService));
+
+            //var model = new EmailIndexViewModel()
+            //{
+            //    CurrentPage = currentPage,
+            //    TotalPages = totalPages,
+            //    Emails = emailsListing,
+            //};
+
+            //if (totalPages > currentPage)
+            //{
+            //    model.NextPage = currentPage + 1;
+            //}
+
+            //if (currentPage > 1)
+            //{
+            //    model.PreviewPage = currentPage - 1;
+            //}
+
+            return View();
         }
 
-        public async Task<IActionResult> ListAllStatusEmails(string statusEmail /*int page*/)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ListAllStatusEmails(int? currPage, string statusEmail, string search = null)
         {
-            var emailsAllNewResults = await _emailService.GetAllStatusEmails(statusEmail);
+            var currentPage = currPage ?? 1;
 
-            var emailsListing = emailsAllNewResults
+            int totalPages = await _emailService.GetPageCount(10);
+
+            IEnumerable<Email> emailAllResults = null;
+
+            if (!string.IsNullOrEmpty(search))
+            {
+                emailAllResults = await _emailService.SearchEmails(search, currentPage);
+                _logger.LogInformation($"User searched for {search}.");
+            }
+            else
+            {
+                emailAllResults = await _emailService.GetAllStatusEmails(statusEmail, currentPage);
+                _logger.LogInformation($"Displayed all {statusEmail} email list.");
+            }
+
+            var emailsListing = emailAllResults
                 .Select(m => EmailMapper.MapFromEmail(m, _emailService));
-            var emailModel = EmailMapper.MapFromEmailIndex(emailsListing);
+            var emailModel = EmailMapper.MapFromEmailIndex(emailsListing, currentPage, totalPages);
 
-            _logger.LogInformation("Displayed all open email list.");
-            
+            //var model = new EmailIndexViewModel()
+            //{
+            //    CurrentPage = currentPage,
+            //    TotalPages = totalPages,
+            //    Emails = emailsListing,
+            //};
+
+            if (totalPages > currentPage)
+            {
+                emailModel.NextPage = currentPage + 1;
+            }
+
+            if (currentPage > 1)
+            {
+                emailModel.PreviewPage = currentPage - 1;
+            }
+
             return View(emailModel);
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> MarkNew(int id)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -90,6 +142,7 @@ namespace EmailManager.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> MarkClosedApproved(EmailViewModel viewModel)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -112,6 +165,7 @@ namespace EmailManager.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> MarkClosedRejected(EmailViewModel viewModel)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -134,6 +188,7 @@ namespace EmailManager.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> MarkInvalid(EmailViewModel viewModel)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -156,6 +211,7 @@ namespace EmailManager.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> MarkOpen(EmailViewModel viewModel)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -178,6 +234,7 @@ namespace EmailManager.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         [Authorize(Roles = "Manager")]
         public async Task<IActionResult> MarkNotReviewed(EmailViewModel viewModel)
         {

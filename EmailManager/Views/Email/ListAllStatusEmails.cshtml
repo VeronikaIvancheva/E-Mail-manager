@@ -4,6 +4,16 @@
     ViewData["Title"] = "ListAllStatusEmails";
 }
 
+
+    <form asp-action="ListAllStatusEmails" asp-controller="Email" method="post">
+        <div class="input-group mb-1">
+            <input type="text" name="search" id="search" class="btn btn-light btn-outline-secondary" />
+            <div class="input-group-append btn">
+                <input type="submit" value="Search" class="btn btn-outline-secondary" />
+            </div>
+        </div>
+    </form>
+
 <table class="blueTable">
     <thead>
         <tr>
@@ -23,22 +33,8 @@
             <th></th>
         </tr>
     </thead>
-    <tfoot>
-        <tr>
-            <td colspan="11">
-                <div class="links">
-                    <a href="#">&laquo;</a>
-                    <a class="active" href="#">1</a>
-                    <a href="#">2</a>
-                    <a href="#">3</a>
-                    <a href="#">4</a>
-                    <a href="#">&raquo;</a>
-                </div>
-            </td>
-        </tr>
-    </tfoot>
     <tbody>
-        @foreach (var email in Model.Emails)
+        @foreach (var email in @Model.Emails)
         {
             <tr>
                 <td>@email.Id</td>
@@ -63,6 +59,28 @@
         }
     </tbody>
 </table>
+<div class="align-content-center">
+    @if (Model.PreviewPage == null)
+    {
+        <a class="btn btn-sm btn-lighter btn-auto disabled">Prev</a>
+    }
+    else
+    {
+        <a asp-action="ListAllStatusEmails" asp-route-currentPage="@Model.PreviewPage" class="btn btn-sm btn-lighter btn-auto previous-pagination-button-table" id="ingredients-table" at="@Model.PreviewPage">Prev</a>
+    }
+
+    <button class="btn btn-sm btn-primary btn-auto">@Model.CurrentPage</button>
+
+    @if (Model.NextPage == null)
+    {
+        <a class="btn btn-sm btn-lighter btn-auto disabled">Next</a>
+    }
+    else
+    {
+        <a asp-action="ListAllStatusEmails" asp-route-currentPage="@Model.NextPage" class="btn btn-sm btn-lighter btn-auto next-pagination-button-table" id="ingredients-table" at="Next">Next</a>
+    }
+</div>
+
 <div>
-    <a asp-action="Index" asp-controller="Home">< Back ></a>
+    <a asp-action="Index" asp-controller="Home"><< Back to home page >></a>
 </div>

@@ -2,6 +2,7 @@
 using EmailManager.Models.EmailViewModel;
 using EmailManager.Services.Contracts;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace EmailManager.Mappers
 {
@@ -28,7 +29,7 @@ namespace EmailManager.Mappers
             return emailListing;
         }
 
-        public static EmailIndexViewModel MapFromEmailIndex(this IEnumerable<EmailViewModel> email)
+        public static EmailIndexViewModel MapFromEmailIndex(this IEnumerable<EmailViewModel> email, int currentPage, int totalPages)
         {
             var model = new EmailIndexViewModel
             {

@@ -8,8 +8,7 @@ namespace EmailManager.Services.Contracts
 {
     public interface IEmailService
     {
-        Task<IEnumerable<Email>> GetAllEmails();
-        Task<IEnumerable<Email>> GetAllStatusEmails(string statusEmail);
+        Task<IEnumerable<Email>> GetAllStatusEmails(string statusEmail, int currentPage);
 
         EmailStatus GetStatus(string emailId);
 
@@ -22,5 +21,8 @@ namespace EmailManager.Services.Contracts
         Task MarkOpenStatus(int emailId, string userId);
         Task MarkNotReviewStatus(int emailId, string userId);
         Task MarkInvalidStatus(int emailId, string userId);
+
+        Task<IEnumerable<Email>> SearchEmails(string search, int currentPage);
+        Task<int> GetPageCount(int barsPerPage);
     }
 }

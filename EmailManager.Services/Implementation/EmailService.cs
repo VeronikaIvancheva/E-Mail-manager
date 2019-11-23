@@ -23,40 +23,53 @@ namespace EmailManager.Services.Implementation
 
         //private readonly UserManager<User> _userManager;
         public EmailService(EmailManagerContext context, ILogger<EmailService> logger,
-            IEncryptionServices securityEncrypt,IDecryptionServices securityDecrypt)
+            IEncryptionServices securityEncrypt, IDecryptionServices securityDecrypt)
         {
-            this._context = context;
-            this._logger = logger;
-            this._securityEncrypt = securityEncrypt;
-            this._securityDecrypt = securityDecrypt;
-            this._securityEncrypt = securityEncrypt;
+            this._context = context ?? throw new ArgumentNullException(nameof(context));
+            this._logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            this._securityEncrypt = securityEncrypt ?? throw new ArgumentNullException(nameof(securityEncrypt));
+            this._securityDecrypt = securityDecrypt ?? throw new ArgumentNullException(nameof(securityDecrypt));
         }
 
-        public async Task<IEnumerable<Email>> GetAllEmails()
+        public async Task<IEnumerable<Email>> GetAllStatusEmails(string statusEmail, int currentPage)
         {
-            IEnumerable<Email> emailAll = await _context.Emails
+            EmailStatus status;
+
+            if (statusEmail == null)
+            {
+                IEnumerable<Email> emailPage = _context.Emails
                 .Include(m => m.EmailBody)
                 .Include(m => m.Attachments)
                 .Include(m => m.Status)
                 .Include(m => m.User)
-                .OrderByDescending(m => m.Id)
-                .ToListAsync();
+                .OrderByDescending(m => m.Id);
 
-            _logger.LogInformation("System listing all emails.");
-            
-            return emailAll;
-        }
+                IEnumerable<Email> emailAll = emailPage;
 
-        public async Task<IEnumerable<Email>> GetAllStatusEmails(string statusEmail)
-        {
-            EmailStatus status;
+                if (currentPage == 1)
+                {
+                    emailAll
+                    .Take(10)
+                    .ToList();
+                }
+                else
+                {
+                    emailAll
+                    .Skip((currentPage - 1) * 10)
+                    .Take(10)
+                    .ToList();
+                }
 
-            if (statusEmail == "New")
+                _logger.LogInformation("System listing all emails.");
+
+                return emailAll;
+            }
+            else if (statusEmail == "New")
             {
                 status = EmailStatus.New;
                 _logger.LogInformation("System listing all emails - status New.");
             }
-            else if(statusEmail == "Approved")
+            else if (statusEmail == "Approved")
             {
                 status = EmailStatus.Approved;
                 _logger.LogInformation("System listing all emails - status Approved.");
@@ -66,17 +79,17 @@ namespace EmailManager.Services.Implementation
                 status = EmailStatus.Rejected;
                 _logger.LogInformation("System listing all emails - status Rejected.");
             }
-            else if(statusEmail == "NotReviewed")
+            else if (statusEmail == "NotReviewed")
             {
                 status = EmailStatus.NotReviewed;
                 _logger.LogInformation("System listing all emails - status NotReviewed.");
             }
-            else if(statusEmail == "NotValid")
+            else if (statusEmail == "NotValid")
             {
                 status = EmailStatus.NotValid;
                 _logger.LogInformation("System listing all emails - status NotValid.");
             }
-            else if(statusEmail == "Open")
+            else if (statusEmail == "Open")
             {
                 status = EmailStatus.Open;
                 _logger.LogInformation("System listing all emails - status Open.");
@@ -89,17 +102,75 @@ namespace EmailManager.Services.Implementation
 
             _logger.LogInformation($"System listing all emails - status {statusEmail}.");
 
-            IEnumerable<Email> emailAllStatus = await _context.Emails
+            IEnumerable<Email> emailAllStatus = _context.Emails
                 .Where(s => s.EnumStatus == (status))
                 .Include(m => m.EmailBody)
                 .Include(m => m.Attachments)
                 .Include(m => m.Status)
                 .Include(m => m.User)
-                .OrderByDescending(m => m.Status.NewStatus)
-                .ToListAsync();
+                .OrderByDescending(m => m.Status.NewStatus);
+
+            if (currentPage == 1)
+            {
+                emailAllStatus
+                .Take(10)
+                .ToList();
+            }
+            else
+            {
+                emailAllStatus
+                .Skip((currentPage - 1) * 10)
+                .Take(10)
+                .ToList();
+            }
 
             return emailAllStatus;
         }
+
+        //TODO Може да се счупи, когато започнем да криптираме тялото и изпращача или да не работят тези 2 search-a
+        public async Task<IEnumerable<Email>> SearchEmails(string search, int currentPage)
+        {
+            var searchResult = _context.Emails
+                .Include(m => m.EmailBody)
+                .Include(m => m.Attachments)
+                .Include(m => m.Status)
+                .Include(m => m.User)
+                .Where(
+                       b => b.User.Email.Contains(search) ||
+                       b.User.UserName.Contains(search) ||
+                       b.Sender.Contains(search) ||
+                       b.EmailId.Contains(search) ||
+                       b.EnumStatus.ToString().ToLower().Contains(search.ToLower())
+                       )
+                .OrderByDescending(b => b.Status.NewStatus);
+
+            if (currentPage == 1)
+            {
+                searchResult
+                .Take(10)
+                .ToList();
+            }
+            else
+            {
+                searchResult
+                .Skip((currentPage - 1) * 10)
+                .Take(10)
+                .ToList();
+            }
+
+            return searchResult;
+        }
+
+        public async Task<int> GetPageCount(int emailsPerPage)
+        {
+            var allEmails = await _context.Emails
+                .CountAsync();
+
+            var totalPages = (allEmails - 1) / emailsPerPage + 1;
+
+            return totalPages;
+        }
+
 
         public Email GetEmail(int emailId)
         {
@@ -119,7 +190,7 @@ namespace EmailManager.Services.Implementation
 
             return email;
         }
-        
+
         public Attachment GetAttachment(int emailId)
         {
             Email email = _context.Emails
@@ -147,6 +218,7 @@ namespace EmailManager.Services.Implementation
 
             return email.EnumStatus;
         }
+
 
         public async Task MarkNewStatus(int emailId, string userId)
         {
@@ -222,17 +294,18 @@ namespace EmailManager.Services.Implementation
                 LastStatus = email.Status.LastStatus = email.Status.NewStatus,
                 NewStatus = email.Status.NewStatus = DateTime.UtcNow,
                 TimeStamp = email.Status.TimeStamp = DateTime.UtcNow,
-                ActionTaken = email.Status.ActionTaken = "Changed",                
+                ActionTaken = email.Status.ActionTaken = "Changed",
             };
-            
 
             email.User = user;
             user.UserEmails.Add(email);
+            await _context.SaveChangesAsync();
 
             _logger.LogInformation($"Changed general email statuses. Email Id: {emailId}");
 
             return email;
         }
+
 
         public async Task AddAttachmentAsync(EmailAttachmentDTO attachmentDTO)
         {
@@ -268,7 +341,7 @@ namespace EmailManager.Services.Implementation
                 .Include(b => b.Email)
                 .Where(b => b.EmailId == emailBodyDto.EmailId)
                 .SingleOrDefaultAsync();
-                
+
             var currentUser = await this._context.Users
                 .Where(id => id.Id == emailBodyDto.UserId)
                 .SingleOrDefaultAsync();

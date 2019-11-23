@@ -28,7 +28,7 @@
         <p>@User.Identity.Name, what do you want to do today?</p>
 
         <form method="post">
-            <button asp-controller="Email" asp-action="Index" type="submit" class="btn btn-lg btn-outline-info">
+            <button asp-controller="Email" asp-action="ListAllStatusEmails" type="submit" class="btn btn-lg btn-outline-info">
                 See all emails
             </button>
             <button asp-route-statusEmail="NotReviewed" asp-controller="Email" asp-action="ListAllStatusEmails" type="submit" class="btn btn-lg btn-outline-secondary">
