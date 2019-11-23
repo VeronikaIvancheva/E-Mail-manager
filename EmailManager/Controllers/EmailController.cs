@@ -1,17 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using EmailManager.Data;
-using EmailManager.Data.Implementation;
 using EmailManager.Mappers;
 using EmailManager.Models.EmailViewModel;
 using EmailManager.Services.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 namespace EmailManager.Controllers
 {
@@ -39,40 +36,33 @@ namespace EmailManager.Controllers
             return View("Detail", emailModel);
         }
 
-        public IActionResult Index(/*int? currPage*/)
+        public IActionResult Index()
         {
-            //var currentPage = currPage ?? 1;
-
-            //int totalPages = await _emailService.GetPageCount(5);
-            //IEnumerable<Email> emailsPP = await _emailService.GetAllStatusEmails(currentPage);
-
-            //var emailsListing = emailsPP
-            //    .Select(m => EmailMapper.MapFromEmail(m, _emailService));
-
-            //var model = new EmailIndexViewModel()
-            //{
-            //    CurrentPage = currentPage,
-            //    TotalPages = totalPages,
-            //    Emails = emailsListing,
-            //};
-
-            //if (totalPages > currentPage)
-            //{
-            //    model.NextPage = currentPage + 1;
-            //}
-
-            //if (currentPage > 1)
-            //{
-            //    model.PreviewPage = currentPage - 1;
-            //}
-
             return View();
+        }
+
+        private async void GetEmailsFromGmail()
+        {
+            DateTime dateTimeNow = DateTime.UtcNow;
+
+            dateTimeNow = new DateTime(dateTimeNow.Year, dateTimeNow.Month, dateTimeNow.Day,
+                dateTimeNow.Hour, dateTimeNow.Minute, dateTimeNow.Second, dateTimeNow.Kind);
+
+            DateTime dateTimeAfter = dateTimeNow.AddSeconds(5);
+
+            if (dateTimeNow <= dateTimeAfter)
+            {
+                await _emailService.SaveEmailsToDB();
+                dateTimeNow = DateTime.UtcNow;
+            }
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ListAllStatusEmails(int? currPage, string search = null)
         {
+            GetEmailsFromGmail();
+
             var currentPage = currPage ?? 1;
 
             int totalPages = await _emailService.GetPageCount(10);
