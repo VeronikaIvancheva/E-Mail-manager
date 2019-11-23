@@ -101,7 +101,7 @@ namespace EmailManager.Controllers
 
             if (currentPage > 1)
             {
-                emailModel.PreviewPage = currentPage - 1;
+                emailModel.PreviousPage = currentPage - 1;
             }
 
             return View(emailModel);

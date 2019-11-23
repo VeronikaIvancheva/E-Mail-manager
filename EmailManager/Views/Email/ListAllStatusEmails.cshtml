@@ -60,13 +60,13 @@
     </tbody>
 </table>
 <div class="align-content-center">
-    @if (Model.PreviewPage == null)
+    @if (Model.PreviousPage == null)
     {
         <a class="btn btn-sm btn-lighter btn-auto disabled">Prev</a>
     }
     else
     {
-        <a asp-action="ListAllStatusEmails" asp-route-currentPage="@Model.PreviewPage" class="btn btn-sm btn-lighter btn-auto previous-pagination-button-table" at="@Model.PreviewPage">Prev</a>
+        <a asp-action="ListAllStatusEmails" asp-route-currentPage="@Model.PreviousPage" class="btn btn-sm btn-lighter btn-auto previous-pagination-button-table" at="@Model.PreviousPage">Prev</a>
     }
 
     <button class="btn btn-sm btn-primary btn-auto">@Model.CurrentPage</button>
