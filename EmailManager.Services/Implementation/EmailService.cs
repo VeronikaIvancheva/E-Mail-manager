@@ -12,12 +12,17 @@ using Microsoft.Extensions.Logging;
 using EmailManager.Data.DTO;
 using EmailManager.Services.Exeptions;
 
+[assembly: log4net.Config.XmlConfigurator(Watch = true)]
+
 namespace EmailManager.Services.Implementation
 {
     public class EmailService : IEmailService
     {
+        private static readonly log4net.ILog log =
+           log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         private readonly EmailManagerContext _context;
-        private readonly ILogger _logger;
+        private readonly ILogger<EmailService> _logger;
         private readonly IEncryptionServices _securityEncrypt;
         private readonly IDecryptionServices _securityDecrypt;
 
