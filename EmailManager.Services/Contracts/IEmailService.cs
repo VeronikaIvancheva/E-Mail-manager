@@ -24,5 +24,6 @@ namespace EmailManager.Services.Contracts
 
         Task<IEnumerable<Email>> SearchEmails(string search, int currentPage);
         Task<int> GetPageCount(int barsPerPage);
+        Task SaveEmailsToDB();
     }
 }

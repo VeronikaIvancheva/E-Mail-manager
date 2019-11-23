@@ -1,11 +1,7 @@
 ﻿using System.Diagnostics;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using EmailManager.Models;
 using EmailManager.Services.Contracts;
-using System.Net.Http;
-using EmailManager.Data.DTO;
-using System;
 
 namespace EmailManager.Controllers
 {
@@ -18,35 +14,10 @@ namespace EmailManager.Controllers
 			this._emailService = emailService;
 		}
 
-		public async Task<IActionResult> Index()
+		public IActionResult Index()
 		{
-			DateTime dateTimeNow = DateTime.UtcNow;
-			DateTime dateTimeAfter = dateTimeNow.AddMinutes(3);
-
-			//if (dateTimeNow == dateTimeAfter)
-			//{
-			//    await _emailService.SaveEmailsToDB();
-			//    dateTimeNow = DateTime.UtcNow;
-			//}
-			//else if (dateTimeNow == dateTimeNow)
-			//{
-			//    await _emailService.SaveEmailsToDB();
-			//}
-
-			await _emailService.SaveEmailsToDB();
-
 			return View();
 		}
-
-		//public async Task<bool> ReadGmail(HttpClient client, GmailCredentialsDTO userData)
-		//{
-		//    client.DefaultRequestHeaders.Add("Authorization", "Bearer " + userData.AccessToken);
-
-		//    var res = await client.GetAsync("https://www.googleapis.com/gmail/v1/users/me/messages");
-		//    //var content = await res.Content.ReadAsStringAsync();
-
-		//    return res.IsSuccessStatusCode;
-		//}
 
 		public IActionResult Privacy()
 		{
