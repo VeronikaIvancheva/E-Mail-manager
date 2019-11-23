@@ -6,7 +6,7 @@ namespace EmailManager.Models.EmailViewModel
     {
         public IEnumerable<EmailViewModel> Emails { get; set; }
 
-        public int? PreviewPage { get; set; }
+        public int? PreviousPage { get; set; }
 
         public int CurrentPage { get; set; }
 
