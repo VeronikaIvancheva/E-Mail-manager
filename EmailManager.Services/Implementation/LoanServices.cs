@@ -65,7 +65,7 @@ namespace EmailManager.Services.Implementation
                 throw new LoanExeptions("EGN must only contain digits");
             }
 
-            var user = await this._context.Users
+            var user = await this._context.User
                 .Include(l => l.Clients)
                 .Where(userId => userId.Id == clientDto.UserId)
                 .FirstOrDefaultAsync();
@@ -164,6 +164,18 @@ namespace EmailManager.Services.Implementation
             return true;
         }
 
+        public Client GetClient(int clientID)
+        {
+            var client = _context.Clients.FirstOrDefault(c=>c.ClientId==clientID);
+
+            var decryptName = _decrypt.Decrypt(client.ClientName);
+            var decryptEgn = _decrypt.Decrypt(client.ClientEGN);
+            var decryptPhoneNumber = _decrypt.Decrypt(client.ClientPhoneNumber);
+            var decryptEmail = _decrypt.Decrypt(client.EmailId);
+
+            return client;
+
+        }
        
     }
 }

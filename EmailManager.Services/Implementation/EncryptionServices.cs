@@ -27,7 +27,7 @@ namespace EmailManager.Services.Implementation
                     }
                     clearText = Convert.ToBase64String(stream.ToArray());
 
-                    //key.Dispose();
+                    key.Dispose();
                 }
             }
             return clearText;
