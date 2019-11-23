@@ -39,16 +39,16 @@ namespace EmailManager.Controllers
                 return Json(new { exeption = email });
             }
 
-            return Json(new { exeption = email });
+            return View();
         }
 
         [HttpPost]
         [Authorize]
         public async Task<IActionResult> ApproveLoan(string approveData, string rejectData)
         {
-            string[] result = null;
             try
             {
+                string[] result = null;
                 if (approveData != null)
                 {
                     result = approveData.Split(' ');
@@ -74,12 +74,12 @@ namespace EmailManager.Controllers
                     await this._loanService.ApproveLoanAsync(approveDto);
                 }
             }
-            catch (LoanExeptions ex)
+            catch 
             {
                 throw new Exception("Loan was not approved");
             }
 
-            return Json(new { emailId = result[1] });
+            return View();
         }
 
     }

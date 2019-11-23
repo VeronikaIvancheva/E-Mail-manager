@@ -53,7 +53,7 @@ namespace EmailManager.Services.Implementation
             {
                 throw new LoanExeptions("The length of the client's name is not correct!");
             }
-            if (clientDto.ClientPhoneNumber.Length < 3 || clientDto.ClientPhoneNumber.Length > 50)
+            if (clientDto.ClientPhoneNumber.Length < 3 || clientDto.ClientPhoneNumber.Length > 10)
             {
                 throw new LoanExeptions("The length of the client's phone number is not correct!");
             }
@@ -62,7 +62,7 @@ namespace EmailManager.Services.Implementation
 
             if (isEgnCorrect == false)
             {
-                throw new LoanExeptions("EGN cannot contains digits");
+                throw new LoanExeptions("EGN must only contain digits");
             }
 
             var user = await this._context.Users
@@ -70,10 +70,10 @@ namespace EmailManager.Services.Implementation
                 .Where(userId => userId.Id == clientDto.UserId)
                 .FirstOrDefaultAsync();
 
-            var Name = clientDto.ClientName;
+            var encryptedName = this._encrypt.Encrypt(clientDto.ClientName);
             var encryptedEgn = this._encrypt.Encrypt(clientDto.ClientEGN);
             var encryptedPhoneNumber = this._encrypt.Encrypt(clientDto.ClientPhoneNumber);
-
+            var encryptedEmail = this._encrypt.Encrypt(clientDto.EmailId);
 
             var email = await this._context.Emails
                 .Where(e => e.EmailId == clientDto.EmailId)
@@ -81,13 +81,13 @@ namespace EmailManager.Services.Implementation
 
             var loan = new Client
             {
-                ClientName = Name,
+                ClientName = encryptedName,
                 ClientEGN = encryptedEgn,
                 ClientPhoneNumber = encryptedPhoneNumber,
                 UserId = clientDto.UserId,
                 User = user,
                 Email = email,
-                EmailId = clientDto.EmailId
+                EmailId = encryptedEmail
             };
 
             email.SetCurrentStatus = DateTime.Now;
@@ -163,5 +163,7 @@ namespace EmailManager.Services.Implementation
 
             return true;
         }
+
+       
     }
 }
