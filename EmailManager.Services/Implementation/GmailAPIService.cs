@@ -59,6 +59,7 @@ namespace EmailManager.Services.Implementation
             {
                 HttpClientInitializer = credential,
                 ApplicationName = ApplicationName,
+                
             });
 
             var emailListRequest = service.Users.Messages.List("emailmanager13@gmail.com");
