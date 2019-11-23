@@ -18,10 +18,12 @@ namespace EmailManager.Controllers
         log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         private readonly IEmailService _emailService;
+        private readonly IGmailAPIService _gmailAPIService;
 
-        public EmailController(IEmailService service)
+        public EmailController(IEmailService service, IGmailAPIService gmailAPIService)
         {
             this._emailService = service;
+            this._gmailAPIService = gmailAPIService;
         }
 
         public IActionResult Detail(int id)
@@ -52,7 +54,7 @@ namespace EmailManager.Controllers
 
             if (dateTimeNow <= dateTimeAfter)
             {
-                await _emailService.SaveEmailsToDB();
+                await _gmailAPIService.SaveEmailsToDB();
                 dateTimeNow = DateTime.UtcNow;
             }
         }
@@ -119,10 +121,10 @@ namespace EmailManager.Controllers
                 TempData["error"] = ex.Message;
                 log.Info($"System failed to change the email status to new. User Id: {userId} Email Id: {id}");
 
-                return RedirectToAction("Index", new { id = emailId });
+                return RedirectToAction("Detail", new { id = emailId });
             }
 
-            return RedirectToAction("Index", new { id = emailId });
+            return RedirectToAction("Detail", new { id = emailId });
         }
 
         [HttpPost]
@@ -142,10 +144,10 @@ namespace EmailManager.Controllers
                 TempData["error"] = ex.Message;
                 log.Error($"System failed to change the email status to closed - approved. User Id: {userId} Email Id: {emailId}");
 
-                return RedirectToAction("Index", new { id = emailId });
+                return RedirectToAction("Detail", new { id = emailId });
             }
 
-            return RedirectToAction("Index", new { id = emailId });
+            return RedirectToAction("Detail", new { id = emailId });
         }
 
         [HttpPost]
@@ -165,10 +167,10 @@ namespace EmailManager.Controllers
                 TempData["error"] = ex.Message;
                 log.Error($"System failed to change the email status to closed - rejected. User Id: {userId} Email Id: {emailId}");
 
-                return RedirectToAction("Index", new { id = emailId });
+                return RedirectToAction("Detail", new { id = emailId });
             }
 
-            return RedirectToAction("Index", new { id = emailId });
+            return RedirectToAction("Detail", new { id = emailId });
         }
 
         [HttpPost]
@@ -188,10 +190,10 @@ namespace EmailManager.Controllers
                 TempData["error"] = ex.Message;
                 log.Error($"System failed to change the email status to invalid. User Id: {userId} Email Id: {emailId}");
 
-                return RedirectToAction("Index", new { id = emailId });
+                return RedirectToAction("Detail", new { id = emailId });
             }
 
-            return RedirectToAction("Index", new { id = emailId });
+            return RedirectToAction("Detail", new { id = emailId });
         }
 
         [HttpPost]
@@ -211,10 +213,10 @@ namespace EmailManager.Controllers
                 TempData["error"] = ex.Message;
                 log.Error($"System failed to change the email status to open. User Id: {userId} Email Id: {emailId}");
 
-                return RedirectToAction("Index", new { id = emailId });
+                return RedirectToAction("Detail", new { id = emailId });
             }
 
-            return RedirectToAction("Index", new { id = emailId });
+            return RedirectToAction("Detail", new { id = emailId });
         }
 
         [HttpPost]
@@ -235,10 +237,10 @@ namespace EmailManager.Controllers
                 TempData["error"] = ex.Message;
                 log.Error($"System failed to change the email status to not reviewed. User Id: {userId} Email Id: {emailId}");
 
-                return RedirectToAction("Index", new { id = emailId });
+                return RedirectToAction("Detail", new { id = emailId });
             }
 
-            return RedirectToAction("Index", new { id = emailId });
+            return RedirectToAction("Detail", new { id = emailId });
         }
     }
 }

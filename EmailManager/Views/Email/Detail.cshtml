@@ -77,7 +77,7 @@
             <button asp-route-Id="@Model.Id" asp-controller="Email" asp-action="MarkClosedApproved" name="ClosedApproved" type="submit" class="btn btn-lg btn-outline-success">Mark as Approved</button>
             <button asp-route-Id="@Model.Id" asp-controller="Email" asp-action="MarkClosedRejected" name="ClosedRejected" type="submit" class="btn btn-lg btn-outline-danger">Mark as Rejected</button>
         }
-        else if (Model.EnumStatus.ToString() == "MarkClosedApproved" || Model.EnumStatus.ToString() == "MarkClosedRejected")
+        else if (Model.EnumStatus.ToString() == "Approved" || Model.EnumStatus.ToString() == "Rejected")
         {
             <button asp-route-Id="@Model.Id" asp-controller="Email" asp-action="MarkNew" name="New" type="submit" class="btn btn-lg btn-outline-info">Mark as New</button>
         }
