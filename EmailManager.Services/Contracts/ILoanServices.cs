@@ -8,6 +8,6 @@ namespace EmailManager.Services.Contracts
     {
         Task<bool> ApproveLoanAsync(ApproveLoanDTO approveLoanDto);
         Task<Client> ClientLoanApplication(ClientDTO clientDto);
-        ClientDTO ValidationMethod(ClientDTO clientDto);
+        bool CheckEgnValidity(string email);
     }
 }
