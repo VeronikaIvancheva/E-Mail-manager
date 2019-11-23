@@ -20,7 +20,7 @@ namespace EmailManager.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> LoanApplicationFill(string name, string egn, string phoneNumber, string email)
+        public async Task<IActionResult> EmailLoanFill(string name, string egn, string phoneNumber, string email)
         {
             try
             {

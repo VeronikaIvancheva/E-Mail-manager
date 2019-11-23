@@ -5,6 +5,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20191121195405_I.cs" />
+    <Compile Remove="Migrations\20191121195405_I.Designer.cs" />
+    <Compile Remove="Migrations\20191122230743_II.cs" />
+    <Compile Remove="Migrations\20191122230743_II.Designer.cs" />
+    <Compile Remove="Migrations\20191123172058_I.cs" />
+    <Compile Remove="Migrations\20191123172058_I.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="log4net" Version="2.0.8" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="2.2.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.6" />

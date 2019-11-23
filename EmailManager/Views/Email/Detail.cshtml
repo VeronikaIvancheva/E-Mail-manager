@@ -68,11 +68,8 @@
         else if (Model.EnumStatus.ToString() == "New" || Model.EnumStatus.ToString() == "NotValid")
         {
             <button asp-route-Id="@Model.Id" asp-controller="Email" asp-action="MarkNotReviewed" name="NotReviewed" type="submit" class="btn btn-lg btn-outline-info">Mark as Not Reviewed</button>
-
-        }
-        else if (Model.EnumStatus.ToString() == "New")
-        {
             <button asp-route-Id="@Model.Id" asp-controller="Email" asp-action="MarkOpen" name="Open" type="submit" class="btn btn-lg btn-outline-success">Mark as Open</button>
+            <button asp-route-Id="@Model.Id" asp-controller="ClientLoan" asp-action="EmailLoanFill" name="EmailLoanFill" type="submit" class="btn btn-lg btn-outline-success">Make loan</button>
         }
         else if (Model.EnumStatus.ToString() == "Open")
         {
