@@ -33,6 +33,8 @@ namespace EmailManager.Mappers
         {
             var model = new EmailIndexViewModel
             {
+                CurrentPage = currentPage,
+                TotalPages = totalPages,
                 Emails = email
             };
 

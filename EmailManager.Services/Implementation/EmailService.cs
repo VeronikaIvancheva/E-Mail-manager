@@ -36,106 +36,47 @@ namespace EmailManager.Services.Implementation
             this._securityDecrypt = securityDecrypt ?? throw new ArgumentNullException(nameof(securityDecrypt));
         }
 
-        public async Task<IEnumerable<Email>> GetAllStatusEmails(string statusEmail, int currentPage)
+        public async Task<IEnumerable<Email>> GetAllStatusEmails(int currentPage)
         {
-            EmailStatus status;
-
-            if (statusEmail == null)
-            {
-                IEnumerable<Email> emailPage = _context.Emails
-                .Include(m => m.EmailBody)
-                .Include(m => m.Attachments)
-                .Include(m => m.Status)
-                .Include(m => m.User)
-                .OrderByDescending(m => m.Id);
-
-                IEnumerable<Email> emailAll = emailPage;
-
-                if (currentPage == 1)
-                {
-                    emailAll
-                    .Take(10)
-                    .ToList();
-                }
-                else
-                {
-                    emailAll
-                    .Skip((currentPage - 1) * 10)
-                    .Take(10)
-                    .ToList();
-                }
-
-                _logger.LogInformation("System listing all emails.");
-
-                return emailAll;
-            }
-            else if (statusEmail == "New")
-            {
-                status = EmailStatus.New;
-                _logger.LogInformation("System listing all emails - status New.");
-            }
-            else if (statusEmail == "Approved")
-            {
-                status = EmailStatus.Approved;
-                _logger.LogInformation("System listing all emails - status Approved.");
-            }
-            else if (statusEmail == "Rejected")
-            {
-                status = EmailStatus.Rejected;
-                _logger.LogInformation("System listing all emails - status Rejected.");
-            }
-            else if (statusEmail == "NotReviewed")
-            {
-                status = EmailStatus.NotReviewed;
-                _logger.LogInformation("System listing all emails - status NotReviewed.");
-            }
-            else if (statusEmail == "NotValid")
-            {
-                status = EmailStatus.NotValid;
-                _logger.LogInformation("System listing all emails - status NotValid.");
-            }
-            else if (statusEmail == "Open")
-            {
-                status = EmailStatus.Open;
-                _logger.LogInformation("System listing all emails - status Open.");
-            }
-            else
-            {
-                _logger.LogInformation("System failed to get list of emails statuses.");
-                throw new Exception("There are no status like this in the enums.");
-            }
-
-            _logger.LogInformation($"System listing all emails - status {statusEmail}.");
-
-            IEnumerable<Email> emailAllStatus = _context.Emails
-                .Where(s => s.EnumStatus == (status))
-                .Include(m => m.EmailBody)
-                .Include(m => m.Attachments)
-                .Include(m => m.Status)
-                .Include(m => m.User)
-                .OrderByDescending(m => m.Status.NewStatus);
+            IEnumerable<Email> emailAll;
 
             if (currentPage == 1)
             {
-                emailAllStatus
-                .Take(10)
-                .ToList();
+                emailAll = _context.Emails
+                     .Include(m => m.EmailBody)
+                     .Include(m => m.Attachments)
+                     .Include(m => m.Status)
+                     .Include(m => m.User)
+                     .OrderByDescending(m => m.Id)
+                     .Take(10)
+                     .ToList();
             }
             else
             {
-                emailAllStatus
-                .Skip((currentPage - 1) * 10)
-                .Take(10)
-                .ToList();
+                emailAll = _context.Emails
+                    .Include(m => m.EmailBody)
+                    .Include(m => m.Attachments)
+                    .Include(m => m.Status)
+                    .Include(m => m.User)
+                    .OrderByDescending(m => m.Id)
+                    .Skip((currentPage - 1) * 10)
+                    .Take(10)
+                    .ToList();
             }
 
-            return emailAllStatus;
+            log.Info("System listing all emails.");
+
+            return emailAll;
         }
 
         //TODO Може да се счупи, когато започнем да криптираме тялото и изпращача или да не работят тези 2 search-a
         public async Task<IEnumerable<Email>> SearchEmails(string search, int currentPage)
         {
-            var searchResult = _context.Emails
+            IEnumerable<Email> searchResult;
+
+            if (currentPage == 1)
+            {
+                searchResult = _context.Emails
                 .Include(m => m.EmailBody)
                 .Include(m => m.Attachments)
                 .Include(m => m.Status)
@@ -147,17 +88,25 @@ namespace EmailManager.Services.Implementation
                        b.EmailId.Contains(search) ||
                        b.EnumStatus.ToString().ToLower().Contains(search.ToLower())
                        )
-                .OrderByDescending(b => b.Status.NewStatus);
-
-            if (currentPage == 1)
-            {
-                searchResult
+                .OrderByDescending(b => b.Status.NewStatus)
                 .Take(10)
                 .ToList();
             }
             else
             {
-                searchResult
+                searchResult = _context.Emails
+                .Include(m => m.EmailBody)
+                .Include(m => m.Attachments)
+                .Include(m => m.Status)
+                .Include(m => m.User)
+                .Where(
+                       b => b.User.Email.Contains(search) ||
+                       b.User.UserName.Contains(search) ||
+                       b.Sender.Contains(search) ||
+                       b.EmailId.Contains(search) ||
+                       b.EnumStatus.ToString().ToLower().Contains(search.ToLower())
+                       )
+                .OrderByDescending(b => b.Status.NewStatus)
                 .Skip((currentPage - 1) * 10)
                 .Take(10)
                 .ToList();
@@ -188,10 +137,10 @@ namespace EmailManager.Services.Implementation
 
             if (email == null)
             {
-                _logger.LogWarning($"System didn't find email with id: {emailId}");
+                log.Info($"System didn't find email with id: {emailId}");
             }
 
-            _logger.LogWarning($"User look for email with id: {emailId}");
+            log.Warn ($"User look for email with id: {emailId}");
 
             return email;
         }

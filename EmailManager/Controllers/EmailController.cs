@@ -70,7 +70,7 @@ namespace EmailManager.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ListAllStatusEmails(int? currPage, string statusEmail, string search = null)
+        public async Task<IActionResult> ListAllStatusEmails(int? currPage, string search = null)
         {
             var currentPage = currPage ?? 1;
 
@@ -85,20 +85,13 @@ namespace EmailManager.Controllers
             }
             else
             {
-                emailAllResults = await _emailService.GetAllStatusEmails(statusEmail, currentPage);
-                _logger.LogInformation($"Displayed all {statusEmail} email list.");
+                emailAllResults = await _emailService.GetAllStatusEmails(currentPage);
+                _logger.LogInformation($"Displayed all emails list.");
             }
 
             var emailsListing = emailAllResults
                 .Select(m => EmailMapper.MapFromEmail(m, _emailService));
             var emailModel = EmailMapper.MapFromEmailIndex(emailsListing, currentPage, totalPages);
-
-            //var model = new EmailIndexViewModel()
-            //{
-            //    CurrentPage = currentPage,
-            //    TotalPages = totalPages,
-            //    Emails = emailsListing,
-            //};
 
             if (totalPages > currentPage)
             {

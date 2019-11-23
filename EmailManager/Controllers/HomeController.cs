@@ -5,6 +5,7 @@ using EmailManager.Models;
 using EmailManager.Services.Contracts;
 using System.Net.Http;
 using EmailManager.Data.DTO;
+using System;
 
 namespace EmailManager.Controllers
 {
@@ -18,7 +19,20 @@ namespace EmailManager.Controllers
 		}
 
 		public async Task<IActionResult> Index()
-		{			
+		{
+			DateTime dateTimeNow = DateTime.UtcNow;
+			DateTime dateTimeAfter = dateTimeNow.AddMinutes(3);
+
+			//if (dateTimeNow == dateTimeAfter)
+			//{
+			//    await _emailService.SaveEmailsToDB();
+			//    dateTimeNow = DateTime.UtcNow;
+			//}
+			//else if (dateTimeNow == dateTimeNow)
+			//{
+			//    await _emailService.SaveEmailsToDB();
+			//}
+
 			await _emailService.SaveEmailsToDB();
 
 			return View();
