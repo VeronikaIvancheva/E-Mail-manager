@@ -15,17 +15,20 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
+[assembly: log4net.Config.XmlConfigurator(Watch = true)]
+
 namespace EmailManager.Services.Implementation
 {
     public class GmailAPIService : IGmailAPIService
     {
-        private readonly EmailManagerContext _context;
-        private readonly ILogger _logger;
+        private static readonly log4net.ILog log =
+           log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        public GmailAPIService(EmailManagerContext context, ILogger<GmailAPIService> logger)
+        private readonly EmailManagerContext _context;
+
+        public GmailAPIService(EmailManagerContext context)
         {
             this._context = context;
-            this._logger = logger;
         }
 
         public async Task SaveEmailsToDB()
@@ -98,7 +101,7 @@ namespace EmailManager.Services.Implementation
 
                     if (emailCheck == null)
                     {
-                        _logger.LogInformation("Start creating new emails.");
+                        log.Info("Start creating new emails.");
                         PassEmailParams(emailFullResponse, editedDate, subject, sender);
                     }
                 }

@@ -12,7 +12,6 @@ using Microsoft.Extensions.Logging;
 using EmailManager.Data.DTO;
 using EmailManager.Services.Exeptions;
 
-[assembly: log4net.Config.XmlConfigurator(Watch = true)]
 
 namespace EmailManager.Services.Implementation
 {
@@ -158,7 +157,7 @@ namespace EmailManager.Services.Implementation
                 .Include(a => a.Email)
                 .FirstOrDefault(e => email.Id == emailId);
 
-            _logger.LogInformation($"Server fetch attachment for email with Id: {emailId}");
+            log.Info($"Server fetch attachment for email with Id: {emailId}");
 
             return attachment;
         }
@@ -168,7 +167,7 @@ namespace EmailManager.Services.Implementation
             Email email = _context.Emails
                 .FirstOrDefault(b => b.EmailId == emailId);
 
-            _logger.LogInformation($"Email status sent. Email id: {emailId}");
+            log.Info($"Email status sent. Email id: {emailId}");
 
             return email.EnumStatus;
         }
@@ -181,7 +180,7 @@ namespace EmailManager.Services.Implementation
             email.Result.EnumStatus = EmailStatus.New;
             await _context.SaveChangesAsync();
 
-            _logger.LogInformation($"Changed email status to new. Email Id: {emailId}");
+            log.Info($"Changed email status to new. Email Id: {emailId}");
         }
 
         public async Task MarkClosedApprovedStatus(int emailId, string userId)
@@ -191,7 +190,7 @@ namespace EmailManager.Services.Implementation
             email.Result.EnumStatus = EmailStatus.Approved;
             await _context.SaveChangesAsync();
 
-            _logger.LogInformation($"Changed email status to closed - approved. Email Id: {emailId} by user id: {userId}.");
+            log.Info($"Changed email status to closed - approved. Email Id: {emailId} by user id: {userId}.");
         }
 
         public async Task MarkClosedRejectedStatus(int emailId, string userId)
@@ -201,7 +200,7 @@ namespace EmailManager.Services.Implementation
             email.Result.EnumStatus = EmailStatus.Rejected;
             await _context.SaveChangesAsync();
 
-            _logger.LogInformation($"Changed email status to closed - rejected. Email Id: {emailId} by user id: {userId}.");
+            log.Info($"Changed email status to closed - rejected. Email Id: {emailId} by user id: {userId}.");
         }
 
         public async Task MarkOpenStatus(int emailId, string userId)
@@ -211,7 +210,7 @@ namespace EmailManager.Services.Implementation
             email.Result.EnumStatus = EmailStatus.Open;
             await _context.SaveChangesAsync();
 
-            _logger.LogInformation($"Changed email status to open. Email Id: {emailId}");
+            log.Info($"Changed email status to open. Email Id: {emailId}");
         }
 
         public async Task MarkNotReviewStatus(int emailId, string userId)
@@ -221,7 +220,7 @@ namespace EmailManager.Services.Implementation
             email.Result.EnumStatus = EmailStatus.NotReviewed;
             await _context.SaveChangesAsync();
 
-            _logger.LogInformation($"Changed email status to not review. Email Id: {emailId}");
+            log.Info($"Changed email status to not review. Email Id: {emailId}");
         }
 
         public async Task MarkInvalidStatus(int emailId, string userId)
@@ -231,7 +230,7 @@ namespace EmailManager.Services.Implementation
             email.Result.EnumStatus = EmailStatus.NotValid;
             await _context.SaveChangesAsync();
 
-            _logger.LogInformation($"Changed email status to invalid. Email Id: {emailId}");
+            log.Info($"Changed email status to invalid. Email Id: {emailId}");
         }
 
         public async Task<Email> EmailRepeatedPart(int emailId, string userId)
@@ -255,7 +254,7 @@ namespace EmailManager.Services.Implementation
             user.UserEmails.Add(email);
             await _context.SaveChangesAsync();
 
-            _logger.LogInformation($"Changed general email statuses. Email Id: {emailId}");
+            log.Info($"Changed general email statuses. Email Id: {emailId}");
 
             return email;
         }

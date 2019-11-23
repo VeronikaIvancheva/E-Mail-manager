@@ -12,11 +12,16 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using EmailManager.Services.Contracts;
 
+
 namespace EmailManager.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]
     public class LoginModel : PageModel
     {
+
+         private static readonly log4net.ILog log =
+           log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         private readonly SignInManager<User> _signInManager;
         private readonly ILogger<LoginModel> _logger;
         private readonly UserManager<User> _userManager;
@@ -84,7 +89,7 @@ namespace EmailManager.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     await _logging.SaveLastLoginUser(login);
-                    _logger.LogInformation("User logged in.");
+                   log.Info("User logged in.");
                     return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)
@@ -93,7 +98,7 @@ namespace EmailManager.Areas.Identity.Pages.Account
                 }
                 if (result.IsLockedOut)
                 {
-                    _logger.LogWarning("User account locked out.");
+                    log.Warn("User account locked out.");
                     return RedirectToPage("./Lockout");
                 }
                 else

@@ -16,15 +16,13 @@ namespace EmailManager.Services.Implementation
 {
     public class UserServices : IUserServices
     {
-        private readonly ILogger<UserServices> _logger;
         private readonly EmailManagerContext _context;
         private readonly UserManager<User> _userManager;
 
-        public UserServices(EmailManagerContext context, UserManager<User> userManager, ILogger<UserServices> logger)
+        public UserServices(EmailManagerContext context, UserManager<User> userManager)
         {
             this._context = context;
             this._userManager = userManager;
-            this._logger = logger;
         }
 
         public async Task RegisterAccountAsync(RegisterAccountDTO registerAccountDto)

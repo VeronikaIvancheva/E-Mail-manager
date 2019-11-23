@@ -17,13 +17,14 @@ namespace EmailManager.Controllers
 {
     public class EmailController : Controller
     {
-        private readonly IEmailService _emailService;
-        private readonly ILogger _logger;
+        private static readonly log4net.ILog log =
+        log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        public EmailController(IEmailService service, ILogger<EmailController> logger)
+        private readonly IEmailService _emailService;
+
+        public EmailController(IEmailService service)
         {
             this._emailService = service;
-            this._logger = logger;
         }
 
         public IActionResult Detail(int id)
@@ -33,7 +34,7 @@ namespace EmailManager.Controllers
 
             var emailModel = new EmailViewModel(email, emailAttachments);
 
-            _logger.LogInformation($"User opened email detail page. Email Id: {id}");
+            log.Info($"User opened email detail page. Email Id: {id}");
 
             return View("Detail", emailModel);
         }
@@ -81,12 +82,12 @@ namespace EmailManager.Controllers
             if (!string.IsNullOrEmpty(search))
             {
                 emailAllResults = await _emailService.SearchEmails(search, currentPage);
-                _logger.LogInformation($"User searched for {search}.");
+                log.Info($"User searched for {search}.");
             }
             else
             {
                 emailAllResults = await _emailService.GetAllStatusEmails(currentPage);
-                _logger.LogInformation($"Displayed all emails list.");
+                log.Info($"Displayed all emails list.");
             }
 
             var emailsListing = emailAllResults
@@ -116,7 +117,7 @@ namespace EmailManager.Controllers
             try
             {
                 await _emailService.MarkNewStatus(emailId, userId);
-                _logger.LogInformation($"User changed email status to new. User Id: {userId} Email Id: {id}");
+                log.Info($"User changed email status to new. User Id: {userId} Email Id: {id}");
 
                 //if (markNew == false)
                 //{
@@ -126,7 +127,7 @@ namespace EmailManager.Controllers
             catch (Exception ex)
             {
                 TempData["error"] = ex.Message;
-                _logger.LogError($"System failed to change the email status to new. User Id: {userId} Email Id: {id}");
+                log.Info($"System failed to change the email status to new. User Id: {userId} Email Id: {id}");
 
                 return RedirectToAction("Index", new { id = emailId });
             }
@@ -144,12 +145,12 @@ namespace EmailManager.Controllers
             try
             {
                 await _emailService.MarkClosedApprovedStatus(emailId, userId);
-                _logger.LogInformation($"User changed email status to closed - approved. User Id: {userId} Email Id: {emailId}");
+                log.Info($"User changed email status to closed - approved. User Id: {userId} Email Id: {emailId}");
             }
             catch (Exception ex)
             {
                 TempData["error"] = ex.Message;
-                _logger.LogError($"System failed to change the email status to closed - approved. User Id: {userId} Email Id: {emailId}");
+                log.Error($"System failed to change the email status to closed - approved. User Id: {userId} Email Id: {emailId}");
 
                 return RedirectToAction("Index", new { id = emailId });
             }
@@ -167,12 +168,12 @@ namespace EmailManager.Controllers
             try
             {
                 await _emailService.MarkClosedRejectedStatus(emailId, userId);
-                _logger.LogInformation($"User changed email status to closed - rejected. User Id: {userId} Email Id: {emailId}");
+                log.Info($"User changed email status to closed - rejected. User Id: {userId} Email Id: {emailId}");
             }
             catch (Exception ex)
             {
                 TempData["error"] = ex.Message;
-                _logger.LogError($"System failed to change the email status to closed - rejected. User Id: {userId} Email Id: {emailId}");
+                log.Error($"System failed to change the email status to closed - rejected. User Id: {userId} Email Id: {emailId}");
 
                 return RedirectToAction("Index", new { id = emailId });
             }
@@ -190,12 +191,12 @@ namespace EmailManager.Controllers
             try
             {
                 await _emailService.MarkInvalidStatus(emailId, userId);
-                _logger.LogInformation($"User changed email status to invalid. User Id: {userId} Email Id: {emailId}");
+                log.Info($"User changed email status to invalid. User Id: {userId} Email Id: {emailId}");
             }
             catch (Exception ex)
             {
                 TempData["error"] = ex.Message;
-                _logger.LogError($"System failed to change the email status to invalid. User Id: {userId} Email Id: {emailId}");
+                log.Error($"System failed to change the email status to invalid. User Id: {userId} Email Id: {emailId}");
 
                 return RedirectToAction("Index", new { id = emailId });
             }
@@ -213,12 +214,12 @@ namespace EmailManager.Controllers
             try
             {
                 await _emailService.MarkOpenStatus(emailId, userId);
-                _logger.LogInformation($"User changed email status to open. User Id: {userId} Email Id: {emailId}");
+                log.Info($"User changed email status to open. User Id: {userId} Email Id: {emailId}");
             }
             catch (Exception ex)
             {
                 TempData["error"] = ex.Message;
-                _logger.LogError($"System failed to change the email status to open. User Id: {userId} Email Id: {emailId}");
+                log.Error($"System failed to change the email status to open. User Id: {userId} Email Id: {emailId}");
 
                 return RedirectToAction("Index", new { id = emailId });
             }
@@ -237,12 +238,12 @@ namespace EmailManager.Controllers
             try
             {
                 await _emailService.MarkNotReviewStatus(emailId, userId);
-                _logger.LogInformation($"User changed email status to not reviewed. User Id: {userId} Email Id: {emailId}");
+                log.Info($"User changed email status to not reviewed. User Id: {userId} Email Id: {emailId}");
             }
             catch (Exception ex)
             {
                 TempData["error"] = ex.Message;
-                _logger.LogError($"System failed to change the email status to not reviewed. User Id: {userId} Email Id: {emailId}");
+                log.Error($"System failed to change the email status to not reviewed. User Id: {userId} Email Id: {emailId}");
 
                 return RedirectToAction("Index", new { id = emailId });
             }

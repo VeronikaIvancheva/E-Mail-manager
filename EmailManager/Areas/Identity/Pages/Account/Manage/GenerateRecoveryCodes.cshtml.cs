@@ -12,15 +12,15 @@ namespace EmailManager.Areas.Identity.Pages.Account.Manage
 {
     public class GenerateRecoveryCodesModel : PageModel
     {
+        private static readonly log4net.ILog log =
+          log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         private readonly UserManager<User> _userManager;
-        private readonly ILogger<GenerateRecoveryCodesModel> _logger;
 
         public GenerateRecoveryCodesModel(
-            UserManager<User> userManager,
-            ILogger<GenerateRecoveryCodesModel> logger)
+            UserManager<User> userManager)
         {
             _userManager = userManager;
-            _logger = logger;
         }
 
         [TempData]
@@ -65,7 +65,7 @@ namespace EmailManager.Areas.Identity.Pages.Account.Manage
             var recoveryCodes = await _userManager.GenerateNewTwoFactorRecoveryCodesAsync(user, 10);
             RecoveryCodes = recoveryCodes.ToArray();
 
-            _logger.LogInformation("User with ID '{UserId}' has generated new 2FA recovery codes.", userId);
+            log.Info($"User '{user.UserName}' has generated new 2FA recovery codes.");
             StatusMessage = "You have generated new recovery codes.";
             return RedirectToPage("./ShowRecoveryCodes");
         }

@@ -12,15 +12,15 @@ namespace EmailManager.Areas.Identity.Pages.Account.Manage
 {
     public class Disable2faModel : PageModel
     {
+        private static readonly log4net.ILog log =
+          log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         private readonly UserManager<User> _userManager;
-        private readonly ILogger<Disable2faModel> _logger;
 
         public Disable2faModel(
-            UserManager<User> userManager,
-            ILogger<Disable2faModel> logger)
+            UserManager<User> userManager)
         {
             _userManager = userManager;
-            _logger = logger;
         }
 
         [TempData]
@@ -56,7 +56,7 @@ namespace EmailManager.Areas.Identity.Pages.Account.Manage
                 throw new InvalidOperationException($"Unexpected error occurred disabling 2FA for user with ID '{_userManager.GetUserId(User)}'.");
             }
 
-            _logger.LogInformation("User with ID '{UserId}' has disabled 2fa.", _userManager.GetUserId(User));
+            log.Info($"User '{user.UserName}' has disabled 2fa.");
             StatusMessage = "2fa has been disabled. You can reenable 2fa when you setup an authenticator app";
             return RedirectToPage("./TwoFactorAuthentication");
         }
