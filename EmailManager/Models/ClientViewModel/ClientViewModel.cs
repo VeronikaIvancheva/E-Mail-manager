@@ -6,6 +6,17 @@ namespace EmailManager.Models.ClientViewModel
 {
     public class ClientViewModel
     {
+        public ClientViewModel() { }
+
+        public ClientViewModel(Client client, Loan loan)
+        {
+            this.ClientName = client.ClientName;
+            this.ClientEmail = client.ClientEmail;
+            this.ClientEGN = client.ClientEGN;
+            this.ClientId = client.ClientId;
+            this.LoanSum = loan.LoanedSum;
+        }
+
         public int ClientId { get; set; }
 
         [Required(ErrorMessage = "Please enter the client phone number.")]
@@ -25,6 +36,8 @@ namespace EmailManager.Models.ClientViewModel
         [Required(ErrorMessage = "Please enter the client email.")]
         [Display(Name = "Client email")]
         public string ClientEmail { get; set; }
+
+        public int LoanSum { get; set; }
 
         public ICollection<Loan> Loans { get; set; }
     }

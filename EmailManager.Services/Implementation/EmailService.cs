@@ -9,8 +9,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using EmailManager.Data.Implementation;
 using Microsoft.Extensions.Logging;
-using EmailManager.Services.DTO;
-using EmailManager.Services.Exeptions;
 
 
 namespace EmailManager.Services.Implementation
@@ -262,74 +260,74 @@ namespace EmailManager.Services.Implementation
         }
 
 
-        public async Task AddAttachmentAsync(EmailAttachmentDTO attachmentDTO)
-        {
-            if (attachmentDTO.FileName.Length < 1 || attachmentDTO.FileName.Length > 100)
-            {
-                throw new EmailExeptions("Lenght of attachment name is not correct!");
-            }
+        //public async Task AddAttachmentAsync(Attachment attachmentDTO)
+        //{
+        //    if (attachmentDTO.FileName.Length < 1 || attachmentDTO.FileName.Length > 100)
+        //    {
+        //        throw new EmailExeptions("Lenght of attachment name is not correct!");
+        //    }
 
-            var gmaiId = await this._context.Emails
-               .FirstOrDefaultAsync(id => id.EmailId == attachmentDTO.EmailId);
+        //    var gmaiId = await this._context.Emails
+        //       .FirstOrDefaultAsync(id => id.EmailId == attachmentDTO.EmailId);
 
-            if (gmaiId == null)
-            {
-                var attachment = new Attachment
-                {
-                    FileName = attachmentDTO.FileName,
-                    AttachmentSizeKb = attachmentDTO.AttachmentSizeKb,
-                    EmailId = attachmentDTO.EmailId
-                };
+        //    if (gmaiId == null)
+        //    {
+        //        var attachment = new Attachment
+        //        {
+        //            FileName = attachmentDTO.FileName,
+        //            AttachmentSizeKb = attachmentDTO.AttachmentSizeKb,
+        //            EmailId = attachmentDTO.EmailId
+        //        };
 
-                await this._context.Attachments.AddAsync(attachment);
-                await this._context.SaveChangesAsync();
-            }
-        }
-        public async Task<Email> AddBodyToCurrentEmailAsync(EmailBodyDTO emailBodyDto)
-        {
-            var email = await this._context.Emails
-                .Include(u => u.User)
-                .Where(gMail => gMail.EmailId == emailBodyDto.UserId)
-                .SingleOrDefaultAsync();
+        //        await this._context.Attachments.AddAsync(attachment);
+        //        await this._context.SaveChangesAsync();
+        //    }
+        //}
+        //public async Task<Email> AddBodyToCurrentEmailAsync(EmailBody emailBodyDto)
+        //{
+        //    var email = await this._context.Emails
+        //        .Include(u => u.User)
+        //        .Where(gMail => gMail.EmailId == emailBodyDto.UserId)
+        //        .SingleOrDefaultAsync();
 
-            var emailBody = await this._context.EmailBodies
-                .Include(b => b.Email)
-                .Where(b => b.EmailId == emailBodyDto.EmailId)
-                .SingleOrDefaultAsync();
+        //    var emailBody = await this._context.EmailBodies
+        //        .Include(b => b.Email)
+        //        .Where(b => b.EmailId == emailBodyDto.EmailId)
+        //        .SingleOrDefaultAsync();
 
-            var currentUser = await this._context.Users
-                .Where(id => id.Id == emailBodyDto.UserId)
-                .SingleOrDefaultAsync();
+        //    var currentUser = await this._context.Users
+        //        .Where(id => id.Id == emailBodyDto.UserId)
+        //        .SingleOrDefaultAsync();
 
-            if (emailBodyDto.Body == null)
-            {
-                throw new EmailExeptions($"The Email with Id {emailBodyDto.Email} does not exist");
-            }
+        //    if (emailBodyDto.Body == null)
+        //    {
+        //        throw new EmailExeptions($"The Email with Id {emailBodyDto.Email} does not exist");
+        //    }
 
-            if (emailBodyDto.Body.Length > 1000)
-            {
-                throw new EmailExeptions($"Body of email is to long!");
-            }
+        //    if (emailBodyDto.Body.Length > 1000)
+        //    {
+        //        throw new EmailExeptions($"Body of email is to long!");
+        //    }
 
-            if (emailBody != null)
-            {
-                throw new EmailExeptions($"Email with the following id {emailBodyDto.Email} contains body");
-            }
+        //    if (emailBody != null)
+        //    {
+        //        throw new EmailExeptions($"Email with the following id {emailBodyDto.Email} contains body");
+        //    }
 
-            var decodeBody = this._securityDecrypt.Base64Decrypt(emailBodyDto.Body);
+        //    var decodeBody = this._securityDecrypt.Base64Decrypt(emailBodyDto.Body);
 
-            var encriptBody = this._securityEncrypt.Encrypt(decodeBody);
+        //    var encriptBody = this._securityEncrypt.Encrypt(decodeBody);
 
 
-            if (email.EmailBody == null)
-            {
-                emailBody.Body = encriptBody;
-                email.User = currentUser;
-                email.UserId = emailBodyDto.UserId;
-                email.IsSeen = true;
-                await this._context.SaveChangesAsync();
-            }
-            return email;
-        }
+        //    if (email.EmailBody == null)
+        //    {
+        //        emailBody.Body = encriptBody;
+        //        email.User = currentUser;
+        //        email.UserId = emailBodyDto.UserId;
+        //        email.IsSeen = true;
+        //        await this._context.SaveChangesAsync();
+        //    }
+        //    return email;
+        //}
     }
 }

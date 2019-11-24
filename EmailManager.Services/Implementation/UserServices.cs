@@ -1,5 +1,4 @@
 ﻿using EmailManager.Data.Context;
-using EmailManager.Services.DTO;
 using EmailManager.Data.Implementation;
 using EmailManager.Services.Contracts;
 using EmailManager.Services.Exeptions;
@@ -25,9 +24,9 @@ namespace EmailManager.Services.Implementation
             this._userManager = userManager;
         }
 
-        public async Task RegisterAccountAsync(RegisterAccountDTO registerAccountDto)
+        public async Task RegisterAccountAsync(User registerAccount)
         {
-            var validationMethod = ValidationMethod(registerAccountDto);
+            var validationMethod = ValidationMethod(registerAccount);
 
             var user = await this._context.Users
                 .Where(name => name.UserName == validationMethod.UserName)
@@ -40,33 +39,33 @@ namespace EmailManager.Services.Implementation
             }
         }
 
-        public RegisterAccountDTO ValidationMethod(RegisterAccountDTO registerAccountDto)
+        public User ValidationMethod(User user)
         {
-            if (registerAccountDto.Role != "Manager" && registerAccountDto.Role != "Operator")
+            if (user.Role != "Manager" && user.Role != "Operator")
             {
                 throw new UserExeptions("Wrong role name!");
             }
 
-            if (registerAccountDto.UserName.Length < 3 || registerAccountDto.UserName.Length > 50)
+            if (user.UserName.Length < 3 || user.UserName.Length > 50)
             {
                 throw new UserExeptions("Username must be betweeen 3 and 50 symbols!");
             }
 
-            if (registerAccountDto.Password.Length < 5 || registerAccountDto.Password.Length > 100)
-            {
-                throw new UserExeptions("Password must be betweeen 5 and 50 symbols!");
-            }
+            //if (user.Password.Length < 5 || user.Password.Length > 100)
+            //{
+            //    throw new UserExeptions("Password must be betweeen 5 and 50 symbols!");
+            //}
 
-            if (registerAccountDto.Email == null)
+            if (user.Email == null)
             {
                 throw new UserExeptions("Email cannot be null!");
             }
 
-            if (registerAccountDto.Email.Length < 5 || registerAccountDto.Email.Length > 50)
+            if (user.Email.Length < 5 || user.Email.Length > 50)
             {
                 throw new UserExeptions("Email must be betweeen 5 and 50 symbols!");
             }
-            return registerAccountDto;
+            return user;
         }
     }
 }

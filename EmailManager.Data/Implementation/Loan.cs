@@ -8,7 +8,7 @@ namespace EmailManager.Data.Implementation
     {
         [Key]
         public int LoanId { get; set; }
-        public decimal LoanedSum { get; set; }
+        public int LoanedSum { get; set; }
         public DateTime DateAsigned { get; set; }
 
         public int LoanEmailId { get; set; }

@@ -1,12 +1,11 @@
-﻿using EmailManager.Data.DTO;
-using EmailManager.Models.ClientViewModel;
+﻿using EmailManager.Models.ClientViewModel;
 using EmailManager.Services.Contracts;
 using EmailManager.Services.Exeptions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using EmailManager.Data.Implementation;
 
 namespace EmailManager.Controllers
 {
@@ -23,23 +22,23 @@ namespace EmailManager.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> EmailLoanFill(ClientViewModel viewModel)
+        public async Task<IActionResult> EmailLoanFill(ClientViewModel vm)
         {
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            int clientId = viewModel.ClientId;
+            var client = new Client( vm.ClientName, vm.ClientPhoneNumber, vm.ClientEmail, vm.ClientEGN);
 
             try
             {
-                //await _loanService.CreateLoanApplication(clientId, userId);
+                await _loanService.CreateLoanApplication(client, userId);
 
             }
             catch (LoanExeptions ex)
             {
                 log.Error($"Failed to create loan application. |{ex}| error");
-                return RedirectToAction("Detail", new { id = clientId });
+                return RedirectToAction("Detail", new { id = client.ClientId });
             }
 
-            return RedirectToAction("Detail", new { id = clientId });
+            return RedirectToAction("Detail", new { id = client.ClientId });
         }
 
         [HttpPost]

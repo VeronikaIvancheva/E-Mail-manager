@@ -1,11 +1,11 @@
-﻿using System.Threading.Tasks;
-using EmailManager.Services.DTO;
+﻿using EmailManager.Data.Implementation;
+using System.Threading.Tasks;
 
 namespace EmailManager.Services.Contracts
 {
     public interface IUserServices
     {
-        Task RegisterAccountAsync(RegisterAccountDTO registerAccountDto);
-        RegisterAccountDTO ValidationMethod(RegisterAccountDTO registerAccountDto);
+        Task RegisterAccountAsync(User user);
+        User ValidationMethod(User user);
     }
 }

@@ -1,5 +1,4 @@
 ﻿using EmailManager.Data.Context;
-using EmailManager.Services.DTO;
 using EmailManager.Data.Enums;
 using EmailManager.Data.Implementation;
 using EmailManager.Services.Contracts;
@@ -31,36 +30,34 @@ namespace EmailManager.Services.Implementation
             this._encrypt = encrypt;
         }
 
-        public async Task<Client> CreateLoanApplication(ClientDTO clientDto, int clientId, string userId)
+        public async Task<Client> CreateLoanApplication(Client client, string userId)
         {
-            //ClientDTO clientDto; = clientId;
-
             #region Validations
-            if (clientDto.ClientName == null || clientDto.ClientEGN == null || clientDto.ClientPhoneNumber == null)
+            if (client.ClientName == null || client.ClientEGN == null || client.ClientPhoneNumber == null)
             {
                 throw new LoanExeptions("Тhe details of the loan application have not been filled in correctly");
             }
 
-            if (clientDto.EmailId == null)
+            if (client.EmailId == null)
             {
-                throw new LoanExeptions($"Email with ID {clientDto.EmailId} does not exist!");
+                throw new LoanExeptions($"Email with ID {client.EmailId} does not exist!");
             }
 
-            if (clientDto.ClientEGN.Length != 10)
+            if (client.ClientEGN.Length != 10)
             {
                 throw new LoanExeptions("The EGN of the client must be exactly 10 digits!");
             }
 
-            if (clientDto.ClientName.Length < 3 || clientDto.ClientName.Length > 50)
+            if (client.ClientName.Length < 3 || client.ClientName.Length > 50)
             {
                 throw new LoanExeptions("The length of the client's name is not correct!");
             }
-            if (clientDto.ClientPhoneNumber.Length < 3 || clientDto.ClientPhoneNumber.Length > 10)
+            if (client.ClientPhoneNumber.Length < 3 || client.ClientPhoneNumber.Length > 10)
             {
                 throw new LoanExeptions("The length of the client's phone number is not correct!");
             }
 
-            var isEgnCorrect = CheckEgnValidity(clientDto.ClientEGN);
+            var isEgnCorrect = CheckEgnValidity(client.ClientEGN);
 
             if (isEgnCorrect == false)
             {
@@ -68,10 +65,10 @@ namespace EmailManager.Services.Implementation
             }
             #endregion
 
-            var encryptedClientData = EncryptClientInfo(clientDto);
+            var encryptedClientData = EncryptClientInfo(client);
 
             var email = await this._context.Emails
-                .Where(e => e.EmailId == clientDto.EmailId)
+                .Where(e => e.EmailId == client.EmailId)
                 .FirstOrDefaultAsync();
 
             var loan = new Client
@@ -93,50 +90,50 @@ namespace EmailManager.Services.Implementation
             return loan;
         }
 
-        public async Task<bool> ApproveLoan(ApproveLoanDTO approveLoanDto)
-        {
+        //public async Task<bool> ApproveLoan(ApproveLoanDTO approveLoanDto)
+        //{
 
-            if (approveLoanDto.EmailId == null || approveLoanDto.Approved == null)
-            {
-                throw new LoanExeptions($"Invalid loan request details");
-            }
+        //    if (approveLoanDto.EmailId == null || approveLoanDto.Approved == null)
+        //    {
+        //        throw new LoanExeptions($"Invalid loan request details");
+        //    }
 
-            int result = int.Parse(approveLoanDto.Approved);
+        //    int result = int.Parse(approveLoanDto.Approved);
 
-            var loan = await this._context.Clients
-                .Where(e => e.EmailId == approveLoanDto.EmailId)
-                .FirstOrDefaultAsync();
+        //    var loan = await this._context.Clients
+        //        .Where(e => e.EmailId == approveLoanDto.EmailId)
+        //        .FirstOrDefaultAsync();
 
-            var email = await this._context.Emails
-                .Where(e => e.EmailId == approveLoanDto.EmailId)
-                .FirstOrDefaultAsync();
+        //    var email = await this._context.Emails
+        //        .Where(e => e.EmailId == approveLoanDto.EmailId)
+        //        .FirstOrDefaultAsync();
 
-            var user = await this._context.Users
-                .Where(id => id.Id == approveLoanDto.UserId)
-                .SingleOrDefaultAsync();
+        //    var user = await this._context.Users
+        //        .Where(id => id.Id == approveLoanDto.UserId)
+        //        .SingleOrDefaultAsync();
 
-            if (result == (int)EmailStatus.Rejected)
-            {
-                loan.IsApproved = false;
-                loan.User = user;
-                log.Info("Loan was rejected");
-            }
+        //    if (result == (int)EmailStatus.Rejected)
+        //    {
+        //        loan.IsApproved = false;
+        //        loan.User = user;
+        //        log.Info("Loan was rejected");
+        //    }
 
-            if (result == (int)EmailStatus.Approved)
-            {
-                loan.IsApproved = true;
-                loan.User = user;
-                log.Info("Loan was approved");
-            }
+        //    if (result == (int)EmailStatus.Approved)
+        //    {
+        //        loan.IsApproved = true;
+        //        loan.User = user;
+        //        log.Info("Loan was approved");
+        //    }
 
-            email.SetCurrentStatus = DateTime.Now;
-            email.EmailStatusId = (int)EmailStatus.Closed;
-            email.IsDeleted = DateTime.Now;
+        //    email.SetCurrentStatus = DateTime.Now;
+        //    email.EmailStatusId = (int)EmailStatus.Closed;
+        //    email.IsDeleted = DateTime.Now;
 
-            await this._context.SaveChangesAsync();
+        //    await this._context.SaveChangesAsync();
 
-            return true;
-        }
+        //    return true;
+        //}
 
         public bool CheckEgnValidity(string email)
         {
@@ -157,7 +154,7 @@ namespace EmailManager.Services.Implementation
             return true;
         }
 
-        public Client DecryptClientInfo(ClientDTO clientId)
+        public Client DecryptClientInfo(Client clientId)
         {
             Client client = _context.Clients
                 .FirstOrDefault(c => c.ClientId == clientId.ClientId);
@@ -170,7 +167,7 @@ namespace EmailManager.Services.Implementation
             return client;
         }
 
-        public Client EncryptClientInfo(ClientDTO clientId)
+        public Client EncryptClientInfo(Client clientId)
         {
             Client client = _context.Clients
                 .FirstOrDefault(c => c.ClientId == clientId.ClientId);
