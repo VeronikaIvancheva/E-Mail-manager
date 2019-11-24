@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using EmailManager.Data.DTO;
+using EmailManager.Services.DTO;
 using EmailManager.Data.Implementation;
 
 namespace EmailManager.Services.Contracts

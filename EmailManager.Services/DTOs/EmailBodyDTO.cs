@@ -1,5 +1,7 @@
 ﻿
-namespace EmailManager.Data.DTO
+using EmailManager.Data;
+
+namespace EmailManager.Services.DTO
 {
     public class EmailBodyDTO
     {

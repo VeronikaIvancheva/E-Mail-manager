@@ -1,5 +1,5 @@
 ﻿
-namespace EmailManager.Data.DTO
+namespace EmailManager.Services.DTO
 {
    public class EmailAttachmentDTO
     {
