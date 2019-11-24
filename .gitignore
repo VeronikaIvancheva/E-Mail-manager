@@ -357,3 +357,4 @@ MigrationBackup/
 /LibraryOfSolitude.Data/Implementation/UserBooks.cs
 /LibraryOfSolitude.Data/Migrations
 /EmailManager.Data/Migrations
+/EmailManager.Tests/EmailTests/Email_Should.cs
