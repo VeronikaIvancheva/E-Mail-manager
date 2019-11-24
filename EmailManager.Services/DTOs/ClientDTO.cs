@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace EmailManager.Data.DTO
+namespace EmailManager.Services.DTO
 {
    public class ClientDTO
     {

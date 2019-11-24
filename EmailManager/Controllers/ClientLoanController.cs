@@ -1,4 +1,4 @@
-﻿using EmailManager.Data.DTO;
+﻿using EmailManager.Services.DTO;
 using EmailManager.Services.Contracts;
 using EmailManager.Services.Exeptions;
 using Microsoft.AspNetCore.Authorization;

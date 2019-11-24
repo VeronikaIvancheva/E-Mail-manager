@@ -9,7 +9,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using EmailManager.Data.Implementation;
 using Microsoft.Extensions.Logging;
-using EmailManager.Data.DTO;
+using EmailManager.Services.DTO;
 using EmailManager.Services.Exeptions;
 
 
