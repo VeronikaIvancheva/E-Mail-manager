@@ -242,6 +242,10 @@ namespace EmailManager.Services.Implementation
 
             var user = _context.Users.FirstOrDefault(x => x.Id == userId);
 
+            log.Info($"Status changed: for Email Id: {emailId}; from user Id: {userId};" +
+                $" last status: {email.Status.LastStatus}; new status {email.Status.NewStatus};" +
+                $" changed on {DateTime.UtcNow}");
+
             var status = new Status
             {
                 LastStatus = email.Status.LastStatus = email.Status.NewStatus,
@@ -253,8 +257,6 @@ namespace EmailManager.Services.Implementation
             email.User = user;
             user.UserEmails.Add(email);
             await _context.SaveChangesAsync();
-
-            log.Info($"Changed general email statuses. Email Id: {emailId}");
 
             return email;
         }

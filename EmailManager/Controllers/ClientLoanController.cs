@@ -1,4 +1,5 @@
 ﻿using EmailManager.Data.DTO;
+using EmailManager.Models.ClientViewModel;
 using EmailManager.Services.Contracts;
 using EmailManager.Services.Exeptions;
 using Microsoft.AspNetCore.Authorization;
@@ -12,6 +13,8 @@ namespace EmailManager.Controllers
     public class ClientLoanController : Controller
     {
         private readonly ILoanServices _loanService;
+        private static readonly log4net.ILog log =
+        log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         public ClientLoanController(ILoanServices loanService)
         {
@@ -20,63 +23,65 @@ namespace EmailManager.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> EmailLoanFill(string name, string egn, string phoneNumber, string email)
+        public async Task<IActionResult> EmailLoanFill(ClientViewModel viewModel)
         {
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            int clientId = viewModel.ClientId;
+
             try
             {
-                var loanApplication = new ClientDTO
-                {
-                    ClientName = name,
-                    ClientEGN = egn,
-                    ClientPhoneNumber = phoneNumber,
-                    EmailId = email,
-                    UserId = User.FindFirstValue(ClaimTypes.NameIdentifier)
-                };
+                //await _loanService.CreateLoanApplication(clientId, userId);
 
             }
-            catch (LoanExeptions)
+            catch (LoanExeptions ex)
             {
-                return Json(new { exeption = email });
+                log.Error($"Failed to create loan application. |{ex}| error");
+                return RedirectToAction("Detail", new { id = clientId });
             }
 
-            return View();
+            return RedirectToAction("Detail", new { id = clientId });
         }
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> ApproveLoan(string approveData, string rejectData)
+        public async Task<IActionResult> ApproveLoan(/*string approveData, string rejectData*/)
         {
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            //int clientId = viewModel.ClientId;
+
             try
             {
-                string[] result = null;
-                if (approveData != null)
-                {
-                    result = approveData.Split(' ');
-                    var approveDto = new ApproveLoanDTO
-                    {
-                        Approved = result[0],
-                        EmailId = result[1],
-                        UserId = User.FindFirstValue(ClaimTypes.NameIdentifier)
-                    };
+                //string[] result = null;
+                //if (approveData != null)
+                //{
+                //    result = approveData.Split(' ');
+                //    var approveDto = new ApproveLoanDTO
+                //    {
+                //        Approved = result[0],
+                //        EmailId = result[1],
+                //        UserId = User.FindFirstValue(ClaimTypes.NameIdentifier)
+                //    };
 
-                    await this._loanService.ApproveLoanAsync(approveDto);
-                }
-                else if (rejectData != null)
-                {
-                    result = rejectData.Split(' ');
-                    var approveDto = new ApproveLoanDTO
-                    {
-                        Approved = result[0],
-                        EmailId = result[1],
-                        UserId = User.FindFirstValue(ClaimTypes.NameIdentifier)
-                    };
+                //    await this._loanService.ApproveLoan(approveDto);
+                //}
+                //else if (rejectData != null)
+                //{
+                //    result = rejectData.Split(' ');
+                //    var approveDto = new ApproveLoanDTO
+                //    {
+                //        Approved = result[0],
+                //        EmailId = result[1],
+                //        UserId = User.FindFirstValue(ClaimTypes.NameIdentifier)
+                //    };
 
-                    await this._loanService.ApproveLoanAsync(approveDto);
-                }
+                //    await this._loanService.ApproveLoan(approveDto);
+                //}
             }
             catch 
             {
-                throw new Exception("Loan was not approved");
+                //log.Error($"Failed to create loan application. |{ex}| error");
+                //return RedirectToAction("Detail", new { id = clientId });
+                //throw new Exception("Loan was not approved");
             }
 
             return View();

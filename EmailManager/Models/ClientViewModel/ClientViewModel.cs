@@ -1,9 +1,6 @@
 ﻿using EmailManager.Data.Implementation;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace EmailManager.Models.ClientViewModel
 {
@@ -22,12 +19,8 @@ namespace EmailManager.Models.ClientViewModel
         public string ClientEGN { get; set; }
 
         [Required(ErrorMessage = "Please enter the client first name.")]
-        [Display(Name = "Client first name")]
-        public string ClientFirstName { get; set; }
-
-        [Required(ErrorMessage = "Please enter the client last name.")]
-        [Display(Name = "Client last name")]
-        public string ClientLastName { get; set; }
+        [Display(Name = "Client name")]
+        public string ClientName { get; set; }
 
         [Required(ErrorMessage = "Please enter the client email.")]
         [Display(Name = "Client email")]

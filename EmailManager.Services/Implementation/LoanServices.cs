@@ -31,9 +31,11 @@ namespace EmailManager.Services.Implementation
             this._encrypt = encrypt;
         }
 
-        public async Task<Client> ClientLoanApplication(ClientDTO clientDto)
+        public async Task<Client> CreateLoanApplication(ClientDTO clientDto, int clientId, string userId)
         {
+            //ClientDTO clientDto; = clientId;
 
+            #region Validations
             if (clientDto.ClientName == null || clientDto.ClientEGN == null || clientDto.ClientPhoneNumber == null)
             {
                 throw new LoanExeptions("Тhe details of the loan application have not been filled in correctly");
@@ -64,30 +66,22 @@ namespace EmailManager.Services.Implementation
             {
                 throw new LoanExeptions("EGN must only contain digits");
             }
+            #endregion
 
-            var user = await this._context.User
-                .Include(l => l.Clients)
-                .Where(userId => userId.Id == clientDto.UserId)
-                .FirstOrDefaultAsync();
-
-            var encryptedName = this._encrypt.Encrypt(clientDto.ClientName);
-            var encryptedEgn = this._encrypt.Encrypt(clientDto.ClientEGN);
-            var encryptedPhoneNumber = this._encrypt.Encrypt(clientDto.ClientPhoneNumber);
-            var encryptedEmail = this._encrypt.Encrypt(clientDto.EmailId);
+            var encryptedClientData = EncryptClientInfo(clientDto);
 
             var email = await this._context.Emails
                 .Where(e => e.EmailId == clientDto.EmailId)
-                .SingleOrDefaultAsync();
+                .FirstOrDefaultAsync();
 
             var loan = new Client
             {
-                ClientName = encryptedName,
-                ClientEGN = encryptedEgn,
-                ClientPhoneNumber = encryptedPhoneNumber,
-                UserId = clientDto.UserId,
-                User = user,
-                Email = email,
-                EmailId = encryptedEmail
+                ClientName = encryptedClientData.ClientName,
+                ClientEGN = encryptedClientData.ClientEGN,
+                ClientPhoneNumber = encryptedClientData.ClientPhoneNumber,
+                ClientEmail = encryptedClientData.ClientEmail,
+                UserId = userId,
+                EmailId = email.EmailId
             };
 
             email.SetCurrentStatus = DateTime.Now;
@@ -95,12 +89,11 @@ namespace EmailManager.Services.Implementation
 
             await this._context.Clients.AddAsync(loan);
             await this._context.SaveChangesAsync();
+
             return loan;
         }
 
-       
-        
-        public async Task<bool> ApproveLoanAsync(ApproveLoanDTO approveLoanDto)
+        public async Task<bool> ApproveLoan(ApproveLoanDTO approveLoanDto)
         {
 
             if (approveLoanDto.EmailId == null || approveLoanDto.Approved == null)
@@ -115,8 +108,8 @@ namespace EmailManager.Services.Implementation
                 .FirstOrDefaultAsync();
 
             var email = await this._context.Emails
-            .Where(e => e.EmailId == approveLoanDto.EmailId)
-            .FirstOrDefaultAsync();
+                .Where(e => e.EmailId == approveLoanDto.EmailId)
+                .FirstOrDefaultAsync();
 
             var user = await this._context.Users
                 .Where(id => id.Id == approveLoanDto.UserId)
@@ -134,7 +127,6 @@ namespace EmailManager.Services.Implementation
                 loan.IsApproved = true;
                 loan.User = user;
                 log.Info("Loan was approved");
-
             }
 
             email.SetCurrentStatus = DateTime.Now;
@@ -145,6 +137,7 @@ namespace EmailManager.Services.Implementation
 
             return true;
         }
+
         public bool CheckEgnValidity(string email)
         {
             var egn = "";
@@ -164,18 +157,30 @@ namespace EmailManager.Services.Implementation
             return true;
         }
 
-        public Client GetClient(int clientID)
+        public Client DecryptClientInfo(ClientDTO clientId)
         {
-            var client = _context.Clients.FirstOrDefault(c=>c.ClientId==clientID);
+            Client client = _context.Clients
+                .FirstOrDefault(c => c.ClientId == clientId.ClientId);
 
-            var decryptName = _decrypt.Decrypt(client.ClientName);
-            var decryptEgn = _decrypt.Decrypt(client.ClientEGN);
-            var decryptPhoneNumber = _decrypt.Decrypt(client.ClientPhoneNumber);
-            var decryptEmail = _decrypt.Decrypt(client.EmailId);
+            string decryptName = _decrypt.Decrypt(client.ClientName);
+            string decryptEgn = _decrypt.Decrypt(client.ClientEGN);
+            string decryptPhoneNumber = _decrypt.Decrypt(client.ClientPhoneNumber);
+            string decryptEmail = _decrypt.Decrypt(client.ClientEmail);
 
             return client;
-
         }
-       
+
+        public Client EncryptClientInfo(ClientDTO clientId)
+        {
+            Client client = _context.Clients
+                .FirstOrDefault(c => c.ClientId == clientId.ClientId);
+
+            var encryptedName = this._encrypt.Encrypt(client.ClientName);
+            var encryptedEgn = this._encrypt.Encrypt(client.ClientEGN);
+            var encryptedPhoneNumber = this._encrypt.Encrypt(client.ClientPhoneNumber);
+            var encryptedEmail = this._encrypt.Encrypt(client.ClientEmail);
+
+            return client;
+        }
     }
 }
