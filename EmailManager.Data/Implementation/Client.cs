@@ -35,6 +35,8 @@ namespace EmailManager.Data.Implementation
         public virtual Email Email { get; set; }
         [NotMapped]
         public string EmailId { get; set; }
+        [NotMapped]
+        public int LoanedSum { get; set; }
 
     }
 }

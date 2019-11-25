@@ -59,13 +59,11 @@ namespace EmailManager.Controllers
             }
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ListAllStatusEmails(int? currPage, string search = null)
+        public async Task<IActionResult> ListAllStatusEmails(int? currentPage, string search = null)
         {
             GetEmailsFromGmail();
 
-            var currentPage = currPage ?? 1;
+            var currPage = currentPage ?? 1;
 
             int totalPages = await _emailService.GetPageCount(10);
 
@@ -73,27 +71,30 @@ namespace EmailManager.Controllers
 
             if (!string.IsNullOrEmpty(search))
             {
-                emailAllResults = await _emailService.SearchEmails(search, currentPage);
+                emailAllResults = await _emailService.SearchEmails(search, currPage);
                 log.Info($"User searched for {search}.");
             }
             else
             {
-                emailAllResults = await _emailService.GetAllStatusEmails(currentPage);
+                emailAllResults = await _emailService.GetAllStatusEmails(currPage);
                 log.Info($"Displayed all emails list.");
             }
 
             var emailsListing = emailAllResults
                 .Select(m => EmailMapper.MapFromEmail(m, _emailService));
-            var emailModel = EmailMapper.MapFromEmailIndex(emailsListing, currentPage, totalPages);
+            var emailModel = EmailMapper.MapFromEmailIndex(emailsListing, currPage, totalPages);
 
-            if (totalPages > currentPage)
+            emailModel.CurrentPage = currPage;
+            emailModel.TotalPages = totalPages;
+
+            if (totalPages > currPage)
             {
-                emailModel.NextPage = currentPage + 1;
+                emailModel.NextPage = currPage + 1;
             }
 
-            if (currentPage > 1)
+            if (currPage > 1)
             {
-                emailModel.PreviousPage = currentPage - 1;
+                emailModel.PreviousPage = currPage - 1;
             }
 
             return View(emailModel);

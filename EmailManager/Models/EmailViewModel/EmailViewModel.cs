@@ -1,6 +1,7 @@
 ﻿using EmailManager.Data;
 using EmailManager.Data.Enums;
 using EmailManager.Data.Implementation;
+using EmailManager.Models.ClientViewModel;
 using System;
 
 namespace EmailManager.Models.EmailViewModel
@@ -41,5 +42,7 @@ namespace EmailManager.Models.EmailViewModel
         public bool HasAttachments { get; set; }
         public double? AttachmentSize { get; set; }
         public string AttachmentName { get; set; }
+
+        public CreateLoanViewModel NewLoan { get; set; }
     }
 }

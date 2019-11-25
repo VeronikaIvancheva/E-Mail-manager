@@ -5,60 +5,66 @@
 }
 
 
-    <form asp-action="ListAllStatusEmails" asp-controller="Email" method="post">
-        <div class="input-group mb-1">
-            <input type="text" name="search" id="search" class="btn btn-light btn-outline-secondary" />
-            <div class="input-group-append btn">
-                <input type="submit" value="Search" class="btn btn-outline-secondary" />
-            </div>
+<form asp-action="ListAllStatusEmails" asp-controller="Email" method="post">
+    <div class="input-group mb-1">
+        <input type="text" name="search" id="search" class="btn btn-light btn-outline-secondary" />
+        <div class="input-group-append btn">
+            <input type="submit" value="Search" class="btn btn-outline-secondary" />
         </div>
-    </form>
+    </div>
+</form>
 
-<table class="blueTable">
-    <thead>
-        <tr>
+<table class="table table-striped text-center" style="border-color: #808080">
+    <thead style="color: #2f2c2c">
+        <tr style="text-align: center">
             <th>№</th>
             <th>Sender</th>
             <th>Subject</th>
-            <th>Body</th>
+            @*<th>Body</th>*@
             <th>Receive Date</th>
             <th>Status</th>
-            <th>In current status since</th>
+            <th>Current status since</th>
             <th>Attachments</th>
             @if (User.IsInRole("Manager"))
             {
                 <th>Changed by</th>
             }
             <th></th>
-            <th></th>
         </tr>
     </thead>
-    <tbody>
+    <tbody style="color: #4a3e3e">
         @foreach (var email in @Model.Emails)
         {
             <tr>
                 <td>@email.Id</td>
                 <td>@email.Sender</td>
                 <td>@email.Subject</td>
-                <td>@email.Body</td>
+                @*<td>@email.Body</td>*@
                 <td>@email.ReceiveDate</td>
                 <td>@email.EnumStatus</td>
                 <td>@email.InCurrentStatusSince</td>
-                <td>@email.HasAttachments</td>
+                @if (email.HasAttachments == true)
+                {
+                    <td class="text-center"><img src="~/constants/Icons/attach_file_18dp.png" /></td>
+                }
+                else
+                {
+                    <td></td>
+                }
                 @if (User.IsInRole("Manager"))
                 {
                     <td>@email.StatusChangedBy</td>
                 }
                 <td>
                     <form asp-route-id="@email.Id" asp-action="Detail" asp-controller="Email" method="post">
-                        <button type="submit" class="btn btn-lg btn-info">Details</button>
+                        <button type="submit" class="btn btn-lg btn-light">Details</button>
                     </form>
                 </td>
-                <td></td>
             </tr>
         }
     </tbody>
 </table>
+<p></p>
 <div class="align-content-center">
     @if (Model.PreviousPage == null)
     {
@@ -77,10 +83,11 @@
     }
     else
     {
-        <a asp-action="ListAllStatusEmails" asp-route-currentPage="@Model.NextPage" class="btn btn-sm btn-lighter btn-auto next-pagination-button-table" at="Next">Next</a>
+        <a asp-action="ListAllStatusEmails" asp-route-currentPage="@Model.NextPage" class="btn btn-sm btn-lighter btn-auto next-pagination-button-table" at="@Model.NextPage">Next</a>
     }
 </div>
 
+<p></p>
 <div>
     <a asp-action="Index" asp-controller="Home"><< Back to home page >></a>
 </div>

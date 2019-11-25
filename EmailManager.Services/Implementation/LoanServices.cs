@@ -1,4 +1,5 @@
-﻿using EmailManager.Data.Context;
+﻿using EmailManager.Data;
+using EmailManager.Data.Context;
 using EmailManager.Data.Enums;
 using EmailManager.Data.Implementation;
 using EmailManager.Services.Contracts;
@@ -19,10 +20,11 @@ namespace EmailManager.Services.Implementation
 
         private readonly EmailManagerContext _context;
         private readonly IEncryptionServices _securityEncrypt;
-        private readonly DecryptionServices _decrypt;
-        private readonly EncryptionServices _encrypt;
+        private readonly IDecryptionServices _decrypt;
+        private readonly IEncryptionServices _encrypt;
 
-        public LoanServices(EmailManagerContext context, IEncryptionServices securityEncrypt, DecryptionServices decrypt, EncryptionServices encrypt)
+        public LoanServices(EmailManagerContext context, IEncryptionServices securityEncrypt,
+            IDecryptionServices decrypt, IEncryptionServices encrypt)
         {
             this._context = context;
             this._securityEncrypt = securityEncrypt;
@@ -30,46 +32,58 @@ namespace EmailManager.Services.Implementation
             this._encrypt = encrypt;
         }
 
-        public async Task<Client> CreateLoanApplication(Client client, string userId)
+        public async Task<Client> CreateLoanApplication(Client client, string userId, Email email)
         {
             #region Validations
-            if (client.ClientName == null || client.ClientEGN == null || client.ClientPhoneNumber == null)
-            {
-                throw new LoanExeptions("Тhe details of the loan application have not been filled in correctly");
-            }
+            //if (client.ClientName == null || client.ClientEGN == null || client.ClientPhoneNumber == null)
+            //{
+            //    throw new LoanExeptions("Тhe details of the loan application have not been filled in correctly");
+            //}
 
-            if (client.EmailId == null)
-            {
-                throw new LoanExeptions($"Email with ID {client.EmailId} does not exist!");
-            }
+            //if (client.EmailId == null)
+            //{
+            //    throw new LoanExeptions($"Email with ID {client.EmailId} does not exist!");
+            //}
 
-            if (client.ClientEGN.Length != 10)
-            {
-                throw new LoanExeptions("The EGN of the client must be exactly 10 digits!");
-            }
+            //if (client.ClientEGN.Length != 10)
+            //{
+            //    return new LoanExeptions("The EGN of the client must be exactly 10 digits!");
+            //}
 
-            if (client.ClientName.Length < 3 || client.ClientName.Length > 50)
-            {
-                throw new LoanExeptions("The length of the client's name is not correct!");
-            }
-            if (client.ClientPhoneNumber.Length < 3 || client.ClientPhoneNumber.Length > 10)
-            {
-                throw new LoanExeptions("The length of the client's phone number is not correct!");
-            }
+            //if (client.ClientName.Length < 3 || client.ClientName.Length > 50)
+            //{
+            //    throw new LoanExeptions("The length of the client's name is not correct!");
+            //}
+            //if (client.ClientPhoneNumber.Length < 3 || client.ClientPhoneNumber.Length > 10)
+            //{
+            //    throw new LoanExeptions("The length of the client's phone number is not correct!");
+            //}
 
-            var isEgnCorrect = CheckEgnValidity(client.ClientEGN);
+            //var isEgnCorrect = CheckEgnValidity(client.ClientEGN);
 
-            if (isEgnCorrect == false)
-            {
-                throw new LoanExeptions("EGN must only contain digits");
-            }
+            //if (isEgnCorrect == false)
+            //{
+            //    throw new LoanExeptions("EGN must only contain digits");
+            //}
             #endregion
+
+            //var email = await this._context.Emails
+            //    .Where(e => e.Id == emailId)
+            //    .FirstOrDefaultAsync();
 
             var encryptedClientData = EncryptClientInfo(client);
 
-            var email = await this._context.Emails
-                .Where(e => e.EmailId == client.EmailId)
-                .FirstOrDefaultAsync();
+            var loanSum = new Loan
+            {
+                LoanedSum = client.LoanedSum,
+                DateAsigned = DateTime.UtcNow,
+                
+            };
+
+            var loanCollection = new List<Loan>()
+            {
+                loanSum
+            };
 
             var loan = new Client
             {
@@ -77,6 +91,7 @@ namespace EmailManager.Services.Implementation
                 ClientEGN = encryptedClientData.ClientEGN,
                 ClientPhoneNumber = encryptedClientData.ClientPhoneNumber,
                 ClientEmail = encryptedClientData.ClientEmail,
+                Loans = loanCollection,
                 UserId = userId,
                 EmailId = email.EmailId
             };

@@ -6,7 +6,7 @@
     <title>@ViewData["Title"] - EmailManager</title>
 
     <environment include="Development">
-        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-Spacelab.css" />
     </environment>
     <environment exclude="Development">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
@@ -16,13 +16,13 @@
               integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"/>
     </environment>
     <link rel="stylesheet" href="~/css/site.css" />
-    <link rel="stylesheet" href="~/constants/tablesStyle.css" />
 </head>
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">EmailManager</a>
+                <img src="~/constants/Logo/email-message.png" alt="" width="32" height="32" />
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Email Manager</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -50,7 +50,7 @@
     </div>
 
 
-    <footer class="border-top footer text-muted">
+    <footer class="footer text-muted" style="position: fixed">
         <div class="container">
             &copy; 2019 - EmailManager - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>

@@ -6,6 +6,11 @@
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Content Remove="wwwroot\constants\FillFormStyle.css" />
+    <Content Remove="wwwroot\constants\SiteBackground.css" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="Google.Apis.Gmail.v1" Version="1.42.0.1635" />
