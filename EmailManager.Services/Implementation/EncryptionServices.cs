@@ -11,7 +11,7 @@ namespace EmailManager.Services.Implementation
     {
         public string Encrypt(string clearText)
         {
-            string EncryptionKey = "abc123";
+            string EncryptionKey = "banana";
             byte[] clearBytes = Encoding.Unicode.GetBytes(clearText);
             using (Aes encryptor = Aes.Create())
             {

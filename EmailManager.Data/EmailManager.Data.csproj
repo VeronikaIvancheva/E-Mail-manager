@@ -17,10 +17,18 @@
     <Compile Remove="Migrations\20191123215545_I.Designer.cs" />
     <Compile Remove="Migrations\20191123222434_II.cs" />
     <Compile Remove="Migrations\20191123222434_II.Designer.cs" />
+    <Compile Remove="Migrations\20191124114510_I.cs" />
+    <Compile Remove="Migrations\20191124114510_I.Designer.cs" />
     <Compile Remove="Migrations\20191125110755_I.cs" />
     <Compile Remove="Migrations\20191125110755_I.Designer.cs" />
     <Compile Remove="Migrations\20191125112813_I.cs" />
     <Compile Remove="Migrations\20191125112813_I.Designer.cs" />
+    <Compile Remove="Migrations\20191125124555_II.cs" />
+    <Compile Remove="Migrations\20191125124555_II.Designer.cs" />
+    <Compile Remove="Migrations\20191125125451_III.cs" />
+    <Compile Remove="Migrations\20191125125451_III.Designer.cs" />
+    <Compile Remove="Migrations\20191125134332_IV.cs" />
+    <Compile Remove="Migrations\20191125134332_IV.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

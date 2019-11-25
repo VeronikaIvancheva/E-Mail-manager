@@ -197,28 +197,28 @@ namespace EmailManager.Controllers
             return RedirectToAction("Detail", new { id = emailId });
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> MarkOpen(EmailViewModel viewModel)
-        {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            int emailId = viewModel.Id;
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> MarkOpen(EmailViewModel viewModel)
+        //{
+        //    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        //    int emailId = viewModel.Id;
 
-            try
-            {
-                await _emailService.MarkOpenStatus(emailId, userId);
-                log.Info($"User changed email status to open. User Id: {userId} Email Id: {emailId}");
-            }
-            catch (Exception ex)
-            {
-                TempData["error"] = ex.Message;
-                log.Error($"System failed to change the email status to open. User Id: {userId} Email Id: {emailId}");
+        //    try
+        //    {
+        //        await _emailService.MarkOpenStatus(emailId, userId);
+        //        log.Info($"User changed email status to open. User Id: {userId} Email Id: {emailId}");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        TempData["error"] = ex.Message;
+        //        log.Error($"System failed to change the email status to open. User Id: {userId} Email Id: {emailId}");
 
-                return RedirectToAction("Detail", new { id = emailId });
-            }
+        //        return RedirectToAction("Detail", new { id = emailId });
+        //    }
 
-            return RedirectToAction("Detail", new { id = emailId });
-        }
+        //    return RedirectToAction("Detail", new { id = emailId });
+        //}
 
         [HttpPost]
         [ValidateAntiForgeryToken]

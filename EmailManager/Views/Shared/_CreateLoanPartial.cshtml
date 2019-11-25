@@ -4,9 +4,9 @@
     <link rel="stylesheet" href="~/constants/FillFormStyle.css" />
 </head>
 
-<form id="createLoan" asp-controller="ClientLoan" asp-action="CreateLoan"asp-route-emailDbId="@Model.EmailDbId" method="post"
+<form id="createLoan" asp-controller="ClientLoan" asp-action="CreateLoan" asp-route-emailDbId="@Model.EmailDbId" method="post"
       class="form-style-4" style="float:right">
-    <h4 style="color: white"><b><u>Loan form</u></b></h4>    
+    <h4 style="color: white"><b><u>Loan form</u></b></h4>
     <div class="form-group">
         <label asp-for="ClientName" class="control-label"></label>
         <input asp-for="ClientName" class="form-control" />

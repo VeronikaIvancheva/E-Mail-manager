@@ -7,10 +7,10 @@ namespace EmailManager.Services.Contracts
     public interface ILoanServices
     {
         //Task<bool> ApproveLoan(ApproveLoan approveLoan);
-        Task<Loan> CreateLoanApplication(Client client, int loanSum, string userId, Email email);
+        Task<Loan> CreateLoanApplication(Client client, int loanSum, string userId, int emailId);
         bool CheckEgnValidity(string email);
-        Client EncryptClientInfo(Client clientId);
+        Client EncryptClientInfo(string clientName, string clientPhone, string clientEGN, string clientEmail, string userId);
         Client DecryptClientInfo(Client clientId);
-        Task<Client> AddClient(string clientName, string clientPhone, string clientEGN, string clientEmail);
+        Task<Client> AddClient(string clientName, string clientPhone, string clientEGN, string clientEmail, string userId);
     }
 }

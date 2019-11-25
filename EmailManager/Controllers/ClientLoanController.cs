@@ -37,14 +37,14 @@ namespace EmailManager.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateLoan(CreateLoanViewModel vm, int emailDbId, Email email)
+        public async Task<IActionResult> CreateLoan(CreateLoanViewModel vm)
         {
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var clientCheck = await _loanService.AddClient(vm.ClientName, vm.ClientPhoneNumber, vm.ClientEGN, vm.ClientEmail);
+            var clientCheck = await _loanService.AddClient(vm.ClientName, vm.ClientPhoneNumber, vm.ClientEGN, vm.ClientEmail, userId);
 
             try
             {
-                await _loanService.CreateLoanApplication(clientCheck, vm.LoanSum, userId, email);
+                await _loanService.CreateLoanApplication(clientCheck, vm.LoanSum, userId, vm.EmailDbId);
 
             }
             catch (LoanExeptions ex)
