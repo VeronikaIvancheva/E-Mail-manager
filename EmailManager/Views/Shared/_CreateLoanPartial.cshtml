@@ -1,39 +1,38 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model CreateLoanViewModel
 
-@model CreateLoanViewModel
-
-    <head>
-        <link rel="stylesheet" href="~/constants/FillFormStyle.css" />
-    </head>
+<head>
+    <link rel="stylesheet" href="~/constants/FillFormStyle.css" />
+</head>
 
 <form id="createLoan" asp-controller="ClientLoan" asp-action="CreateLoan" method="post"
       class="form-style-4" style="float:right">
-
-    <p>Loan form</p>
-    <label asp-for="ClientName" class="control-label" for="field1">
-        <span asp-validation-for="ClientName">Name</span>
-        <input asp-for="ClientName" type="text" name="field1" required />
-    </label>
-    <label for="field2">
-        <span>Email Address</span>
-        <input type="email" name="field2" required />
-    </label>
-    <label asp-for="ClientPhoneNumber" class="control-label" for="field2">
-        <span asp-validation-for="ClientPhoneNumber">Phone</span>
-        <input asp-for="ClientPhoneNumber" type="number" name="field2" required />
-    </label>
-    <label asp-for="ClientEGN" for="field2">
-        <span asp-validation-for="ClientEGN">EGN</span>
-        <input asp-for="ClientEGN" type="number" pattern="[0-9]{10,10}" name="field2" required />
-    </label>
-    <label asp-for="LoanedSum" for="field2">
-        <span asp-validation-for="LoanedSum">Loan in BGN</span>
-        <input asp-for="LoanedSum" type="number" pattern="[0-9]{10,10}" name="field2" required />
-    </label>
-    <label>
-        <span> </span><input type="submit" value="Submit" />
-        <span> </span><input type="reset" value="Reset" />
-    </label>
+    <h4 style="color: white"><b><u>Loan form</u></b></h4>
+    <div class="form-group">
+        <label asp-for="ClientName" class="control-label"></label>
+        <input asp-for="ClientName" class="form-control" />
+        <span asp-validation-for="ClientName" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="ClientEmail" class="control-label"></label>
+        <input asp-for="ClientEmail" class="form-control" />
+        <span asp-validation-for="ClientEmail" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="ClientPhoneNumber" class="control-label"></label>
+        <input asp-for="ClientPhoneNumber" class="form-control" />
+        <span asp-validation-for="ClientPhoneNumber" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="ClientEGN" class="control-label"></label>
+        <input asp-for="ClientEGN" class="form-control" />
+        <span asp-validation-for="ClientEGN" class="text-danger"></span>
+    </div><div class="form-group">
+        <label asp-for="LoanedSum" class="control-label"></label>
+        <input asp-for="LoanedSum" class="form-control" />
+        <span asp-validation-for="LoanedSum" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Create" class="btn btn-primary" />
+        <button type="reset" class="btn btn-secondary">Reset</button>
+    </div>
 </form>

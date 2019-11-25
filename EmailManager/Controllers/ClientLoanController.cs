@@ -1,7 +1,6 @@
 ﻿using EmailManager.Models.ClientViewModel;
 using EmailManager.Services.Contracts;
 using EmailManager.Services.Exeptions;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using System.Threading.Tasks;

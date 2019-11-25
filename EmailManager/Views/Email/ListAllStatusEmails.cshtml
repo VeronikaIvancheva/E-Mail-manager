@@ -64,6 +64,7 @@
         }
     </tbody>
 </table>
+
 <p></p>
 <div class="align-content-center">
     @if (Model.PreviousPage == null)
@@ -73,6 +74,7 @@
     else
     {
         <a asp-action="ListAllStatusEmails" asp-route-currentPage="@Model.PreviousPage" class="btn btn-sm btn-lighter btn-auto previous-pagination-button-table" at="@Model.PreviousPage">Prev</a>
+        <a asp-action="ListAllStatusEmails" asp-route-currentPage="@Model.PreviousPage" class="btn btn-sm btn-lighter btn-auto previous-pagination-button-table" at="@Model.PreviousPage">@Model.PreviousPage</a>
     }
 
     <button class="btn btn-sm btn-primary btn-auto">@Model.CurrentPage</button>
@@ -83,6 +85,7 @@
     }
     else
     {
+        <a asp-action="ListAllStatusEmails" asp-route-currentPage="@Model.NextPage" class="btn btn-sm btn-lighter btn-auto previous-pagination-button-table" at="@Model.NextPage">@Model.NextPage</a>
         <a asp-action="ListAllStatusEmails" asp-route-currentPage="@Model.NextPage" class="btn btn-sm btn-lighter btn-auto next-pagination-button-table" at="@Model.NextPage">Next</a>
     }
 </div>
