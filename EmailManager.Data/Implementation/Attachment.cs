@@ -11,7 +11,6 @@ namespace EmailManager.Data.Implementation
         public string AttachmentId { get; set; }
         public string FileName { get; set; }
         public double? AttachmentSizeKb { get; set; }
-        [NotMapped]
         public string EmailId { get; set; }
         public Email Email { get; set; }
     }
