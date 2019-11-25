@@ -73,11 +73,9 @@ namespace EmailManager.Services.Implementation
                 .Where(e => e.Id == emailId)
                 .FirstOrDefaultAsync();
 
-            int loanedSum = client.LoanedSum + loanSum;
-
             var createLoan = new Loan
             {
-                LoanedSum = loanedSum,
+                LoanedSum = loanSum,
                 DateAsigned = DateTime.UtcNow,
                 ClientId = client.ClientId,
                 Client = client,
@@ -168,6 +166,17 @@ namespace EmailManager.Services.Implementation
             string decryptPhoneNumber = _decrypt.Decrypt(client.ClientPhoneNumber);
             string decryptEmail = _decrypt.Decrypt(client.ClientEmail);
 
+            Client clientForLoan = new Client
+            {
+                ClientName = decryptName,
+                ClientEmail = decryptEgn,
+                ClientEGN = decryptPhoneNumber,
+                ClientPhoneNumber = decryptEmail,
+                UserId = client.UserId,
+                EmailId = client.EmailId,
+                Email = client.Email,
+            };
+
             return client;
         }
 
@@ -198,8 +207,7 @@ namespace EmailManager.Services.Implementation
             IEnumerable<Client> decryptedClients = _decrypt.DecryptClientList(clientAll);
 
             Client newClientCheck = decryptedClients
-                .Where(a => a.ClientEGN == clientEGN)
-                .FirstOrDefault();
+                .FirstOrDefault(a => a.ClientEGN == clientEGN);
 
             if (newClientCheck == null)
             {

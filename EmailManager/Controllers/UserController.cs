@@ -44,6 +44,8 @@ namespace EmailManager.Controllers
         public IActionResult Detail(string userId)
         {
             var user = _userService.GetUserById(userId);
+            //var client = _userService.GetClientById(int.Parse(userId));
+
             var userModel = new UserViewModel(user);
 
             return View("Detail", userModel);

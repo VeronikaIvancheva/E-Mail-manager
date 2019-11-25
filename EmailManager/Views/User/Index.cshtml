@@ -16,6 +16,9 @@
             <th>Full Name</th>
             <th>Member Since</th>
             <th>Email</th>
+            <th>Role</th>
+            <th>Has loan</th>
+            <th>Loan sum</th>
         </tr>
     </thead>
     <tbody>
@@ -32,6 +35,20 @@
                 <td>@user.Name</td>
                 <td>@user.InitialRegistration</td>
                 <td>@user.Email</td>
+                @if (user.Role != "Manager" || user.Role != "Operator")
+                {
+                    <td>User</td>
+                }
+                else
+                {
+                    <td>@user.Role</td>
+                }
+                @*@foreach (var item in user.HasLoan)
+                {
+                    <td>@user.HasLoan</td>
+                    <td>item += item</td>
+                }*@
+
             </tr>
         }
     </tbody>

@@ -39,6 +39,7 @@ namespace EmailManager.Services.Implementation
             var base64EncodedBytes = Convert.FromBase64String(base64EncodedData);
             return Encoding.UTF8.GetString(base64EncodedBytes);
         }
+
         public Client DecodeClient(Client client)
         {
             var name = Decrypt(client.ClientName);
@@ -55,17 +56,19 @@ namespace EmailManager.Services.Implementation
 
             return applicant;
         }
+
         public IEnumerable<Client> DecryptClientList(IEnumerable<Client> client)
         {
             var clients = new List<Client>();
 
             foreach (var item in client)
             {
-                var name = Decrypt(item.ClientName);
-                clients.Add(new Client { ClientName = name, ClientId = item.ClientId });
+                var egn = Decrypt(item.ClientEGN);
+                clients.Add(new Client { ClientEGN = egn, ClientId = item.ClientId });
             }
             return clients;
         }
+
         public string ReplaceSign(string body)
         {
             string codedBody = body.Replace("-", "+");

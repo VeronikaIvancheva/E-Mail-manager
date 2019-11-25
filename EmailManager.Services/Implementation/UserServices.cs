@@ -69,6 +69,12 @@ namespace EmailManager.Services.Implementation
                 .FirstOrDefault(a => a.Id == id);
         }
 
+        public Client GetClientById(int id)
+        {
+            return _context.Clients
+                .FirstOrDefault(c => c.ClientId == id);
+        }
+
         public IEnumerable<User> GetAll()
         {
             var user = _context.Users

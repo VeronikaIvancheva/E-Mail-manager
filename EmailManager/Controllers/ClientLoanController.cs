@@ -50,10 +50,10 @@ namespace EmailManager.Controllers
             catch (LoanExeptions ex)
             {
                 log.Error($"Failed to create loan application. |{ex}| error");
-                return RedirectToAction("Detail", new { id = clientCheck.ClientId });
+                return RedirectToAction("ListAllStatusEmails", "Email");
             }
 
-            return RedirectToAction("Detail", new { id = clientCheck.ClientId });
+            return RedirectToAction("ListAllStatusEmails", "Email");
         }
 
         [HttpPost]

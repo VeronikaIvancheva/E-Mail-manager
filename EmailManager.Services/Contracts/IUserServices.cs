@@ -9,6 +9,7 @@ namespace EmailManager.Services.Contracts
         User BanUser(string userId);
         IEnumerable<User> GetAll();
         User GetUserById(string id);
+        Client GetClientById(int id);
         Task RegisterAccountAsync(User registerAccount);
         User ValidationMethod(User user);
     }

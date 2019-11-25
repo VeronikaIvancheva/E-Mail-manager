@@ -29,7 +29,7 @@ namespace EmailManager.Data.Implementation
         public string ClientEmail { get; set; }
         public ICollection<Loan> Loans { get; set; }
         public bool IsApproved { get; set; }
-        //Testing
+
         public User User { get; set; }
         public string UserId { get; set; }
         [NotMapped]

@@ -13,13 +13,15 @@ namespace EmailManager.Models.UserViewModel
         {
         }
 
-        public UserViewModel(User user)
+        public UserViewModel(User user/*, Client client*/)
         {
             this.Name = user.Name;
             this.Role = user.Role;
             this.Email = user.Email;
             this.Id = user.Id;
             InitialRegistration = user.InitialRegistration;
+            //this.HasLoan = client.Loans;
+            //this.LoanSum = client.LoanedSum;
             //LastRegistration = user.LastRegistration;
         }
 
@@ -32,5 +34,8 @@ namespace EmailManager.Models.UserViewModel
 
         [Display(Name = "Last Registration")]
         public DateTime? LastRegistration { get; set; }
+
+        public int LoanSum { get; set; }
+        public ICollection<Loan> HasLoan { get; set; }
     }
 }
