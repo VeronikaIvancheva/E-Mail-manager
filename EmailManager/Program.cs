@@ -4,6 +4,16 @@ using System;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using EmailManager.Data.Context;
+using Microsoft.Extensions.Configuration;
+using log4net;
+using log4net.Config;
+using log4net.Appender;
+using log4net.Repository;
+using System.IO;
+using System.Configuration;
+using System.Reflection;
+
+[assembly: log4net.Config.XmlConfigurator(Watch = true)]
 
 namespace EmailManager
 {
@@ -11,6 +21,11 @@ namespace EmailManager
     {
         public static void Main(string[] args)
         {
+
+            var logRepository = LogManager.GetRepository(Assembly.GetEntryAssembly());
+            XmlConfigurator.Configure(logRepository, new FileInfo("log4net.config"));
+
+
             var host = CreateWebHostBuilder(args).Build();
 
             using (var scope = host.Services.CreateScope())
