@@ -38,6 +38,5 @@ namespace EmailManager.Data.Implementation
         public string EmailId { get; set; }
         [NotMapped]
         public int LoanedSum { get; set; }
-
     }
 }

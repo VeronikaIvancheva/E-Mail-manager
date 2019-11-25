@@ -37,7 +37,7 @@ namespace EmailManager.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateLoan(ClientViewModel vm, int id, Email email)
+        public async Task<IActionResult> CreateLoan(CreateLoanViewModel vm, int emailDbId, Email email)
         {
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var clientCheck = await _loanService.AddClient(vm.ClientName, vm.ClientPhoneNumber, vm.ClientEGN, vm.ClientEmail);

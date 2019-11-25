@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="~/constants/FillFormStyle.css" />
 </head>
 
-<partial name="_CreateLoanPartial" , model="@Model.NewLoan" />
+<partial name="_CreateLoanPartial" , model="new CreateLoanViewModel {EmailDbId=Model.Id}" />
 
 <div style="color: white">
     <form class="form-style-4" method="post" style="float:left">
