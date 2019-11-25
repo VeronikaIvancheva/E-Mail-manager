@@ -17,13 +17,16 @@ namespace EmailManager.Models.UserViewModel
         {
             this.Name = user.Name;
             this.Role = user.Role;
-            //InitialRegistration = user.InitialRegistration;
+            this.Email = user.Email;
+            this.Id = user.Id;
+            InitialRegistration = user.InitialRegistration;
             //LastRegistration = user.LastRegistration;
         }
 
         public string Name { get; set; }
         public string Role { get; set; }
-
+        public string Email { get; set; }
+        public string Id { get; set; }
         [Display(Name = "Initial Registration")]
         public DateTime? InitialRegistration { get; set; }
 

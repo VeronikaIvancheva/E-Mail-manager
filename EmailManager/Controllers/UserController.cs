@@ -26,9 +26,11 @@ namespace EmailManager.Controllers
                 .Select(u => new UserViewModel
                 {
                     Name = u.Name,
-                    Role =u.Role
+                    Role = u.Role,
+                    Email = u.Email
+                    
                 })
-                .OrderBy(f => f.Name)
+                .OrderBy(f => f.Id)
                 .ToList();
 
             var userModel = new UserIndexModel
