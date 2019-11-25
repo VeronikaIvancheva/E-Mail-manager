@@ -11,6 +11,7 @@ using EmailManager.Data.Context;
 using EmailManager.Data.Implementation;
 using EmailManager.Services.Contracts;
 using EmailManager.Services.Implementation;
+using EmailManager.Data.Contracts;
 
 namespace EmailManager
 {
@@ -63,6 +64,8 @@ namespace EmailManager
 
             services.AddScoped<IEncryptionServices, EncryptionServices>(); 
             services.AddScoped<IDecryptionServices, DecryptionServices>();
+
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

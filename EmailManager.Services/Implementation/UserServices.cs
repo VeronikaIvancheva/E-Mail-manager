@@ -51,11 +51,6 @@ namespace EmailManager.Services.Implementation
                 throw new UserExeptions("Username must be betweeen 3 and 50 symbols!");
             }
 
-            //if (user.Password.Length < 5 || user.Password.Length > 100)
-            //{
-            //    throw new UserExeptions("Password must be betweeen 5 and 50 symbols!");
-            //}
-
             if (user.Email == null)
             {
                 throw new UserExeptions("Email cannot be null!");
@@ -65,6 +60,38 @@ namespace EmailManager.Services.Implementation
             {
                 throw new UserExeptions("Email must be betweeen 5 and 50 symbols!");
             }
+            return user;
+        }
+
+        public User GetUserById(string id)
+        {
+            return _context.User
+                .FirstOrDefault(a => a.Id == id);
+        }
+
+        public IEnumerable<User> GetAll()
+        {
+            var user = _context.Users
+                .ToList();
+
+            if (user.Count() == 0)
+            {
+                throw new ArgumentNullException("No users were found.");
+            }
+
+            return user;
+        }
+
+        public User BanUser(string userId)
+        {
+            var user = _context.Users
+                .FirstOrDefault(u => u.Id == userId);
+
+            user.LockoutEnabled = true;
+            user.LockoutEnd = DateTime.Now.AddDays(30);
+
+            _context.SaveChanges();
+
             return user;
         }
     }
