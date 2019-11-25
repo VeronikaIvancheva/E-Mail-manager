@@ -13,7 +13,7 @@ namespace EmailManager.Models.ClientViewModel
             this.ClientName = client.ClientName;
             this.ClientEmail = client.ClientEmail;
             this.ClientEGN = client.ClientEGN;
-            this.ClientId = client.ClientId;
+            this.ClientPhoneNumber = client.ClientPhoneNumber;
             this.LoanSum = client.LoanedSum;
         }
 
@@ -37,6 +37,8 @@ namespace EmailManager.Models.ClientViewModel
         [Display(Name = "Client email")]
         public string ClientEmail { get; set; }
 
+        [Required(ErrorMessage = "Please enter loan sum.")]
+        [Display(Name = "Client loan")]
         public int LoanSum { get; set; }
 
         public ICollection<Loan> Loans { get; set; }

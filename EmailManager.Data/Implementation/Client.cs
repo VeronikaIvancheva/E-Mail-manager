@@ -12,12 +12,13 @@ namespace EmailManager.Data.Implementation
             this.Loans = new HashSet<Loan>();
         }
 
-        public Client(string clientTel, string clientEGN, string clientName, string clientEmail)
+        public Client(string clientTel, string clientEGN, string clientName, string clientEmail, int loanSum)
         {
             this.ClientEGN = clientEGN;
             this.ClientEmail = clientEmail;
             this.ClientName = clientName;
             this.ClientPhoneNumber = clientTel;
+            this.LoanedSum = loanSum;
         }
 
         [Key]

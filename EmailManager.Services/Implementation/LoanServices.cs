@@ -32,7 +32,7 @@ namespace EmailManager.Services.Implementation
             this._encrypt = encrypt;
         }
 
-        public async Task<Client> CreateLoanApplication(Client client, string userId, Email email)
+        public async Task<Loan> CreateLoanApplication(Client client, int loanSum, string userId, Email email)
         {
             #region Validations
             //if (client.ClientName == null || client.ClientEGN == null || client.ClientPhoneNumber == null)
@@ -71,38 +71,25 @@ namespace EmailManager.Services.Implementation
             //    .Where(e => e.Id == emailId)
             //    .FirstOrDefaultAsync();
 
-            var encryptedClientData = EncryptClientInfo(client);
-
-            var loanSum = new Loan
+            var createLoan = new Loan
             {
-                LoanedSum = client.LoanedSum,
+                LoanedSum = loanSum,
                 DateAsigned = DateTime.UtcNow,
-                
-            };
-
-            var loanCollection = new List<Loan>()
-            {
-                loanSum
-            };
-
-            var loan = new Client
-            {
-                ClientName = encryptedClientData.ClientName,
-                ClientEGN = encryptedClientData.ClientEGN,
-                ClientPhoneNumber = encryptedClientData.ClientPhoneNumber,
-                ClientEmail = encryptedClientData.ClientEmail,
-                Loans = loanCollection,
-                UserId = userId,
-                EmailId = email.EmailId
+                ClientId = client.ClientId,
+                Client = client,
+                LoanEmail = email,
+                LoanEmailId = email.Id,
             };
 
             email.SetCurrentStatus = DateTime.Now;
             email.EmailStatusId = (int)EmailStatus.Open;
 
-            await this._context.Clients.AddAsync(loan);
+            await this._context.Loans.AddAsync(createLoan);
             await this._context.SaveChangesAsync();
 
-            return loan;
+            log.Info($"New loan to client Id: {client.ClientId} for {loanSum} sum.");
+
+            return createLoan;
         }
 
         //public async Task<bool> ApproveLoan(ApproveLoanDTO approveLoanDto)
@@ -182,17 +169,66 @@ namespace EmailManager.Services.Implementation
             return client;
         }
 
-        public Client EncryptClientInfo(Client clientId)
+        public Client EncryptClientInfo(Client client)
         {
-            Client client = _context.Clients
-                .FirstOrDefault(c => c.ClientId == clientId.ClientId);
-
             var encryptedName = this._encrypt.Encrypt(client.ClientName);
             var encryptedEgn = this._encrypt.Encrypt(client.ClientEGN);
             var encryptedPhoneNumber = this._encrypt.Encrypt(client.ClientPhoneNumber);
             var encryptedEmail = this._encrypt.Encrypt(client.ClientEmail);
 
-            return client;
+            var newClient = new Client
+            {
+                ClientName = encryptedName,
+                ClientEmail = encryptedEgn,
+                ClientEGN = encryptedPhoneNumber,
+                ClientPhoneNumber = encryptedEmail
+            };
+
+            return newClient;
+        }
+
+        public async Task<Client> AddClient(string clientName, string clientPhone, string clientEGN, string clientEmail)
+        {
+            IEnumerable<Client> clientAll = _context.Clients;
+            IEnumerable<Client> decryptedClients = _decrypt.DecryptClientList(clientAll);
+            var newClientCheck = decryptedClients
+                .Where(a =>a.ClientEGN == clientEGN)
+                .FirstOrDefault();
+
+            var newClient = newClientCheck;
+
+
+            if (newClient == null)
+            {
+                var encryptedClientData = EncryptClientInfo(newClient);
+
+                newClient = new Client
+                {
+                    ClientName = clientName,
+                    ClientEmail = clientEmail,
+                    ClientEGN = clientEGN,
+                    ClientPhoneNumber = clientPhone
+                };
+
+                await this._context.Clients.AddAsync(newClient);
+                await this._context.SaveChangesAsync();
+
+                log.Info($"New client with Id: {newClient.ClientId}");
+            }
+            else
+            {
+                var decryptClientData = DecryptClientInfo(newClient);
+                newClient = decryptClientData;
+
+                log.Info($"Found excisting client with Id {newClient.ClientId}");
+            }
+
+            if (newClient == null)
+            {
+                log.Fatal("New client is null! Must never reach here! Error in AddClient method in Loan service.");
+            }
+
+            return newClient;
         }
     }
 }

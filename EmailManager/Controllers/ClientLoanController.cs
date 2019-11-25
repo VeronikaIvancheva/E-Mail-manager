@@ -40,20 +40,20 @@ namespace EmailManager.Controllers
         public async Task<IActionResult> CreateLoan(ClientViewModel vm, int id, Email email)
         {
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var client = new Client( vm.ClientName, vm.ClientPhoneNumber, vm.ClientEmail, vm.ClientEGN);
+            var clientCheck = await _loanService.AddClient(vm.ClientName, vm.ClientPhoneNumber, vm.ClientEGN, vm.ClientEmail);
 
             try
             {
-                await _loanService.CreateLoanApplication(client, userId, email);
+                await _loanService.CreateLoanApplication(clientCheck, vm.LoanSum, userId, email);
 
             }
             catch (LoanExeptions ex)
             {
                 log.Error($"Failed to create loan application. |{ex}| error");
-                return RedirectToAction("Detail", new { id = client.ClientId });
+                return RedirectToAction("Detail", new { id = clientCheck.ClientId });
             }
 
-            return RedirectToAction("Detail", new { id = client.ClientId });
+            return RedirectToAction("Detail", new { id = clientCheck.ClientId });
         }
 
         [HttpPost]
