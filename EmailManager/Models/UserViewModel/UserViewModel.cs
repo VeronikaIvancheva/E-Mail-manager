@@ -13,26 +13,30 @@ namespace EmailManager.Models.UserViewModel
         {
         }
 
-        public UserViewModel(User user/*, Client client*/)
+        public UserViewModel(User user)
         {
+            this.Id = user.Id;
             this.Name = user.Name;
             this.Role = user.Role;
             this.Email = user.Email;
-            this.Id = user.Id;
-            InitialRegistration = user.InitialRegistration;
-            //this.HasLoan = client.Loans;
-            //this.LoanSum = client.LoanedSum;
-            //LastRegistration = user.LastRegistration;
+            this.InitialRegistration = user.InitialRegistration;
+            this.LastRegistration = user.LastRegistration;
+            this.LockOutEnd = user.LockoutEnd;
+            this.UserName = user.UserName;
+            this.PhoneNumber = user.PhoneNumber;
         }
 
         public string Name { get; set; }
         public string Role { get; set; }
         public string Email { get; set; }
+        public string PhoneNumber { get; set; }
+        public string UserName { get; set; }
+        public DateTimeOffset? LockOutEnd { get; set; }
         public string Id { get; set; }
-        [Display(Name = "Initial Registration")]
+        [Display(Name = "Registration date")]
         public DateTime? InitialRegistration { get; set; }
 
-        [Display(Name = "Last Registration")]
+        [Display(Name = "Last login")]
         public DateTime? LastRegistration { get; set; }
 
         public int LoanSum { get; set; }

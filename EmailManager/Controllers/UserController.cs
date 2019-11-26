@@ -17,7 +17,7 @@ namespace EmailManager.Controllers
             this._userService = userService;
         }
 
-        public IActionResult Index(/*string userId*/)
+        public IActionResult Index()
         {
             var allUsers = _userService.GetAll();
 
@@ -27,13 +27,18 @@ namespace EmailManager.Controllers
                 {
                     Name = u.Name,
                     Role = u.Role,
-                    Email = u.Email
-                    
+                    Email = u.Email,
+                    Id = u.Id,
+                    InitialRegistration = u.InitialRegistration,
+                    UserName = u.UserName,
+                    LockOutEnd = u.LockoutEnd,
+                    PhoneNumber = u.PhoneNumber,
+                    LastRegistration = u.LastRegistration,                    
                 })
                 .OrderBy(f => f.Id)
                 .ToList();
 
-            var userModel = new UserIndexModel
+            var userModel = new UserIndexViewModel
             {
                 Users = userListing
             };
@@ -44,7 +49,6 @@ namespace EmailManager.Controllers
         public IActionResult Detail(string userId)
         {
             var user = _userService.GetUserById(userId);
-            //var client = _userService.GetClientById(int.Parse(userId));
 
             var userModel = new UserViewModel(user);
 

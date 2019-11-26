@@ -20,9 +20,15 @@
                     <h2>@Model.Name</h2>
                     <div>
                         <div>ID: @Model.Id</div>
+                        <div>Name: @Model.Name</div>
+                        <div>Username: @Model.UserName</div>
+                        <div>Role: @Model.Role</div>
                         <div>Member Since: @Model.InitialRegistration</div>
+                        <div>Last login: @Model.LastRegistration</div>
+                        <div>Ban user ends: @Model.LockOutEnd</div>
+                        <div>Phone number: @Model.PhoneNumber</div>
                     </div>
-                    @if (User.IsInRole("admin"))
+                    @if (User.IsInRole("Manager"))
                     {
                         <br />
                         <form asp-controller="User" asp-action="BanUser" method="post" asp-route-userId="@Model.Id">
