@@ -25,10 +25,17 @@
     {
         <p>@User.Identity.Name, what do you want to do today?</p>
 
-        <form method="post">
+        <form>
             <button asp-controller="Email" asp-action="ListAllStatusEmails" type="submit" class="btn btn-lg btn-outline-info">
-                See all emails
+                Email catalog
             </button>
+
+            @if (User.IsInRole("Manager"))
+            {
+                <button asp-controller="User" asp-action="Index" type="submit" class="btn btn-lg btn-outline-info">
+                    User catalog
+                </button>
+            }
         </form>
     }
 </div>
