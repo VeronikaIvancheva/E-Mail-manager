@@ -1,5 +1,4 @@
-﻿using EmailManager.Data;
-using EmailManager.Data.Context;
+﻿using EmailManager.Data.Context;
 using EmailManager.Data.Enums;
 using EmailManager.Data.Implementation;
 using EmailManager.Services.Contracts;
@@ -92,50 +91,7 @@ namespace EmailManager.Services.Implementation
             return createLoan;
         }
 
-        //public async Task<bool> ApproveLoan(ApproveLoanDTO approveLoanDto)
-        //{
-
-        //    if (approveLoanDto.EmailId == null || approveLoanDto.Approved == null)
-        //    {
-        //        throw new LoanExeptions($"Invalid loan request details");
-        //    }
-
-        //    int result = int.Parse(approveLoanDto.Approved);
-
-        //    var loan = await this._context.Clients
-        //        .Where(e => e.EmailId == approveLoanDto.EmailId)
-        //        .FirstOrDefaultAsync();
-
-        //    var email = await this._context.Emails
-        //        .Where(e => e.EmailId == approveLoanDto.EmailId)
-        //        .FirstOrDefaultAsync();
-
-        //    var user = await this._context.Users
-        //        .Where(id => id.Id == approveLoanDto.UserId)
-        //        .SingleOrDefaultAsync();
-
-        //    if (result == (int)EmailStatus.Rejected)
-        //    {
-        //        loan.IsApproved = false;
-        //        loan.User = user;
-        //        log.Info("Loan was rejected");
-        //    }
-
-        //    if (result == (int)EmailStatus.Approved)
-        //    {
-        //        loan.IsApproved = true;
-        //        loan.User = user;
-        //        log.Info("Loan was approved");
-        //    }
-
-        //    email.SetCurrentStatus = DateTime.Now;
-        //    email.EmailStatusId = (int)EmailStatus.Closed;
-        //    email.IsDeleted = DateTime.Now;
-
-        //    await this._context.SaveChangesAsync();
-
-        //    return true;
-        //}
+     
 
         public bool CheckEgnValidity(string email)
         {

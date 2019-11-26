@@ -4,8 +4,6 @@ using EmailManager.Services.Exeptions;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using EmailManager.Data.Implementation;
-using EmailManager.Data;
 using EmailManager.Models.EmailViewModel;
 
 namespace EmailManager.Controllers

@@ -30,20 +30,9 @@ namespace EmailManager.Data.Context
                 .OnDelete(DeleteBehavior.Restrict);
             #endregion
 
-            #region Loan-Email - One-To-One          
-            //modelBuilder.Entity<Loan>()
-            //    .HasKey(l => l.LoanId);
-
-            //modelBuilder.Entity<Loan>()
-            //    .HasOne(m => m.LoanEmail)
-            //    .WithOne(m => m.Loan)
-            //    .HasForeignKey<Email>(m => m.LoanId)
-            //    .OnDelete(DeleteBehavior.Restrict);
-            #endregion
-
             #region Email-Loan - One-To-One 
             modelBuilder.Entity<Email>()
-                .HasKey(l => l.Id );
+                .HasKey(l => l.Id);
 
             modelBuilder.Entity<Email>()
                 .HasOne(m => m.Loan)
@@ -61,27 +50,11 @@ namespace EmailManager.Data.Context
                 .OnDelete(DeleteBehavior.Restrict);
             #endregion
 
-            #region Email-User - Many-To-One
-            //modelBuilder.Entity<Email>()
-            //    .HasOne(m => m.User)
-            //    .WithMany(m => m.UserEmails)
-            //    .HasForeignKey(m => m.UserId)
-            //    .OnDelete(DeleteBehavior.Restrict);
-            #endregion
-
-            #region User-Email - One-To-Many
-            //modelBuilder.Entity<User>()
-            //    .HasMany(m => m.UserEmails)
-            //    .WithOne(m => m.User)
-            //    .HasForeignKey(m => m.EmailId)
-            //    .OnDelete(DeleteBehavior.Restrict);
-            #endregion
-
             #region Email-EmailBody One-To-One
             modelBuilder.Entity<Email>()
-                .HasOne(m=>m.EmailBody)
-                .WithOne(m=>m.Email)
-                .HasForeignKey<Email>(m=>m.EmailId)
+                .HasOne(m => m.EmailBody)
+                .WithOne(m => m.Email)
+                .HasForeignKey<Email>(m => m.EmailId)
                 .OnDelete(DeleteBehavior.Restrict);
             #endregion
 

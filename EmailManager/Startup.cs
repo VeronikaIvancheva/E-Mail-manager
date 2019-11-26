@@ -11,7 +11,6 @@ using EmailManager.Data.Context;
 using EmailManager.Data.Implementation;
 using EmailManager.Services.Contracts;
 using EmailManager.Services.Implementation;
-using EmailManager.Data.Contracts;
 
 namespace EmailManager
 {
