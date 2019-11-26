@@ -1,17 +1,12 @@
 ﻿using EmailManager.Data.Implementation;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace EmailManager.Models.UserViewModel
 {
     public class UserViewModel
     {
-        public UserViewModel()
-        {
-        }
+        public UserViewModel() { }
 
         public UserViewModel(User user)
         {
@@ -38,8 +33,5 @@ namespace EmailManager.Models.UserViewModel
 
         [Display(Name = "Last login")]
         public DateTime? LastRegistration { get; set; }
-
-        public int LoanSum { get; set; }
-        public ICollection<Loan> HasLoan { get; set; }
     }
 }

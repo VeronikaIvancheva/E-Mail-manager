@@ -15,13 +15,16 @@ namespace EmailManager.Services.Implementation
 {
     public class UserServices : IUserServices
     {
+        private static readonly log4net.ILog log =
+           log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         private readonly EmailManagerContext _context;
         private readonly UserManager<User> _userManager;
 
         public UserServices(EmailManagerContext context, UserManager<User> userManager)
         {
-            this._context = context;
-            this._userManager = userManager;
+            this._context = context ?? throw new ArgumentNullException(nameof(context));
+            this._userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
         }
 
         public async Task RegisterAccountAsync(User registerAccount)
@@ -69,23 +72,29 @@ namespace EmailManager.Services.Implementation
                 .FirstOrDefault(a => a.Id == id);
         }
 
-        public Client GetClientById(int id)
+        public IEnumerable<User> GetAll(int currentPage)
         {
-            return _context.Clients
-                .FirstOrDefault(c => c.ClientId == id);
-        }
+            IEnumerable<User> userAll;
 
-        public IEnumerable<User> GetAll()
-        {
-            var user = _context.Users
-                .ToList();
-
-            if (user.Count() == 0)
+            if (currentPage == 1)
             {
-                throw new ArgumentNullException("No users were found.");
+                userAll = _context.Users
+                     .OrderBy(u => u.Id)
+                     .Take(10)
+                     .ToList();
+            }
+            else
+            {
+                userAll = _context.Users
+                    .OrderBy(u => u.Id)
+                    .Skip((currentPage - 1) * 10)
+                    .Take(10)
+                    .ToList();
             }
 
-            return user;
+            log.Info("System listing all users.");
+
+            return userAll;
         }
 
         public User BanUser(string userId)
@@ -94,11 +103,53 @@ namespace EmailManager.Services.Implementation
                 .FirstOrDefault(u => u.Id == userId);
 
             user.LockoutEnabled = true;
-            user.LockoutEnd = DateTime.Now.AddDays(30);
+            var bannedTill = user.LockoutEnd = DateTime.Now.AddDays(30);
 
             _context.SaveChanges();
+            log.Info($"User with id {userId} has been banned till {bannedTill}");
 
             return user;
+        }
+
+        public async Task<IEnumerable<User>> SearchUsers(string search, int currentPage)
+        {
+            IEnumerable<User> searchResult = _context.Users
+                .Where(b => b.Name.Contains(search) ||
+                       b.UserName.Contains(search) ||
+                       b.Email.Contains(search) ||
+                       b.Id.Contains(search) ||
+                       b.Role.ToLower().Contains(search.ToLower())
+                       )
+                .OrderBy(b => b.Role)
+                .ThenBy(b => b.Id);
+
+            if (currentPage == 1)
+            {
+                searchResult = searchResult
+                    .Take(10)
+                    .ToList();
+            }
+            else
+            {
+                searchResult = searchResult
+                   .Skip((currentPage - 1) * 10)
+                   .Take(10)
+                   .ToList();
+            }
+
+            log.Info($"User searched for: {search}");
+
+            return searchResult;
+        }
+
+        public async Task<int> GetPageCount(int emailsPerPage)
+        {
+            var allEmails = await _context.Emails
+                .CountAsync();
+
+            var totalPages = (allEmails - 1) / emailsPerPage + 1;
+
+            return totalPages;
         }
     }
 }
