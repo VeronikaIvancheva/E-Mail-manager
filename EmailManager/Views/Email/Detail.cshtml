@@ -45,7 +45,7 @@
         }
         else if (Model.EnumStatus.ToString() == "New")
         {
-            <button asp-route-Id="@Model.Id" asp-controller="Email" asp-action="MarkOpen" name="Open" type="submit" class="btn btn-lg btn-outline-success">Mark as Open</button>
+            <button asp-route-Id="@Model.Id" asp-controller="ClientLoan" asp-action="GetEmailDetails" name="GetEmailDetails" type="submit" class="btn btn-lg btn-outline-success">Create loan</button>
         }
         else if (Model.EnumStatus.ToString() == "Open" && Model.StatusChangedBy == Model.CurrentUser)
         {
@@ -68,7 +68,6 @@
         else if (Model.EnumStatus.ToString() == "New" || Model.EnumStatus.ToString() == "NotValid")
         {
             <button asp-route-Id="@Model.Id" asp-controller="Email" asp-action="MarkNotReviewed" name="NotReviewed" type="submit" class="btn btn-lg btn-outline-info">Mark as Not Reviewed</button>
-            <button asp-route-Id="@Model.Id" asp-controller="Email" asp-action="MarkOpen" name="Open" type="submit" class="btn btn-lg btn-outline-success">Mark as Open</button>
             <button asp-route-Id="@Model.Id" asp-controller="ClientLoan" asp-action="GetEmailDetails" name="GetEmailDetails" type="submit" class="btn btn-lg btn-outline-success">Create loan</button>
         }
         else if (Model.EnumStatus.ToString() == "Open")
