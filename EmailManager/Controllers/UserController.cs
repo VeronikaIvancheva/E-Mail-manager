@@ -10,7 +10,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EmailManager.Controllers
 {
-    [Authorize(Roles = "Manager")]
     public class UserController : Controller
     {
         private static readonly log4net.ILog log =
@@ -75,6 +74,7 @@ namespace EmailManager.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Manager")]
         public IActionResult BanUser(string userId)
         {
             var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);

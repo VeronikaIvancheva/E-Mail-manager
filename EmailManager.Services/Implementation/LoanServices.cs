@@ -35,39 +35,6 @@ namespace EmailManager.Services.Implementation
 
         public async Task<Loan> CreateLoanApplication(Client client, int loanSum, string userId, int emailId)
         {
-            #region Validations
-            //if (client.ClientName == null || client.ClientEGN == null || client.ClientPhoneNumber == null)
-            //{
-            //    throw new LoanExeptions("Тhe details of the loan application have not been filled in correctly");
-            //}
-
-            //if (client.EmailId == null)
-            //{
-            //    throw new LoanExeptions($"Email with ID {client.EmailId} does not exist!");
-            //}
-
-            //if (client.ClientEGN.Length != 10)
-            //{
-            //    return new LoanExeptions("The EGN of the client must be exactly 10 digits!");
-            //}
-
-            //if (client.ClientName.Length < 3 || client.ClientName.Length > 50)
-            //{
-            //    throw new LoanExeptions("The length of the client's name is not correct!");
-            //}
-            //if (client.ClientPhoneNumber.Length < 3 || client.ClientPhoneNumber.Length > 10)
-            //{
-            //    throw new LoanExeptions("The length of the client's phone number is not correct!");
-            //}
-
-            //var isEgnCorrect = CheckEgnValidity(client.ClientEGN);
-
-            //if (isEgnCorrect == false)
-            //{
-            //    throw new LoanExeptions("EGN must only contain digits");
-            //}
-            #endregion
-
             var email = await this._context.Emails
                 .Where(e => e.Id == emailId)
                 .FirstOrDefaultAsync();

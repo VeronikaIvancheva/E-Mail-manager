@@ -16,8 +16,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmailManager.Services", "..
 		{B982C5D7-F80C-4E80-B619-537020ADD80D} = {B982C5D7-F80C-4E80-B619-537020ADD80D}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmailManager.Tests", "..\EmailManager.Tests\EmailManager.Tests.csproj", "{587FA503-BC49-4498-9E4A-10B8DF3AB885}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,10 +34,6 @@ Global
 		{0B2DEB7C-1F12-4242-977F-6A38073E890E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0B2DEB7C-1F12-4242-977F-6A38073E890E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0B2DEB7C-1F12-4242-977F-6A38073E890E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{587FA503-BC49-4498-9E4A-10B8DF3AB885}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{587FA503-BC49-4498-9E4A-10B8DF3AB885}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{587FA503-BC49-4498-9E4A-10B8DF3AB885}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{587FA503-BC49-4498-9E4A-10B8DF3AB885}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

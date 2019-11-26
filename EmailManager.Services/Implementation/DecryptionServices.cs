@@ -34,12 +34,6 @@ namespace EmailManager.Services.Implementation
             return cipherText;
         }
 
-        public string Base64Decrypt(string base64EncodedData)
-        {
-            var base64EncodedBytes = Convert.FromBase64String(base64EncodedData);
-            return Encoding.UTF8.GetString(base64EncodedBytes);
-        }
-
         public Client DecodeClient(Client client)
         {
             var name = Decrypt(client.ClientName);

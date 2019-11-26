@@ -23,7 +23,6 @@ namespace EmailManager.Services.Implementation
         private readonly IEncryptionServices _securityEncrypt;
         private readonly IDecryptionServices _securityDecrypt;
 
-        //private readonly UserManager<User> _userManager;
         public EmailService(EmailManagerContext context, ILogger<EmailService> logger,
             IEncryptionServices securityEncrypt, IDecryptionServices securityDecrypt)
         {
@@ -33,29 +32,39 @@ namespace EmailManager.Services.Implementation
             this._securityDecrypt = securityDecrypt ?? throw new ArgumentNullException(nameof(securityDecrypt));
         }
 
-        public async Task<IEnumerable<Email>> GetAllStatusEmails(int currentPage)
+        public async Task<IEnumerable<Email>> GetAllStatusEmails(int currentPage, string userId)
         {
-            IEnumerable<Email> emailAll;
+            var currentUser = await _context.Users
+                .FirstOrDefaultAsync(u => u.Id == userId);
 
-            if (currentPage == 1)
-            {
-                emailAll = _context.Emails
+            IEnumerable<Email> emailAll = _context.Emails
                      .Include(m => m.EmailBody)
                      .Include(m => m.Attachments)
                      .Include(m => m.Status)
                      .Include(m => m.User)
-                     .OrderByDescending(m => m.Id)
+                     .OrderByDescending(m => m.Id);
+
+            if (currentUser.Role == "Operator")
+            {
+                IEnumerable<Email> checkStatus = emailAll.Where(s => s.Status.EmailStatus == EmailStatus.Closed
+                     || s.Status.EmailStatus == EmailStatus.Open);
+
+                if (checkStatus != null)
+                {
+                    emailAll = emailAll
+                    .Where(u => u.UserId == currentUser.Id || u.UserId == "NoUser");
+                }
+            }
+
+            if (currentPage == 1)
+            {
+                emailAll = emailAll
                      .Take(10)
                      .ToList();
             }
             else
             {
-                emailAll = _context.Emails
-                    .Include(m => m.EmailBody)
-                    .Include(m => m.Attachments)
-                    .Include(m => m.Status)
-                    .Include(m => m.User)
-                    .OrderByDescending(m => m.Id)
+                emailAll = emailAll
                     .Skip((currentPage - 1) * 10)
                     .Take(10)
                     .ToList();
@@ -67,43 +76,40 @@ namespace EmailManager.Services.Implementation
         }
 
         //TODO Може да се счупи, когато започнем да криптираме тялото и изпращача или да не работят тези 2 search-a
-        public async Task<IEnumerable<Email>> SearchEmails(string search, int currentPage)
+        public async Task<IEnumerable<Email>> SearchEmails(string search, int currentPage, string userId)
         {
-            IEnumerable<Email> searchResult;
+            var currentUser = await _context.Users
+                .FirstOrDefaultAsync(u => u.Id == userId);
 
-            if (currentPage == 1)
-            {
-                searchResult = _context.Emails
+            IEnumerable<Email> searchResult = _context.Emails
                 .Include(m => m.EmailBody)
                 .Include(m => m.Attachments)
                 .Include(m => m.Status)
-                .Include(m => m.User)
-                .Where(
+                .Include(m => m.User).Where(
                        b => b.User.Email.Contains(search) ||
                        b.User.UserName.Contains(search) ||
                        b.Sender.Contains(search) ||
                        b.EmailId.Contains(search) ||
                        b.EnumStatus.ToString().ToLower().Contains(search.ToLower())
                        )
-                .OrderByDescending(b => b.Status.NewStatus)
+                .OrderByDescending(b => b.Status.NewStatus);
+
+            if (currentUser.Role == "Operator")
+            {
+                searchResult = searchResult
+                    .Where(u => (u.UserId == currentUser.Id || u.UserId == "NoUser")
+                    && u.Status.EmailStatus == EmailStatus.Open || u.Status.EmailStatus == EmailStatus.Closed);
+            }
+
+            if (currentPage == 1)
+            {
+                searchResult = searchResult
                 .Take(10)
                 .ToList();
             }
             else
             {
-                searchResult = _context.Emails
-                .Include(m => m.EmailBody)
-                .Include(m => m.Attachments)
-                .Include(m => m.Status)
-                .Include(m => m.User)
-                .Where(
-                       b => b.User.Email.Contains(search) ||
-                       b.User.UserName.Contains(search) ||
-                       b.Sender.Contains(search) ||
-                       b.EmailId.Contains(search) ||
-                       b.EnumStatus.ToString().ToLower().Contains(search.ToLower())
-                       )
-                .OrderByDescending(b => b.Status.NewStatus)
+                searchResult = searchResult
                 .Skip((currentPage - 1) * 10)
                 .Take(10)
                 .ToList();
@@ -257,77 +263,6 @@ namespace EmailManager.Services.Implementation
             await _context.SaveChangesAsync();
 
             return email;
-        }
-
-
-        //public async Task AddAttachmentAsync(Attachment attachmentDTO)
-        //{
-        //    if (attachmentDTO.FileName.Length < 1 || attachmentDTO.FileName.Length > 100)
-        //    {
-        //        throw new EmailExeptions("Lenght of attachment name is not correct!");
-        //    }
-
-        //    var gmaiId = await this._context.Emails
-        //       .FirstOrDefaultAsync(id => id.EmailId == attachmentDTO.EmailId);
-
-        //    if (gmaiId == null)
-        //    {
-        //        var attachment = new Attachment
-        //        {
-        //            FileName = attachmentDTO.FileName,
-        //            AttachmentSizeKb = attachmentDTO.AttachmentSizeKb,
-        //            EmailId = attachmentDTO.EmailId
-        //        };
-
-        //        await this._context.Attachments.AddAsync(attachment);
-        //        await this._context.SaveChangesAsync();
-        //    }
-        //}
-        //public async Task<Email> AddBodyToCurrentEmailAsync(EmailBody emailBodyDto)
-        //{
-        //    var email = await this._context.Emails
-        //        .Include(u => u.User)
-        //        .Where(gMail => gMail.EmailId == emailBodyDto.UserId)
-        //        .SingleOrDefaultAsync();
-
-        //    var emailBody = await this._context.EmailBodies
-        //        .Include(b => b.Email)
-        //        .Where(b => b.EmailId == emailBodyDto.EmailId)
-        //        .SingleOrDefaultAsync();
-
-        //    var currentUser = await this._context.Users
-        //        .Where(id => id.Id == emailBodyDto.UserId)
-        //        .SingleOrDefaultAsync();
-
-        //    if (emailBodyDto.Body == null)
-        //    {
-        //        throw new EmailExeptions($"The Email with Id {emailBodyDto.Email} does not exist");
-        //    }
-
-        //    if (emailBodyDto.Body.Length > 1000)
-        //    {
-        //        throw new EmailExeptions($"Body of email is to long!");
-        //    }
-
-        //    if (emailBody != null)
-        //    {
-        //        throw new EmailExeptions($"Email with the following id {emailBodyDto.Email} contains body");
-        //    }
-
-        //    var decodeBody = this._securityDecrypt.Base64Decrypt(emailBodyDto.Body);
-
-        //    var encriptBody = this._securityEncrypt.Encrypt(decodeBody);
-
-
-        //    if (email.EmailBody == null)
-        //    {
-        //        emailBody.Body = encriptBody;
-        //        email.User = currentUser;
-        //        email.UserId = emailBodyDto.UserId;
-        //        email.IsSeen = true;
-        //        await this._context.SaveChangesAsync();
-        //    }
-        //    return email;
-        //}
+        }       
     }
 }

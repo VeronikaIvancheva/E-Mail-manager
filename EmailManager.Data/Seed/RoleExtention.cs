@@ -80,7 +80,7 @@ namespace EmailManager.Data.Seed
             {
                 Id = "NoUser",
                 Name = "Godzilla",
-                UserName = "Operator",
+                UserName = "Pesho",
                 NormalizedUserName = "godzilla".ToUpper(),
                 Email = "cloumba@abv.bg",
                 NormalizedEmail = "cloumba@abv.bg".ToUpper(),
@@ -88,7 +88,7 @@ namespace EmailManager.Data.Seed
                 PhoneNumber = "+0895645254",
                 PhoneNumberConfirmed = true,
                 SecurityStamp = Guid.NewGuid().ToString("D"),
-                Role = "Operator"
+                Role = "Manager"
             };
 
             var hashePass = new PasswordHasher<User>().HashPassword(noUser, "nouser");
@@ -102,9 +102,9 @@ namespace EmailManager.Data.Seed
             var manager = new User
             {
                 Id = "2",
-                Name = "El Managore",
+                Name = "El Manajore",
                 UserName = "adminNumbertwo",
-                NormalizedUserName = "elmanagore".ToUpper(),
+                NormalizedUserName = "elmanajore".ToUpper(),
                 Email = "banana@abv.bg",
                 NormalizedEmail = "banana@abv.bg".ToUpper(),
                 EmailConfirmed = true,

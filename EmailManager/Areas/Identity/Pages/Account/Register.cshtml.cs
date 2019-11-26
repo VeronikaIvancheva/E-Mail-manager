@@ -66,10 +66,8 @@ namespace EmailManager.Areas.Identity.Pages.Account
             returnUrl = returnUrl ?? Url.Content("~/");
             if (ModelState.IsValid)
             {
-                var user = new User { UserName = Input.Email, Email = Input.Email };
+                var user = new User { UserName = Input.Email, Email = Input.Email, Role = "Operator" };
                 var result = await _userManager.CreateAsync(user, Input.Password);
-
-                await _userManager.AddToRoleAsync(user, "Operator");
 
                 if (result.Succeeded)
                 {

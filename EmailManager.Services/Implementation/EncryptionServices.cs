@@ -32,11 +32,5 @@ namespace EmailManager.Services.Implementation
             }
             return clearText;
         }
-
-        public string Base64Encrypt(string plainText)
-        {
-            var codedText = Encoding.UTF8.GetBytes(plainText);
-            return Convert.ToBase64String(codedText);
-        }
     }
 }

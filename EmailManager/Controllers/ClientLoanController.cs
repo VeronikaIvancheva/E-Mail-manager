@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using EmailManager.Models.EmailViewModel;
+using EmailManager.Mappers;
 
 namespace EmailManager.Controllers
 {
@@ -20,13 +21,14 @@ namespace EmailManager.Controllers
             this._loanService = loanService;
             this._emailService = emailService;
         }
-        [HttpGet]
+        
         public IActionResult GetEmailDetails(int id)
         {
             var email = _emailService.GetEmail(id);
             var emailAttachments = _emailService.GetAttachment(id);
 
-            var emailModel = new EmailViewModel(email, emailAttachments);
+            var emailModel = EmailMapper.MapFromEmail(email, _emailService);
+            //var emailModel = new EmailViewModel(email, emailAttachments);
 
             log.Info($"User opened email detail page. Email Id: {id}");
 

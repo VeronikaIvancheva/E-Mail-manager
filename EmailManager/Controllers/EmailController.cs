@@ -26,7 +26,6 @@ namespace EmailManager.Controllers
             this._emailService = service;
             this._gmailAPIService = gmailAPIService;
         }
-
         
         public IActionResult Detail(int id)
         {
@@ -40,18 +39,9 @@ namespace EmailManager.Controllers
             return View("Detail", emailModel);
         }
 
-        public IActionResult Index()
-        {
-            return View();
-        }
-
         [ResponseCache(Duration = 7200)]
         private async void GetEmailsFromGmail()
         {
-            if (ModelState.IsValid)
-            {
-
-            }
             DateTime dateTimeNow = DateTime.UtcNow;
 
             dateTimeNow = new DateTime(dateTimeNow.Year, dateTimeNow.Month, dateTimeNow.Day,
@@ -71,20 +61,20 @@ namespace EmailManager.Controllers
         {
             GetEmailsFromGmail();
 
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var currPage = currentPage ?? 1;
-
             int totalPages = await _emailService.GetPageCount(10);
 
             IEnumerable<Email> emailAllResults = null;
 
             if (!string.IsNullOrEmpty(search))
             {
-                emailAllResults = await _emailService.SearchEmails(search, currPage);
+                emailAllResults = await _emailService.SearchEmails(search, currPage, userId);
                 log.Info($"User searched for {search}.");
             }
             else
             {
-                emailAllResults = await _emailService.GetAllStatusEmails(currPage);
+                emailAllResults = await _emailService.GetAllStatusEmails(currPage, userId);
                 log.Info($"Displayed all emails list.");
             }
 
@@ -112,11 +102,6 @@ namespace EmailManager.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> MarkNew(int id)
         {
-            if (ModelState.IsValid)
-            {
-
-            }
-
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             int emailId = id;
 
@@ -124,11 +109,6 @@ namespace EmailManager.Controllers
             {
                 await _emailService.MarkNewStatus(emailId, userId);
                 log.Info($"User changed email status to new. User Id: {userId} Email Id: {id}");
-
-                //if (markNew == false)
-                //{
-                //    throw new ArgumentException("You cannot change the status because it is already changed.");
-                //}
             }
             catch (Exception ex)
             {
@@ -149,6 +129,7 @@ namespace EmailManager.Controllers
             {
                 return View(viewModel);
             }
+
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             int emailId = viewModel.Id;
 
@@ -204,6 +185,7 @@ namespace EmailManager.Controllers
             {
                 return View(viewModel);
             }
+
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             int emailId = viewModel.Id;
 
@@ -222,33 +204,6 @@ namespace EmailManager.Controllers
 
             return RedirectToAction("Detail", new { id = emailId });
         }
-
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> MarkOpen(EmailViewModel viewModel)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return View(viewModel);
-        //    }
-        //    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        //    int emailId = viewModel.Id;
-
-        //    try
-        //    {
-        //        await _emailService.MarkOpenStatus(emailId, userId);
-        //        log.Info($"User changed email status to open. User Id: {userId} Email Id: {emailId}");
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        TempData["error"] = ex.Message;
-        //        log.Error($"System failed to change the email status to open. User Id: {userId} Email Id: {emailId}");
-
-        //        return RedirectToAction("Detail", new { id = emailId });
-        //    }
-
-        //    return RedirectToAction("Detail", new { id = emailId });
-        //}
 
         [HttpPost]
         [ValidateAntiForgeryToken]
