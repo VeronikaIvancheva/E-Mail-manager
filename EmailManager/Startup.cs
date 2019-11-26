@@ -64,7 +64,7 @@ namespace EmailManager
 
             services.AddScoped<IEncryptionServices, EncryptionServices>(); 
             services.AddScoped<IDecryptionServices, DecryptionServices>();
-
+            services.AddMemoryCache();
             
         }
 

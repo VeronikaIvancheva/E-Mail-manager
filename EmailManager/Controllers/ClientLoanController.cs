@@ -60,6 +60,7 @@ namespace EmailManager.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ApproveLoan(/*string approveData, string rejectData*/)
         {
+
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             //int clientId = viewModel.ClientId;
 
