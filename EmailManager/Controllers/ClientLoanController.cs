@@ -22,7 +22,7 @@ namespace EmailManager.Controllers
             this._loanService = loanService;
             this._emailService = emailService;
         }
-
+        [HttpGet]
         public IActionResult GetEmailDetails(int id)
         {
             var email = _emailService.GetEmail(id);
@@ -39,6 +39,11 @@ namespace EmailManager.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateLoan(CreateLoanViewModel vm)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(vm);
+            }
+
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var clientCheck = await _loanService.AddClient(vm.ClientName, vm.ClientPhoneNumber, vm.ClientEGN, vm.ClientEmail, userId);
 
@@ -55,52 +60,5 @@ namespace EmailManager.Controllers
 
             return RedirectToAction("ListAllStatusEmails", "Email");
         }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ApproveLoan(/*string approveData, string rejectData*/)
-        {
-
-            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            //int clientId = viewModel.ClientId;
-
-            try
-            {
-                //string[] result = null;
-                //if (approveData != null)
-                //{
-                //    result = approveData.Split(' ');
-                //    var approveDto = new ApproveLoanDTO
-                //    {
-                //        Approved = result[0],
-                //        EmailId = result[1],
-                //        UserId = User.FindFirstValue(ClaimTypes.NameIdentifier)
-                //    };
-
-                //    await this._loanService.ApproveLoan(approveDto);
-                //}
-                //else if (rejectData != null)
-                //{
-                //    result = rejectData.Split(' ');
-                //    var approveDto = new ApproveLoanDTO
-                //    {
-                //        Approved = result[0],
-                //        EmailId = result[1],
-                //        UserId = User.FindFirstValue(ClaimTypes.NameIdentifier)
-                //    };
-
-                //    await this._loanService.ApproveLoan(approveDto);
-                //}
-            }
-            catch 
-            {
-                //log.Error($"Failed to create loan application. |{ex}| error");
-                //return RedirectToAction("Detail", new { id = clientId });
-                //throw new Exception("Loan was not approved");
-            }
-
-            return View();
-        }
-
     }
 }
