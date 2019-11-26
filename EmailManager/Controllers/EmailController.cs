@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using DevTrends.MvcDonutCaching;
 using EmailManager.Data;
 using EmailManager.Mappers;
 using EmailManager.Models.EmailViewModel;
 using EmailManager.Services.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.ResponseCaching;
 
 namespace EmailManager.Controllers
 {
@@ -26,6 +28,7 @@ namespace EmailManager.Controllers
             this._gmailAPIService = gmailAPIService;
         }
 
+        
         public IActionResult Detail(int id)
         {
             var email = _emailService.GetEmail(id);
@@ -43,8 +46,13 @@ namespace EmailManager.Controllers
             return View();
         }
 
+        [ResponseCache(Duration = 7200)]
         private async void GetEmailsFromGmail()
         {
+            if (ModelState.IsValid)
+            {
+
+            }
             DateTime dateTimeNow = DateTime.UtcNow;
 
             dateTimeNow = new DateTime(dateTimeNow.Year, dateTimeNow.Month, dateTimeNow.Day,
@@ -59,6 +67,7 @@ namespace EmailManager.Controllers
             }
         }
 
+        [ResponseCache(Duration = 7200)]
         public async Task<IActionResult> ListAllStatusEmails(int? currentPage, string search = null)
         {
             GetEmailsFromGmail();
@@ -104,6 +113,11 @@ namespace EmailManager.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> MarkNew(int id)
         {
+            if (ModelState.IsValid)
+            {
+
+            }
+
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             int emailId = id;
 
@@ -132,6 +146,10 @@ namespace EmailManager.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> MarkClosedApproved(EmailViewModel viewModel)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(viewModel);
+            }
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             int emailId = viewModel.Id;
 
@@ -155,6 +173,11 @@ namespace EmailManager.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> MarkClosedRejected(EmailViewModel viewModel)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(viewModel);
+            }
+
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             int emailId = viewModel.Id;
 
@@ -178,6 +201,10 @@ namespace EmailManager.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> MarkInvalid(EmailViewModel viewModel)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(viewModel);
+            }
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             int emailId = viewModel.Id;
 
@@ -201,6 +228,10 @@ namespace EmailManager.Controllers
         //[ValidateAntiForgeryToken]
         //public async Task<IActionResult> MarkOpen(EmailViewModel viewModel)
         //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return View(viewModel);
+        //    }
         //    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
         //    int emailId = viewModel.Id;
 
@@ -225,6 +256,11 @@ namespace EmailManager.Controllers
         [Authorize(Roles = "Manager")]
         public async Task<IActionResult> MarkNotReviewed(EmailViewModel viewModel)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(viewModel);
+            }
+
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             int emailId = viewModel.Id;
 
