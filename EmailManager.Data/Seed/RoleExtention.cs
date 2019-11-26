@@ -15,18 +15,18 @@ namespace EmailManager.Data.Seed
             modelBuilder.Entity<IdentityRole>()
                 .HasData(new IdentityRole { Name = "Operator", Id = "2", NormalizedName = "operator".ToUpper() });
 
-            var adminUser = SeedAdmin();
+            var managerUser = SeedAdmin();
             var manager = SeedManager();
             var noUser = SeedNoUser();
 
             modelBuilder.Entity<User>()
-                .HasData(adminUser);
+                .HasData(managerUser);
 
             modelBuilder.Entity<IdentityUserRole<string>>()
                 .HasData(new IdentityUserRole<string>
                 {
                     RoleId = "1",
-                    UserId = adminUser.Id
+                    UserId = managerUser.Id
                 });           
 
             modelBuilder.Entity<User>()
@@ -57,10 +57,10 @@ namespace EmailManager.Data.Seed
             {
                 Id = "1",
                 Name = "Jik Tak",
-                UserName = "admin",
-                NormalizedUserName = "admin".ToUpper(),
-                Email = "admin@abv.bg",
-                NormalizedEmail = "admin@abv.bg".ToUpper(),
+                UserName = "manager",
+                NormalizedUserName = "manager".ToUpper(),
+                Email = "manager@abv.bg",
+                NormalizedEmail = "manager@abv.bg".ToUpper(),
                 EmailConfirmed = true,
                 PhoneNumber = "+111111111",
                 PhoneNumberConfirmed = true,
