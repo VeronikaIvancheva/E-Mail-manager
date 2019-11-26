@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 
 namespace EmailManager.Models.UserViewModel
 {
-    public class UserIndexModel
+    public class UserIndexViewModel
     {
-        public UserIndexModel() { }
+        public UserIndexViewModel() { }
 
-        public UserIndexModel(IEnumerable<UserViewModel> users)
+        public UserIndexViewModel(IEnumerable<UserViewModel> users)
         {
             Users = users;
         }

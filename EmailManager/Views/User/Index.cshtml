@@ -1,5 +1,4 @@
-﻿@using EmailManager.Models.UserViewModel;
-@model UserIndexModel
+﻿@model UserIndexViewModel
 
 @{
     ViewData["Title"] = "Index";
@@ -14,42 +13,24 @@
         <tr>
             <th>User Id</th>
             <th>Full Name</th>
-            <th>Member Since</th>
             <th>Email</th>
             <th>Role</th>
-            <th>Has loan</th>
-            <th>Loan sum</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var user in @Model.Users)
         {
-            <tr>
-                <td class="nav-link">
-                    <div>
-                        <a asp-action="Detail" asp-controller="User" asp-route-userId="@user.Id">
-                            <p>@Html.DisplayFor(modelItem => user.Id)</p>
-                        </a>
-                    </div>
-                </td>
-                <td>@user.Name</td>
-                <td>@user.InitialRegistration</td>
-                <td>@user.Email</td>
-                @if (user.Role != "Manager" || user.Role != "Operator")
-                {
-                    <td>User</td>
-                }
-                else
-                {
-                    <td>@user.Role</td>
-                }
-                @*@foreach (var item in user.HasLoan)
-                {
-                    <td>@user.HasLoan</td>
-                    <td>item += item</td>
-                }*@
-
-            </tr>
+        <tr>
+            <td>@user.Id</td>
+            <td>@user.Name</td>
+            <td>@user.Email</td>
+            <td>@user.Role</td>
+            <td>
+                <form asp-route-userId="@user.Id" asp-action="Detail" asp-controller="User">
+                    <button type="submit" class="btn btn-lg btn-light">Details</button>
+                </form>
+            </td>
+        </tr>
         }
     </tbody>
 </table>
