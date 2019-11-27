@@ -31,12 +31,13 @@ namespace EmailManager.Models.ClientViewModel
         [Display(Name = "Client EGN")]
         public string ClientEGN { get; set; }
 
-        [Required(ErrorMessage = "Please enter the client first name.")]
+        [Required(ErrorMessage = "Please enter the client name.")]
         [Display(Name = "Client name")]
         public string ClientName { get; set; }
 
         [Required(ErrorMessage = "Please enter the client email.")]
         [Display(Name = "Client email")]
+        [EmailAddress]
         public string ClientEmail { get; set; }
 
         public int LoanSum { get; set; }

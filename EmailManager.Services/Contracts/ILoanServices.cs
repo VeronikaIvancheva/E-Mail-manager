@@ -7,5 +7,6 @@ namespace EmailManager.Services.Contracts
     {
         Task<Loan> CreateLoanApplication(Client client, int loanSum, string userId, int emailId);
         Task<Client> AddClient(string clientName, string clientPhone, string clientEGN, string clientEmail, string userId);
+        bool CheckEgnValidity(string email);
     }
 }

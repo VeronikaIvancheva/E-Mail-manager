@@ -53,26 +53,24 @@ namespace EmailManager.Services.Implementation
             return createLoan;
         }
 
+        public bool CheckEgnValidity(string email)
+        {
+            var egn = "";
 
-        //TO CHECK
-        //public bool CheckEgnValidity(string email)
-        //{
-        //    var egn = "";
+            for (int i = 0; i < email.Length; i++)
+            {
+                if (Char.IsDigit(email[i]))
+                {
+                    egn.Concat(email[i].ToString());
+                }
+                else
+                {
+                    return false;
+                }
+            }
 
-        //    for (int i = 0; i < email.Length; i++)
-        //    {
-        //        if (Char.IsDigit(email[i]))
-        //        {
-        //            egn.Concat(email[i].ToString());
-        //        }
-        //        else
-        //        {
-        //            return false;
-        //        }
-        //    }
-
-        //    return true;
-        //}
+            return true;
+        }
 
         public async Task<Client> AddClient(string clientName, string clientPhone, string clientEGN,
             string clientEmail, string userId)

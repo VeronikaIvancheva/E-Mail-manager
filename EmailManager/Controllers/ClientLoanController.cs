@@ -24,7 +24,6 @@ namespace EmailManager.Controllers
         public IActionResult GetEmailDetails(int id)
         {
             var email = _emailService.GetEmail(id);
-            var emailAttachments = _emailService.GetAttachment(id);
 
             var emailModel = EmailMapper.MapFromEmail(email, _emailService);
 
@@ -37,11 +36,6 @@ namespace EmailManager.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateLoan(CreateLoanViewModel vm)
         {
-            if (!ModelState.IsValid)
-            {
-                return View(vm);
-            }
-
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var clientCheck = await _loanService.AddClient(vm.ClientName, vm.ClientPhoneNumber, vm.ClientEGN, vm.ClientEmail, userId);
 
