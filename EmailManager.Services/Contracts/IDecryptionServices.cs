@@ -7,5 +7,6 @@ namespace EmailManager.Services.Contracts
     {
         string Decrypt(string cipherText);
         IEnumerable<Client> DecryptClientList(IEnumerable<Client> client);
+        string DecryptEmailBody(string body);
     }
 }

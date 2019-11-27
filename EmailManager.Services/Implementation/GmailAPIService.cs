@@ -8,7 +8,6 @@ using Google.Apis.Gmail.v1;
 using Google.Apis.Gmail.v1.Data;
 using Google.Apis.Services;
 using Google.Apis.Util.Store;
-using Microsoft.Extensions.Logging;
 using System;
 using System.IO;
 using System.Linq;
@@ -25,10 +24,14 @@ namespace EmailManager.Services.Implementation
            log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         private readonly EmailManagerContext _context;
+        private readonly IDecryptionServices _decrypt;
+        private readonly IEncryptionServices _encrypt;
 
-        public GmailAPIService(EmailManagerContext context)
+        public GmailAPIService(EmailManagerContext context, IDecryptionServices decrypt, IEncryptionServices encrypt)
         {
             this._context = context;
+            this._decrypt = decrypt;
+            this._encrypt = encrypt;
         }
 
         public async Task SaveEmailsToDB()
@@ -109,9 +112,12 @@ namespace EmailManager.Services.Implementation
 
         public EmailBody PassEmailBodyParams(Message emailFullResponse)
         {
+            var body = emailFullResponse.Snippet;
+            var decryptedEmail = _decrypt.DecryptEmailBody(body);
+
             EmailBody emailBody = new EmailBody
             {
-                Body = emailFullResponse.Snippet,
+                Body = decryptedEmail,
             };
 
             _context.EmailBodies.AddAsync(emailBody);

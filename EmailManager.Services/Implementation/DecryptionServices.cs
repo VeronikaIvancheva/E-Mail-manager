@@ -45,5 +45,12 @@ namespace EmailManager.Services.Implementation
             }
             return clients;
         }
+
+        public string DecryptEmailBody(string body)
+        {
+            string decryptBody = Decrypt(body);
+
+            return decryptBody;
+        }
     }
 }
