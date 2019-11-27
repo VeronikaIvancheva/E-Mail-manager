@@ -43,7 +43,7 @@
 <p></p>
 <!-- User buttons -->
 <form method="post">
-    @if (User.IsInRole("Operator"))
+    @if (!User.IsInRole("Manager"))
     {
         @if (Model.EnumStatus.ToString() == "NotReviewed")
         {
