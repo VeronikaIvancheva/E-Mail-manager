@@ -18,10 +18,12 @@ namespace EmailManager.Services.Implementation
            log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         private readonly EmailManagerContext _context;
+        private readonly IDecryptionServices _decrypt;
 
-        public EmailService(EmailManagerContext context)
+        public EmailService(EmailManagerContext context, IDecryptionServices decrypt)
         {
             this._context = context ?? throw new ArgumentNullException(nameof(context));
+            this._decrypt = decrypt;
         }
 
         public async Task<IEnumerable<Email>> GetAllStatusEmails(int currentPage, string userId)
@@ -67,7 +69,6 @@ namespace EmailManager.Services.Implementation
             return emailAll;
         }
 
-        //TODO Може да се счупи, когато започнем да криптираме тялото и изпращача или да не работят тези 2 search-a
         public async Task<IEnumerable<Email>> SearchEmails(string search, int currentPage, string userId)
         {
             var currentUser = await _context.Users
@@ -129,6 +130,9 @@ namespace EmailManager.Services.Implementation
                 .Include(m => m.Status)
                 .Include(m => m.User)
                 .FirstOrDefault(m => m.Id == emailId);
+
+            string decryptBody = _decrypt.Base64Decrypt(email.EmailBody.Body);
+            email.EmailBody.Body = decryptBody;
 
             if (email == null)
             {

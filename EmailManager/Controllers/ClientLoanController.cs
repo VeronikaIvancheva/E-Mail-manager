@@ -4,7 +4,6 @@ using EmailManager.Services.Exeptions;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using EmailManager.Models.EmailViewModel;
 using EmailManager.Mappers;
 
 namespace EmailManager.Controllers
@@ -28,7 +27,6 @@ namespace EmailManager.Controllers
             var emailAttachments = _emailService.GetAttachment(id);
 
             var emailModel = EmailMapper.MapFromEmail(email, _emailService);
-            //var emailModel = new EmailViewModel(email, emailAttachments);
 
             log.Info($"User opened email detail page. Email Id: {id}");
 

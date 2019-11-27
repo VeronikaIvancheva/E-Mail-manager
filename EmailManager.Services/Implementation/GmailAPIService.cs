@@ -113,7 +113,7 @@ namespace EmailManager.Services.Implementation
         public EmailBody PassEmailBodyParams(Message emailFullResponse)
         {
             var body = emailFullResponse.Snippet;
-            var decryptedEmail = _decrypt.DecryptEmailBody(body);
+            var decryptedEmail = _encrypt.Base64Encrypt(body);
 
             EmailBody emailBody = new EmailBody
             {

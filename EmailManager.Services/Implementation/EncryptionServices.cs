@@ -1,4 +1,6 @@
-﻿using EmailManager.Services.Contracts;
+﻿using EmailManager.Data.Context;
+using EmailManager.Data.Implementation;
+using EmailManager.Services.Contracts;
 using System;
 using System.IO;
 using System.Security.Cryptography;
@@ -8,6 +10,13 @@ namespace EmailManager.Services.Implementation
 {
     public class EncryptionServices : IEncryptionServices
     {
+        private readonly EmailManagerContext _context;
+
+        public EncryptionServices(EmailManagerContext context)
+        {
+            this._context = context;
+        }
+
         public string Encrypt(string clearText)
         {
             string EncryptionKey = "banana";
@@ -36,6 +45,26 @@ namespace EmailManager.Services.Implementation
         {
             var plainTextBytes = Encoding.UTF8.GetBytes(plainText);
             return Convert.ToBase64String(plainTextBytes);
+        }
+
+        public Client EncryptClientInfo(string clientName, string clientPhone, string clientEGN,
+           string clientEmail, string userId)
+        {
+            var encryptedName = Encrypt(clientName);
+            var encryptedEgn = Encrypt(clientPhone);
+            var encryptedPhoneNumber = Encrypt(clientEGN);
+            var encryptedEmail = Encrypt(clientEmail);
+
+            var newClient = new Client
+            {
+                ClientName = encryptedName,
+                ClientEmail = encryptedEgn,
+                ClientEGN = encryptedPhoneNumber,
+                ClientPhoneNumber = encryptedEmail,
+                UserId = userId,
+            };
+
+            return newClient;
         }
     }
 }

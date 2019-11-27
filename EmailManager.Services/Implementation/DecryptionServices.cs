@@ -1,8 +1,10 @@
-﻿using EmailManager.Data.Implementation;
+﻿using EmailManager.Data.Context;
+using EmailManager.Data.Implementation;
 using EmailManager.Services.Contracts;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -10,6 +12,13 @@ namespace EmailManager.Services.Implementation
 {
     public class DecryptionServices : IDecryptionServices
     {
+        private readonly EmailManagerContext _context;
+
+        public DecryptionServices(EmailManagerContext context)
+        {
+            this._context = context;
+        }
+
         public string Decrypt(string cipherText)
         {
             string EncryptionKey = "banana";
@@ -46,17 +55,35 @@ namespace EmailManager.Services.Implementation
             return clients;
         }
 
-        public string DecryptEmailBody(string body)
-        {
-            string decryptBody = Decrypt(body);
-
-            return decryptBody;
-        }
-
         public string Base64Decrypt(string base64EncodedData)
         {
             var base64EncodedBytes = Convert.FromBase64String(base64EncodedData);
+
             return Encoding.UTF8.GetString(base64EncodedBytes);
+        }
+
+        public Client DecryptClientInfo(Client clientId)
+        {
+            Client client = _context.Clients
+                .FirstOrDefault(c => c.ClientId == clientId.ClientId);
+
+            string decryptName = Decrypt(client.ClientName);
+            string decryptEgn = Decrypt(client.ClientEGN);
+            string decryptPhoneNumber = Decrypt(client.ClientPhoneNumber);
+            string decryptEmail = Decrypt(client.ClientEmail);
+
+            Client clientForLoan = new Client
+            {
+                ClientName = decryptName,
+                ClientEmail = decryptEgn,
+                ClientEGN = decryptPhoneNumber,
+                ClientPhoneNumber = decryptEmail,
+                UserId = client.UserId,
+                EmailId = client.EmailId,
+                Email = client.Email,
+            };
+
+            return client;
         }
     }
 }

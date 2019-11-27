@@ -74,50 +74,6 @@ namespace EmailManager.Services.Implementation
         //    return true;
         //}
 
-        public Client DecryptClientInfo(Client clientId)
-        {
-            Client client = _context.Clients
-                .FirstOrDefault(c => c.ClientId == clientId.ClientId);
-
-            string decryptName = _decrypt.Decrypt(client.ClientName);
-            string decryptEgn = _decrypt.Decrypt(client.ClientEGN);
-            string decryptPhoneNumber = _decrypt.Decrypt(client.ClientPhoneNumber);
-            string decryptEmail = _decrypt.Decrypt(client.ClientEmail);
-
-            Client clientForLoan = new Client
-            {
-                ClientName = decryptName,
-                ClientEmail = decryptEgn,
-                ClientEGN = decryptPhoneNumber,
-                ClientPhoneNumber = decryptEmail,
-                UserId = client.UserId,
-                EmailId = client.EmailId,
-                Email = client.Email,
-            };
-
-            return client;
-        }
-
-        public Client EncryptClientInfo(string clientName, string clientPhone, string clientEGN,
-            string clientEmail, string userId)
-        {
-            var encryptedName = _encrypt.Encrypt(clientName);
-            var encryptedEgn = _encrypt.Encrypt(clientPhone);
-            var encryptedPhoneNumber = _encrypt.Encrypt(clientEGN);
-            var encryptedEmail = _encrypt.Encrypt(clientEmail);
-
-            var newClient = new Client
-            {
-                ClientName = encryptedName,
-                ClientEmail = encryptedEgn,
-                ClientEGN = encryptedPhoneNumber,
-                ClientPhoneNumber = encryptedEmail,
-                UserId = userId,
-            };
-
-            return newClient;
-        }
-
         public async Task<Client> AddClient(string clientName, string clientPhone, string clientEGN,
             string clientEmail, string userId)
         {
@@ -129,7 +85,7 @@ namespace EmailManager.Services.Implementation
 
             if (newClientCheck == null)
             {
-                newClientCheck = EncryptClientInfo(clientName, clientPhone, clientEGN, clientEmail, userId);
+                newClientCheck = _encrypt.EncryptClientInfo(clientName, clientPhone, clientEGN, clientEmail, userId);
 
                 await _context.Clients.AddAsync(newClientCheck);
                 await _context.SaveChangesAsync();
@@ -138,7 +94,7 @@ namespace EmailManager.Services.Implementation
             }
             else
             {
-                var decryptClientData = DecryptClientInfo(newClientCheck);
+                var decryptClientData = _decrypt.DecryptClientInfo(newClientCheck);
                 newClientCheck = decryptClientData;
 
                 log.Info($"Found excisting client with Id {newClientCheck.ClientId}");
