@@ -95,7 +95,6 @@ namespace EmailManager.Services.Implementation
                     string editedDate = date.Remove(date.IndexOf('+') - 1);
 
                     //Checking whether the emails are saved or not 
-                    //TODO - може да се счупи, когато започнем да криптираме клиента
                     Email emailCheck = _context.Emails
                         .FirstOrDefault(e => e.Sender == sender && e.Subject == subject && e.ReceiveDate == editedDate);
 

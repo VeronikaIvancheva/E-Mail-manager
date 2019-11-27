@@ -1,6 +1,5 @@
 ﻿using EmailManager.Services.Contracts;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
@@ -27,9 +26,9 @@ namespace EmailManager.Services.Implementation
                     }
                     clearText = Convert.ToBase64String(stream.ToArray());
 
-                    //key.Dispose();
                 }
             }
+
             return clearText;
         }
     }

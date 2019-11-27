@@ -1,5 +1,4 @@
-﻿using EmailManager.Data;
-using EmailManager.Data.Implementation;
+﻿using EmailManager.Data.Implementation;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 

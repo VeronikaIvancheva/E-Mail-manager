@@ -1,14 +1,11 @@
 ﻿using EmailManager.Data.Context;
 using EmailManager.Data.Implementation;
 using EmailManager.Services.Contracts;
-using EmailManager.Services.Exeptions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace EmailManager.Services.Implementation
@@ -19,51 +16,10 @@ namespace EmailManager.Services.Implementation
            log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         private readonly EmailManagerContext _context;
-        private readonly UserManager<User> _userManager;
 
         public UserServices(EmailManagerContext context, UserManager<User> userManager)
         {
             this._context = context ?? throw new ArgumentNullException(nameof(context));
-            this._userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
-        }
-
-        public async Task RegisterAccountAsync(User registerAccount)
-        {
-            var validationMethod = ValidationMethod(registerAccount);
-
-            var user = await this._context.Users
-                .Where(name => name.UserName == validationMethod.UserName)
-                .Select(username => username.UserName)
-                .SingleOrDefaultAsync();
-
-            if (user != null)
-            {
-                throw new UserExeptions($"You cannot register accout with the following username {validationMethod.UserName}");
-            }
-        }
-
-        public User ValidationMethod(User user)
-        {
-            if (user.Role != "Manager" && user.Role != "Operator")
-            {
-                throw new UserExeptions("Wrong role name!");
-            }
-
-            if (user.UserName.Length < 3 || user.UserName.Length > 50)
-            {
-                throw new UserExeptions("Username must be betweeen 3 and 50 symbols!");
-            }
-
-            if (user.Email == null)
-            {
-                throw new UserExeptions("Email cannot be null!");
-            }
-
-            if (user.Email.Length < 5 || user.Email.Length > 50)
-            {
-                throw new UserExeptions("Email must be betweeen 5 and 50 symbols!");
-            }
-            return user;
         }
 
         public User GetUserById(string id)
@@ -74,19 +30,18 @@ namespace EmailManager.Services.Implementation
 
         public IEnumerable<User> GetAll(int currentPage)
         {
-            IEnumerable<User> userAll;
+            IEnumerable<User> userAll = _context.Users
+                     .OrderBy(u => u.Id);
 
             if (currentPage == 1)
             {
-                userAll = _context.Users
-                     .OrderBy(u => u.Id)
+                userAll = userAll
                      .Take(10)
                      .ToList();
             }
             else
             {
-                userAll = _context.Users
-                    .OrderBy(u => u.Id)
+                userAll = userAll
                     .Skip((currentPage - 1) * 10)
                     .Take(10)
                     .ToList();

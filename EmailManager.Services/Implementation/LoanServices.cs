@@ -1,13 +1,10 @@
 ﻿using EmailManager.Data.Context;
-using EmailManager.Data.Enums;
 using EmailManager.Data.Implementation;
 using EmailManager.Services.Contracts;
-using EmailManager.Services.Exeptions;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace EmailManager.Services.Implementation
@@ -18,7 +15,6 @@ namespace EmailManager.Services.Implementation
           log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         private readonly EmailManagerContext _context;
-        private readonly IEncryptionServices _securityEncrypt;
         private readonly IDecryptionServices _decrypt;
         private readonly IEncryptionServices _encrypt;
         private readonly IEmailService _emailService;
@@ -27,7 +23,6 @@ namespace EmailManager.Services.Implementation
             IDecryptionServices decrypt, IEncryptionServices encrypt, IEmailService emailService)
         {
             this._context = context;
-            this._securityEncrypt = securityEncrypt;
             this._decrypt = decrypt;
             this._encrypt = encrypt;
             this._emailService = emailService;
@@ -35,7 +30,7 @@ namespace EmailManager.Services.Implementation
 
         public async Task<Loan> CreateLoanApplication(Client client, int loanSum, string userId, int emailId)
         {
-            var email = await this._context.Emails
+            var email = await _context.Emails
                 .Where(e => e.Id == emailId)
                 .FirstOrDefaultAsync();
 
@@ -50,34 +45,34 @@ namespace EmailManager.Services.Implementation
 
             await _emailService.MarkOpenStatus(emailId, userId);
 
-            await this._context.Loans.AddAsync(createLoan);
-            await this._context.SaveChangesAsync();
+            await _context.Loans.AddAsync(createLoan);
+            await _context.SaveChangesAsync();
 
             log.Info($"New loan to client Id: {client.ClientId} for {loanSum} sum.");
 
             return createLoan;
         }
 
-     
 
-        public bool CheckEgnValidity(string email)
-        {
-            var egn = "";
+        //TO CHECK
+        //public bool CheckEgnValidity(string email)
+        //{
+        //    var egn = "";
 
-            for (int i = 0; i < email.Length; i++)
-            {
-                if (Char.IsDigit(email[i]))
-                {
-                    egn.Concat(email[i].ToString());
-                }
-                else
-                {
-                    return false;
-                }
-            }
+        //    for (int i = 0; i < email.Length; i++)
+        //    {
+        //        if (Char.IsDigit(email[i]))
+        //        {
+        //            egn.Concat(email[i].ToString());
+        //        }
+        //        else
+        //        {
+        //            return false;
+        //        }
+        //    }
 
-            return true;
-        }
+        //    return true;
+        //}
 
         public Client DecryptClientInfo(Client clientId)
         {
@@ -106,10 +101,10 @@ namespace EmailManager.Services.Implementation
         public Client EncryptClientInfo(string clientName, string clientPhone, string clientEGN,
             string clientEmail, string userId)
         {
-            var encryptedName = this._encrypt.Encrypt(clientName);
-            var encryptedEgn = this._encrypt.Encrypt(clientPhone);
-            var encryptedPhoneNumber = this._encrypt.Encrypt(clientEGN);
-            var encryptedEmail = this._encrypt.Encrypt(clientEmail);
+            var encryptedName = _encrypt.Encrypt(clientName);
+            var encryptedEgn = _encrypt.Encrypt(clientPhone);
+            var encryptedPhoneNumber = _encrypt.Encrypt(clientEGN);
+            var encryptedEmail = _encrypt.Encrypt(clientEmail);
 
             var newClient = new Client
             {
@@ -136,8 +131,8 @@ namespace EmailManager.Services.Implementation
             {
                 newClientCheck = EncryptClientInfo(clientName, clientPhone, clientEGN, clientEmail, userId);
 
-                await this._context.Clients.AddAsync(newClientCheck);
-                await this._context.SaveChangesAsync();
+                await _context.Clients.AddAsync(newClientCheck);
+                await _context.SaveChangesAsync();
 
                 log.Info($"New client with Id: {newClientCheck.ClientId}");
             }
@@ -151,7 +146,7 @@ namespace EmailManager.Services.Implementation
 
             if (newClientCheck == null)
             {
-                log.Fatal("New client is null! Must never reach here! Error in AddClient method in Loan service.");
+                log.Fatal("New client is null! Must never reach here! Error in AddClient method => Loan service.");
             }
 
             return newClientCheck;

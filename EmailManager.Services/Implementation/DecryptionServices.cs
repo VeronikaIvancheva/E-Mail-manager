@@ -29,26 +29,9 @@ namespace EmailManager.Services.Implementation
                     }
                     cipherText = Encoding.Unicode.GetString(stream.ToArray());
                 }
-                //key.Dispose();
             }
+
             return cipherText;
-        }
-
-        public Client DecodeClient(Client client)
-        {
-            var name = Decrypt(client.ClientName);
-            var egn = Decrypt(client.ClientEGN);
-            var phoneNumber = Decrypt(client.ClientPhoneNumber);
-
-            var applicant = new Client
-            {
-                ClientName = name,
-                ClientEGN = egn,
-                ClientPhoneNumber = phoneNumber,
-                ClientEmail = client.ClientEmail
-            };
-
-            return applicant;
         }
 
         public IEnumerable<Client> DecryptClientList(IEnumerable<Client> client)
@@ -61,14 +44,6 @@ namespace EmailManager.Services.Implementation
                 clients.Add(new Client { ClientEGN = egn, ClientId = item.ClientId });
             }
             return clients;
-        }
-
-        public string ReplaceSign(string body)
-        {
-            string codedBody = body.Replace("-", "+");
-            codedBody = codedBody.Replace("_", "/");
-
-            return codedBody;
         }
     }
 }

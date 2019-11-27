@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using EmailManager.Data.Implementation;
-using Microsoft.Extensions.Logging;
 
 
 namespace EmailManager.Services.Implementation
@@ -19,17 +18,10 @@ namespace EmailManager.Services.Implementation
            log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         private readonly EmailManagerContext _context;
-        private readonly ILogger<EmailService> _logger;
-        private readonly IEncryptionServices _securityEncrypt;
-        private readonly IDecryptionServices _securityDecrypt;
 
-        public EmailService(EmailManagerContext context, ILogger<EmailService> logger,
-            IEncryptionServices securityEncrypt, IDecryptionServices securityDecrypt)
+        public EmailService(EmailManagerContext context)
         {
             this._context = context ?? throw new ArgumentNullException(nameof(context));
-            this._logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            this._securityEncrypt = securityEncrypt ?? throw new ArgumentNullException(nameof(securityEncrypt));
-            this._securityDecrypt = securityDecrypt ?? throw new ArgumentNullException(nameof(securityDecrypt));
         }
 
         public async Task<IEnumerable<Email>> GetAllStatusEmails(int currentPage, string userId)
