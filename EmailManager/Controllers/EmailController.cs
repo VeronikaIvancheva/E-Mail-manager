@@ -9,7 +9,6 @@ using EmailManager.Models.EmailViewModel;
 using EmailManager.Services.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.ResponseCaching;
 
 namespace EmailManager.Controllers
 {

@@ -24,23 +24,19 @@ namespace EmailManager.Services.Implementation
            log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         private readonly EmailManagerContext _context;
-        private readonly IDecryptionServices _decrypt;
         private readonly IEncryptionServices _encrypt;
 
-        public GmailAPIService(EmailManagerContext context, IDecryptionServices decrypt, IEncryptionServices encrypt)
+        public GmailAPIService(EmailManagerContext context, IEncryptionServices encrypt)
         {
             this._context = context;
-            this._decrypt = decrypt;
             this._encrypt = encrypt;
         }
 
+        static string[] Scopes = { GmailService.Scope.GmailReadonly };
+        static string ApplicationName = "Gmail API .NET Quickstart";
+
         public async Task SaveEmailsToDB()
         {
-            // If modifying these scopes, delete your previously saved credentials
-            // at ~/.credentials/gmail-dotnet-quickstart.json
-            string[] Scopes = { GmailService.Scope.GmailReadonly };
-            string ApplicationName = "Gmail API .NET Quickstart";
-
             UserCredential credential;
 
             using (var stream =
