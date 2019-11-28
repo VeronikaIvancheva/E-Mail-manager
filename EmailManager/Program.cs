@@ -8,9 +8,9 @@ using log4net;
 using log4net.Config;
 using System.IO;
 using System.Reflection;
+using System.Configuration;
 
 [assembly: log4net.Config.XmlConfigurator(Watch = true)]
-
 namespace EmailManager
 {
     public class Program
@@ -19,8 +19,7 @@ namespace EmailManager
         {
 
             var logRepository = LogManager.GetRepository(Assembly.GetEntryAssembly());
-            XmlConfigurator.Configure(logRepository, new FileInfo("log4net.config"));
-
+            XmlConfigurator.Configure(logRepository,new FileInfo(ConfigurationManager.AppSettings["~/log4net.config"]));
 
             var host = CreateWebHostBuilder(args).Build();
 
