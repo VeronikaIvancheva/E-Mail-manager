@@ -19,7 +19,7 @@ namespace EmailManager
         {
 
             var logRepository = LogManager.GetRepository(Assembly.GetEntryAssembly());
-            XmlConfigurator.Configure(logRepository,new FileInfo(ConfigurationManager.AppSettings["~/log4net.config"]));
+            XmlConfigurator.Configure(logRepository,new FileInfo("~/log4net.config"));
 
             var host = CreateWebHostBuilder(args).Build();
 
